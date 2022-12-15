@@ -12,7 +12,7 @@ export default class ScoreSummary extends React.Component {
   getTotalScores(scores){
     const totalScores = {score: 0, max:0};
     for(const scene in this.context.params.scenes){
-      const sceneScores = scores[scene];
+      const sceneScores = scores[this.context.params.scenes[scene].sceneId];
       for(const [id, score] of Object.entries(sceneScores.scores)){
           totalScores.score += score.raw;
           totalScores.max += score.max;  
