@@ -183,8 +183,8 @@ export default class Main extends React.Component {
     };
     for(const sceneId in this.context.params.scenes){
       const scene = this.context.params.scenes[sceneId];
-      scoreCard.sceneScoreCards[sceneId] = this.initialSceneScoreCard(scene);
-      scoreCard.numQuestionsInTour += scoreCard.sceneScoreCards[sceneId].numQuestionsInScene
+      scoreCard.sceneScoreCards[scene.sceneId] = this.initialSceneScoreCard(scene);
+      scoreCard.numQuestionsInTour += scoreCard.sceneScoreCards[scene.sceneId].numQuestionsInScene
     }
     return scoreCard;
   }
