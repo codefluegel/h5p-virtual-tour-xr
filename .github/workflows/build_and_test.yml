@@ -29,15 +29,7 @@ jobs:
 
           while read -r repo; do git clone ${repo}; done < ../h5p-three-image/build_info/repos
 
-          if [ -d "h5p-editor-audio-recorder" ]; then
-            pushd h5p-editor-audio-recorder
-            git checkout bec6fe1
-            npm cache clean -f
-            npm i webpack@2.7.0 webpack-sources@1.0.1 -g
-            npm ci
-            webpack
-            popd
-          fi
+          if [ -d "h5p-editor-audio-recorder" ]; then pushd h5p-editor-audio-recorder && npm ci && npm run build; popd; fi
 
           if [ -d "h5p-editor-three-image" ]; then pushd h5p-editor-three-image && npm ci && npm run build; popd; fi
 
