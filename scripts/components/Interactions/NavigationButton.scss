@@ -271,6 +271,6 @@ $answerable-interactions: (
 
 .h5p-interaction-answered {
   &::before {
-    border-style: solid;
+    border-style: solid !important;
   }
 }
