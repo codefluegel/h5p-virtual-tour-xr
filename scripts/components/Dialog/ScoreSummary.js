@@ -35,17 +35,17 @@ export default class ScoreSummary extends React.Component {
         items.push(<SceneScores key={sceneId} sceneId={sceneId} sceneScores={sceneScores}></SceneScores>);
     }
     const children = (
-    <div class="h5p-summary-table-pages">
-      <table class="h5p-score-table">
+    <div className="h5p-summary-table-pages">
+      <table className="h5p-score-table">
         <thead>
           <tr>
-            <th class="h5p-summary-table-header slide">{this.context.l10n.assignment}</th>
-            <th class="h5p-summary-table-header score">{this.context.l10n.score} <span>/</span> {this.context.l10n.total.toLowerCase()}</th>
+            <th className="h5p-summary-table-header slide">{this.context.l10n.assignment}</th>
+            <th className="h5p-summary-table-header score">{this.context.l10n.score} <span>/</span> {this.context.l10n.total.toLowerCase()}</th>
           </tr>
         </thead>
         {items}
         <tfoot>
-          <tr><td class="h5p-td h5p-summary-task-title">Total:</td><td id="total-scores" class="h5p-td h5p-summary-score-bar"></td></tr>
+          <tr><td className="h5p-td h5p-summary-task-title">Total:</td><td id="total-scores" className="h5p-td h5p-summary-score-bar"></td></tr>
         </tfoot>
        </table>
     </div>);
