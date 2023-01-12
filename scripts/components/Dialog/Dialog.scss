@@ -23,6 +23,15 @@
   background: #d6d6d6;
 }
 
+.h5p-dialog-label {
+  height: 1px;
+  left: -10000px;
+  overflow: hidden;
+  position: absolute;
+  top: auto;
+  width: 1px;
+}
+
 .h5p-text-dialog {
   position: absolute;
   transform: translate(-50%, -50%);

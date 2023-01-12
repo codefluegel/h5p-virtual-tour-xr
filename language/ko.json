@@ -16,6 +16,9 @@
                   },
                   {
                     "label": "2차원 이미지"
+                  },
+                  {
+                    "label": "Static image"
                   }
                 ]
               },
@@ -35,75 +38,142 @@
                 "label": "장면 설명",
                 "description": "사용자에게 장면을 설명하기 위한 텍스트"
               },
-              {},
               {
+                "label": "Display \"Scene Description\" initially",
+                "description": "Display the scene description when the scene starts for the first time"
+              },
+              {
+                "label": "Initial camera position",
+                "description": "Camera position in pitch and yaw"
+              },
+              {
+                "label": "버튼 형식",
                 "field": {
                   "fields": [
                     {
-                      "label": "라벨",
-                      "description": "빈칸이면 라벨이 표시되지 않으며 화면 읽어주기 기능을 위해 대한 제목 영역을 사용하고자 합니다."
+                      "label": "Label",
+                      "description": "If left blank no label will be displayed and we'll try to use the title field for screen readers"
                     },
                     {
-                      "label": "라벨 설정",
+                      "label": "Label Settings",
                       "fields": [
                         {
-                          "label": "라벨 위치",
-                          "description": "라벨 위치",
+                          "label": "Label position",
+                          "description": "Choose where the label should appear",
                           "options": [
                             {
-                              "label": "행동설정 사용"
+                              "label": "Use behavioral setting"
                             },
                             {
-                              "label": "우측 정렬"
+                              "label": "Right aligned"
                             },
                             {
-                              "label": "좌측 정렬"
+                              "label": "Left aligned"
                             },
                             {
-                              "label": "위쪽 정렬"
+                              "label": "Top aligned"
                             },
                             {
-                              "label": "아래쪽 정렬"
+                              "label": "Bottom aligned"
                             }
                           ]
                         },
                         {
-                          "label": "라벨 표시",
-                          "description": "숨겨진 경우 - 라벨은 마우스 커서 위에 표시됩니다.",
+                          "label": "Display Label",
+                          "description": "If hidden - labels will show only on mouse over",
                           "options": [
                             {
-                              "label": "행동설정 사용"
+                              "label": "Use behavioral setting"
                             },
                             {
-                              "label": "보이기"
+                              "label": "Show"
                             },
                             {
-                              "label": "숨기기"
+                              "label": "Hide"
                             }
                           ]
+                        },
+                        {
+                          "label": "Show as hotspot",
+                          "description": "Allows for adding interaction areas to the background image that can be custom size."
+                        },
+                        {
+                          "label": "Show hotspot when mouse is hovering",
+                          "description": "Will allow hotspot to be visible when mouse is hovering the area."
+                        },
+                        {
+                          "label": "Set the hotspot be tabbable",
+                          "description": "Will allow hotspot to be tabbable. Can be used for accessibilty."
+                        },
+                        {
+                          "label": "Show as open content in the scene",
+                          "description": "Allows the content to be shown in an open dialog box directly in the scene."
+                        },
+                        {
+                          "default": "256,128",
+                          "label": "Values for storing the height and width for hotspot"
+                        },
+                        {
+                          "label": "Code for the interaction",
+                          "description": "If not empty, the user has to input the code in order to open this content."
+                        },
+                        {
+                          "label": "A hint for the interaction code",
+                          "description": "An optional hint for the code, can be left empty if wanted"
                         }
                       ]
                     },
                     {},
-                    {}
+                    {},
+                    {
+                      "label": "Button style",
+                      "description": "Decide how the icon should look.",
+                      "options": [
+                        {
+                          "label": "Text icon"
+                        },
+                        {
+                          "label": "Info icon"
+                        }
+                      ]
+                    }
                   ]
                 }
               },
               {
-                "label": "버튼 형식",
-                "description": "이 장면을 가리키는 단추의 모양을 결정합니다. 정적이고 새로운 장면으로 이어지지 않는 장면의 경우, \"More information\" (더 보기) 버튼을 권장합니다.",
+                "label": "오디오 트랙",
+                "description": "이 장면에 맞는 오디오 트랙을 추가합니다.",
                 "options": [
                   {
-                    "label": "새 장면 (화살표)"
+                    "label": "New scene (arrow)"
                   },
                   {
-                    "label": "더 보기 (플러스)"
+                    "label": "More information (plus)"
                   }
                 ]
               },
               {
-                "label": "오디오 트랙",
-                "description": "이 장면에 맞는 오디오 트랙을 추가합니다."
+                "label": "Audio type",
+                "description": "Decide what audio type this scene will use, either use an audio track or choose an existing audio playlist.",
+                "options": [
+                  {
+                    "label": "Audio Track"
+                  },
+                  {
+                    "label": "Playlist"
+                  }
+                ]
+              },
+              {
+                "label": "Audio Track",
+                "description": "Add an audio track that's specific for this scene."
+              },
+              {
+                "label": "Playlist",
+                "description": "Here you can pick an existing playlist as audio."
+              },
+              {
+                "label": "Restart audio when scene is reopened"
               }
             ]
           }
@@ -111,6 +181,22 @@
         {},
         {
           "label": "오디오 트랙"
+        },
+        {
+          "label": "Playlists",
+          "field": {
+            "fields": [
+              {
+                "label": "Playlist Title",
+                "description": "Used to identify the playlist"
+              },
+              {
+                "label": "Audio Tracks",
+                "description": "Add audio tracks to the playlist."
+              },
+              {}
+            ]
+          }
         }
       ]
     },
@@ -168,34 +254,77 @@
     },
     {
       "label": "라벨 맞춤 설정",
+      "description": "These options will let you control how the world behaves.",
       "fields": [
         {
           "label": "콘텐츠 유형",
-          "default": "가상 여행"
+          "description": "Decide what audio type this scene will use, either use an audio track or choose an existing audio playlist.",
+          "options": [
+            {
+              "label": "Global Audio"
+            },
+            {
+              "label": "Playlist"
+            }
+          ]
         },
         {
           "label": "오디오 재생 라벨",
-          "default": "오디오 재생"
+          "description": "Add an audio track that's available for all of the scenes by default."
         },
         {
           "label": "오디오 일시멈출 라벨",
-          "default": "오디오 일시멈춤"
+          "description": "Here you can pick an existing playlist as audio."
         },
         {
           "label": "장면 대화 제목",
-          "default": "장면 설명"
+          "description": "Display button for showing the scores from assignments."
         },
         {
           "label": "카메라 리셋 버튼에 대한 라벨",
-          "default": "카메라 리셋"
+          "description": "Display button for going to start scene."
         },
         {
           "label": "제출 대화상자 라벨",
-          "default": "제출 대화상자"
+          "description": "Choose the amount of width and height segments used to render a scene. This directly affects the quality level of the scene, try increasing the quality if a scene looks \"blocky\" or \"waves\" are seen within the scenes. Note that higher quality rendering takes more time to load.",
+          "options": [
+            {
+              "label": "High Quality (128x128)"
+            },
+            {
+              "label": "Medium Quality (64x64)"
+            },
+            {
+              "label": "Low Quality (16x16)"
+            }
+          ]
         },
         {
           "label": "대화상자 닫기 라벨",
-          "default": "대화상자 닫기"
+          "fields": [
+            {
+              "label": "Label position",
+              "description": "The default label position. The position may be overriden per interaction",
+              "options": [
+                {
+                  "label": "Right aligned"
+                },
+                {
+                  "label": "Left aligned"
+                },
+                {
+                  "label": "Top aligned"
+                },
+                {
+                  "label": "Bottom aligned"
+                }
+              ]
+            },
+            {
+              "label": "Display Labels",
+              "description": "If unchecked - labels will show only on mouse over"
+            }
+          ]
         },
         {
           "label": "확장 버튼 라벨",
@@ -208,6 +337,155 @@
         {
           "label": "내용이 없을 때 라벨",
           "default": "내용 없음"
+        }
+      ]
+    },
+    {
+      "label": "Localize",
+      "fields": [
+        {
+          "label": "Aria label for content type",
+          "default": "Virtual Tour"
+        },
+        {
+          "label": "Label for to play audio",
+          "default": "Play Audio Track"
+        },
+        {
+          "label": "Label to pause audio",
+          "default": "Pause Audio Track"
+        },
+        {
+          "label": "Title to scene dialog",
+          "default": "Scene Description"
+        },
+        {
+          "label": "Label for button to reset camera",
+          "default": "Reset Camera"
+        },
+        {
+          "label": "Label for the submit dialog button",
+          "default": "Submit Dialog"
+        },
+        {
+          "label": "Label for the close dialog button",
+          "default": "Close Dialog"
+        },
+        {
+          "label": "Aria label for the expand label button",
+          "default": "Expand the visual label"
+        },
+        {
+          "label": "Label for when background image is loading in 360 scene",
+          "default": "Loading background image..."
+        },
+        {
+          "label": "Label for when there is no content",
+          "default": "No content"
+        },
+        {
+          "label": "Label for context menu button for go to scene",
+          "default": "Go to scene"
+        },
+        {
+          "label": "Label for context menu button for edit",
+          "default": "Edit"
+        },
+        {
+          "label": "Label for context menu button for delete",
+          "default": "Delete"
+        },
+        {
+          "label": "Translation for \"Score\"",
+          "default": "Score"
+        },
+        {
+          "label": "Translation for \"Assignment\"",
+          "default": "Assignment"
+        },
+        {
+          "label": "Translation for \"Total\"",
+          "default": "Total"
+        },
+        {
+          "label": "Translation for \"Total Score\"",
+          "default": "Total Score"
+        },
+        {
+          "label": "Label for button to show score summary",
+          "default": "Show Score Summary"
+        },
+        {
+          "label": "Translation for 'Scene'",
+          "default": "Scene"
+        },
+        {
+          "label": "Untitled",
+          "default": "Untitled"
+        },
+        {
+          "label": "Go to start scene",
+          "default": "Go to start scene"
+        },
+        {
+          "label": "You are at the start scene",
+          "default": "You are at the start scene"
+        },
+        {
+          "label": "Unlocked",
+          "default": "Unlocked"
+        },
+        {
+          "label": "Locked",
+          "default": "Locked"
+        },
+        {
+          "label": "Search the room until you find the code",
+          "default": "Search the room until you find the code"
+        },
+        {
+          "label": "The code was wrong, try again.",
+          "default": "The code was wrong, try again."
+        },
+        {
+          "label": "The content has been unlocked!",
+          "default": "The content has been unlocked!"
+        },
+        {
+          "label": "Code",
+          "default": "Code"
+        },
+        {
+          "label": "Show code",
+          "default": "Show code"
+        },
+        {
+          "label": "Hide code",
+          "default": "Hide code"
+        },
+        {
+          "label": "Unlocked interaction action (Continue)",
+          "default": "Continue"
+        },
+        {
+          "label": "Locked interaction action (Unlock)",
+          "default": "Unlock"
+        },
+        {
+          "label": "Drag horizontally to scale (for screen readers)",
+          "default": "Drag horizontally to scale"
+        },
+        {
+          "label": "Drag vertically to scale (for screen readers)",
+          "default": "Drag vertically to scale"
+        },
+        {
+          "label": "Hint",
+          "default": "Hint"
+        },
+        {
+          "label": "Locked content",
+          "default": "Locked content"
         }
       ]
     }
