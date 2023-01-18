@@ -428,6 +428,10 @@
         {
           "label": "Hint",
           "default": "Hint"
+        },
+        {
+          "label": "Locked content",
+          "default": "Locked content"
         }
       ]
     }

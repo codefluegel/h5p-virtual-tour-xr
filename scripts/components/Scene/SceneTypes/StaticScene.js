@@ -74,7 +74,7 @@ export default class StaticScene extends React.Component {
     const defaultSize = 938;
     const defaultFontSize = 16;
     this.sceneWrapperRef.current.style.width = `100%`;
-    
+
     // Specific to Firefox - Interaction buttons are moving out of scope when image is potrait
     if (this.imageElementRef.current.clientWidth > 0) {
       this.sceneWrapperRef.current.style.width = `${this.imageElementRef.current.clientWidth}px`;
@@ -281,7 +281,8 @@ export default class StaticScene extends React.Component {
     this.setState({
       isVerticalImage: ratio < this.context.getRatio(),
     });
-    imageElement.focus();
+
+    this.focusScene();
 
     this.context.on('resize', () => {
       staticSceneWidth = imageElement.clientWidth;
@@ -291,6 +292,16 @@ export default class StaticScene extends React.Component {
         isVerticalImage: ratio < this.context.getRatio(),
       });
     });
+  }
+
+  /**
+   * Focus scene.
+   */
+  focusScene() {
+    // Scene should only take focus if nothing else could
+    if (this.props.takeFocus) {
+      this.imageElementRef.current?.focus();
+    }
   }
 
   // Since some interactions don't have titles this seeks to use the closest thing to a title to prevent "Untitled Text"

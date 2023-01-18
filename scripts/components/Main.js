@@ -8,10 +8,10 @@ import HUD from './HUD/HUD';
 import NoScene from "./Scene/NoScene";
 import PasswordContent from "./Dialog/PasswordContent";
 import ScoreSummary from './Dialog/ScoreSummary';
-import { 
-  createAudioPlayer, 
-  isInteractionAudio, 
-  fadeAudioInAndOut, 
+import {
+  createAudioPlayer,
+  isInteractionAudio,
+  fadeAudioInAndOut,
   isSceneAudio,
   isPlaylistAudio
 } from "../utils/audio-utils";
@@ -47,6 +47,8 @@ export default class Main extends React.Component {
         labelPosition: "right"
       }
     };
+
+    this.isVeryFirstRenderDone = this.props.isVeryFirstRenderDone ?? false;
   }
 
   componentDidMount() {
@@ -70,9 +72,29 @@ export default class Main extends React.Component {
       this.handleSceneDescriptionInitially(this.props.currentScene);
     }
     this.setState({scoreCard: this.initialScoreCard()});
+
+    if (this.context.extras.isEditor) {
+      // Make sure user is warned before closing the window
+      window.addEventListener('beforeunload', (e) => {
+        if (
+          e.target.body.firstChild.classList.contains('h5p-threeimage-editor') ||
+          ( this.state.scoreCard.totalQuestionsCompleted === 0 &&
+            this.state.scoreCard.totalCodesEntered === 0
+          )
+        ) {
+          return;
+        }
+        e.preventDefault();
+        e.returnValue = '';
+      });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (this.state.threeSixty) {
+      this.isVeryFirstRenderDone = true;
+    }
+
     if (this.state.updateThreeSixty) {
       this.setState({
         updateThreeSixty: false
@@ -143,18 +165,6 @@ export default class Main extends React.Component {
         fadeAudioInAndOut(lastPlayer, null, true);
       }
     }
-
-    //Makes sure the user is warned before closing the window
-    window.addEventListener('beforeunload', (e) => {
-      if(e.target.body.firstChild.classList.contains("h5p-threeimage-editor")
-        || (this.state.scoreCard.totalQuestionsCompleted === 0
-            && this.state.scoreCard.totalCodesEntered === 0))
-      {
-        return;
-      }
-      e.preventDefault();
-      e.returnValue = '';
-    });
   }
 
   setFocusedInteraction(focusedInteraction) {
@@ -190,7 +200,7 @@ export default class Main extends React.Component {
   }
 
   /**
-   * @param {SceneParams} scene 
+   * @param {SceneParams} scene
    * @returns {SceneScoreCard}
    */
   initialSceneScoreCard(scene) {
@@ -236,8 +246,8 @@ export default class Main extends React.Component {
   }
 
   /**
-   * @param {Interaction} interaction 
-   * @returns {number} 
+   * @param {Interaction} interaction
+   * @returns {number}
    */
   getQuestionMaxScore(interaction) {
     if(this.context.extras.isEditor){
@@ -288,7 +298,7 @@ export default class Main extends React.Component {
   }
 
   /**
-   * @param {number} sceneId 
+   * @param {number} sceneId
    */
   navigateToScene(sceneId) {
     this.setState({
@@ -429,7 +439,7 @@ export default class Main extends React.Component {
   }
 
   /**
-   * @param {number} interactionIndex 
+   * @param {number} interactionIndex
    * @returns {Interaction}
    */
   getInteractionFromCurrentScene(interactionIndex) {
@@ -477,9 +487,9 @@ export default class Main extends React.Component {
           });
         }
         const player = this.getAudioPlayer(playerId, interaction);
-        const lastPlayer = 
-          this.state.audioIsPlaying && isInteractionAudio(this.state.audioIsPlaying) 
-            ? this.getAudioPlayer(this.state.audioIsPlaying) 
+        const lastPlayer =
+          this.state.audioIsPlaying && isInteractionAudio(this.state.audioIsPlaying)
+            ? this.getAudioPlayer(this.state.audioIsPlaying)
             : this.sceneAudioPlayers[this.state.audioIsPlaying];
         fadeAudioInAndOut(lastPlayer, player, false);
       }
@@ -572,7 +582,7 @@ export default class Main extends React.Component {
   }
 
   /**
-   * @param {string} inputPassword 
+   * @param {string} inputPassword
    * @returns {boolean}
    */
   handlePassword(inputPassword) {
@@ -585,9 +595,9 @@ export default class Main extends React.Component {
   }
 
   /**
-   * @param {number} sceneId 
-   * @param {number} interactionId 
-   * @param {SceneScoreCardScore} score 
+   * @param {number} sceneId
+   * @param {number} interactionId
+   * @param {SceneScoreCardScore} score
    */
   updateScoreCard(sceneId, interactionId, score){
     this.state.scoreCard.totalQuestionsCompleted += 1;
@@ -600,7 +610,7 @@ export default class Main extends React.Component {
     const scene = this.context.params.scenes.find(scene => {
       return scene.sceneId === sceneId;
     });
- 
+
     scene.interactions[interactionId].isAnswered = true;
   }
 
@@ -608,7 +618,7 @@ export default class Main extends React.Component {
     const totalCodesEntered = this.state.scoreCard.totalCodesEntered + 1;
 	const totalCodesUnlocked = this.state.scoreCard.totalCodesUnlocked + (isUnlocked ? 1 : 0);
 
-    this.setState({ 
+    this.setState({
       scoreCard: {
         ...this.state.scoreCard,
         totalCodesEntered,
@@ -616,7 +626,6 @@ export default class Main extends React.Component {
       }
     });
   }
-
 
   render() {
     const sceneParams = this.context.params.scenes;
@@ -653,12 +662,6 @@ export default class Main extends React.Component {
     // Whenever a dialog is shown we need to hide all the elements behind the overlay
     const isHiddenBehindOverlay = (showInteractionDialog || showTextDialog);
 
-    let dialogTitle;
-
-    if (showInteractionDialog) {
-      dialogTitle = currentInteraction.action.metadata.title;
-    }
-
     const sceneIcons = this.context.params.scenes.map(sceneParams => {
       return {
         id: sceneParams.sceneId,
@@ -668,14 +671,33 @@ export default class Main extends React.Component {
 
     return (
       <div role="document" aria-label={ this.context.l10n.title }>
-        { showInteractionDialog &&
-        <Dialog
-          title={ dialogTitle }
-          onHideTextDialog={this.hideInteraction.bind(this)}
-          dialogClasses={dialogClasses}
-          focusOnTitle={!showPasswordDialog}
-        >
-          {showPasswordDialog ? <PasswordContent
+        { showInteractionDialog && !showPasswordDialog &&
+          <Dialog
+            title={ currentInteraction.action.metadata.title }
+            onHideTextDialog={this.hideInteraction.bind(this)}
+            dialogClasses={dialogClasses}
+            takeFocus={ this.isVeryFirstRenderDone }
+            ariaRole={ 'dialog' }
+          >
+            <InteractionContent
+              currentScene={this.props.currentScene}
+              currentInteraction={this.state.currentInteraction}
+              audioIsPlaying={this.state.audioIsPlaying}
+              onAudioIsPlaying={this.handleAudioIsPlaying}
+              updateScoreCard={this.updateScoreCard.bind(this)}
+            />
+          </Dialog>
+        }
+
+        { showInteractionDialog && showPasswordDialog &&
+          <Dialog
+            title={ this.context.l10n.lockedContent }
+            onHideTextDialog={this.hideInteraction.bind(this)}
+            dialogClasses={dialogClasses}
+            takeFocus={ this.isVeryFirstRenderDone }
+            ariaRole={ 'dialog' }
+          >
+            <PasswordContent
               handlePassword={this.handlePassword.bind(this)}
               showInteraction={this.showInteraction.bind(this)}
               currentInteractionIndex={this.state.currentInteraction}
@@ -683,26 +705,22 @@ export default class Main extends React.Component {
               isInteractionUnlocked={currentInteraction.unlocked}
               hint={currentInteraction.label.interactionPasswordHint}
               updateEscapeScoreCard={this.updateEscapeScoreCard.bind(this)}
-            /> :
-            <InteractionContent
-              currentScene={this.props.currentScene}
-              currentInteraction={this.state.currentInteraction}
-              audioIsPlaying={this.state.audioIsPlaying}
-              onAudioIsPlaying={this.handleAudioIsPlaying}
-              updateScoreCard={this.updateScoreCard.bind(this)}
-            />}
-        </Dialog>
+            />
+          </Dialog>
         }
+
         { showTextDialog &&
         <Dialog
           title={ this.context.l10n.sceneDescription }
           onHideTextDialog={  this.handleCloseTextDialog  }
+          takeFocus={ this.isVeryFirstRenderDone }
+          ariaRole={ 'alertdialog' }
         >
           <div dangerouslySetInnerHTML={{__html: this.state.currentText }} />
         </Dialog>
         }
         { showingScoreSummary &&
-              <ScoreSummary 
+              <ScoreSummary
                 title={this.context.l10n.scoreSummary}
                 onHideTextDialog={  this.handleCloseTextDialog  }
                 scores={this.state.scoreCard}></ScoreSummary>
@@ -720,6 +738,7 @@ export default class Main extends React.Component {
                 sceneIcons={sceneIcons}
                 sceneParams={sceneParams}
                 nextFocus={ this.state.nextFocus }
+                takeFocus={ this.isVeryFirstRenderDone && !showTextDialog }
                 addThreeSixty={ this.addThreeSixty }
                 imageSrc={sceneParams.scenesrc}
                 navigateToScene={this.navigateToScene.bind(this)}

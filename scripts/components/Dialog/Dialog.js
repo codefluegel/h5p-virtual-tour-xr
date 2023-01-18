@@ -1,17 +1,44 @@
 import React from 'react';
 import './Dialog.scss';
+import FocusTrap from '../../utils/focus-trap';
 import { H5PContext } from "../../context/H5PContext";
 
 export default class Dialog extends React.Component {
   constructor(props) {
     super(props);
+
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
   componentDidMount() {
-    // Focus must be set to the first focusable element, if it contains password, <PasswordContent/> sets the focus to its input field
-    if (this.props.focusOnTitle) {
-      this.title.focus();
-    }
+    /*
+     * Focus trap to keep focus inside dialog modal. Will focus first tabbable
+     * element if `takeFocus` is true (= default except for first page load).
+     */
+    this.initializeFocusTrap();
+
+    // Handle Escape key to close dialog as dialog modal should
+    window.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  /**
+   * Handle React component will unmount.
+   */
+  componentWillUnmount() {
+    this.focusTrap.deactivate();
+    window.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  /**
+   * Initialize focus trap.
+   */
+  initializeFocusTrap() {
+    this.focusTrap = new FocusTrap({
+      trapElement: this.el,
+      takeFocus: this.props.takeFocus
+    });
+
+    this.focusTrap.activate();
   }
 
   handleDialogRef = (el) => {
@@ -24,6 +51,17 @@ export default class Dialog extends React.Component {
     if (this.el) {
       this.el.style.width = '';
       this.el.style.height = this.el.getBoundingClientRect().height + 'px';
+    }
+  };
+
+  /**
+   * Handle keydown on dialog.
+   *
+   * @param {KeyboardEvent} event Keyboard event.
+   */
+  handleKeyDown(event) {
+    if (event.code === 'Escape') {
+      this.props.onHideTextDialog();
     }
   }
 
@@ -40,21 +78,27 @@ export default class Dialog extends React.Component {
     ));
 
     return (
-      <div className='h5p-text-overlay' role="dialog" aria-label={ this.props.title }>
-        <div
-          ref={ el => this.title = el }
-          className="h5p-dialog-focusstart"
-          tabIndex="-1"
-        ></div>
+      <div
+        className='h5p-text-overlay'
+        role={ this.props.ariaRole }
+        aria-labelledby={ 'h5p-dialog-label' }
+        aria-describedby={ this.props.ariarole === 'alertdialog' ? 'h5p-dialog-description' : undefined }
+        aria-modal={ 'true' }
+        ref={ this.overlayRef }
+        onKeyDown={ this.handleKeyDown }
+      >
+        <div id='h5p-dialog-label' className="h5p-dialog-label">
+          { this.props.title }
+        </div>
         <div className={dialogClasses.join(' ')} ref={ this.handleDialogRef }>
-          <div className='h5p-text-content'>
+          <div id='h5p-dialog-description' className='h5p-text-content'>
             { children }
           </div>
           <button
             ref={ el => this.closeButton = el }
             aria-label={ this.context.l10n.closeDialog }
             className='close-button-wrapper'
-            onClick={this.props.onHideTextDialog}
+            onClick={ this.props.onHideTextDialog }
           />
         </div>
       </div>

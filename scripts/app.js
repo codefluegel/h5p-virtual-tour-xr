@@ -62,6 +62,7 @@ H5P.NDLAThreeImage = (function () {
       backgroundLoading: 'Loading background image...',
       noContent: 'No content',
       hint: 'Hint',
+      lockedContent: 'Locked content',
       ...params.l10n,
     };
 
@@ -116,6 +117,7 @@ H5P.NDLAThreeImage = (function () {
             setCurrentSceneId={setCurrentSceneId}
             addThreeSixty={ tS => this.threeSixty = tS }
             onSetCameraPos={setCameraPosition}
+            isVeryFirstRender={ true }
           />
         </H5PContext.Provider>,
         wrapper

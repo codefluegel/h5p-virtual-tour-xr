@@ -17,6 +17,7 @@ export const SceneTypes = {
  *   isActive: boolean;
  *   isHiddenBehindOverlay: boolean;
  *   nextFocus: string;
+ *   takeFocus: boolean;
  *   sceneIcons: { id: number; iconType: string; }[];
  *   imageSrc: string;
  *   navigateToScene: () => void;
@@ -44,7 +45,7 @@ export const SceneTypes = {
 
 export default class Scene extends React.Component {
   /**
-   * @param {Props} props 
+   * @param {Props} props
    */
   constructor(props) {
     super(props);
@@ -57,6 +58,7 @@ export default class Scene extends React.Component {
           isActive={this.props.isActive}
           isHiddenBehindOverlay={ this.props.isHiddenBehindOverlay }
           nextFocus={ this.props.nextFocus }
+          takeFocus={ this.props.takeFocus }
           sceneParams={this.props.sceneParams}
           imageSrc={this.props.imageSrc}
           navigateToScene={this.props.navigateToScene.bind(this)}
@@ -80,6 +82,7 @@ export default class Scene extends React.Component {
         isActive={this.props.isActive}
         isHiddenBehindOverlay={ this.props.isHiddenBehindOverlay }
         nextFocus={ this.props.nextFocus }
+        takeFocus={ this.props.takeFocus }
         sceneIcons={this.props.sceneIcons}
         sceneParams={this.props.sceneParams}
         addThreeSixty={ this.props.addThreeSixty }

@@ -32,7 +32,7 @@ const infoInteractions = [
 ];
 
 /**
- * @param {string} machineName 
+ * @param {string} machineName
  * @returns {boolean}
  */
 const isInfoInteraction = (machineName) => {
@@ -40,8 +40,8 @@ const isInfoInteraction = (machineName) => {
 };
 
 /**
- * @param {Interaction} interaction 
- * @param {Array<SceneParams>} scenes 
+ * @param {Interaction} interaction
+ * @param {Array<SceneParams>} scenes
  * @returns {string}
  */
 export const getIconFromInteraction = (interaction, scenes) => {
@@ -87,7 +87,7 @@ export const getIconFromInteraction = (interaction, scenes) => {
 };
 
 /**
- * @param {Interaction} interaction 
+ * @param {Interaction} interaction
  * @returns {InteractionLabel}
  */
 export const getLabelFromInteraction = (interaction) => {
@@ -144,7 +144,7 @@ export const getLabelFromInteraction = (interaction) => {
  */
 export default class NavigationButton extends React.Component {
   /**
-   * @param {Props} props 
+   * @param {Props} props
    */
   constructor(props) {
     super(props);
@@ -167,8 +167,8 @@ export default class NavigationButton extends React.Component {
 
   resizeOnDrag = (width, height) => {
     this.setHotspotValues(width, height);
-    
-    if (this.context.extras.isEditor) { 
+
+    if (this.context.extras.isEditor) {
       this.forceUpdate();
     }
   }
@@ -195,7 +195,7 @@ export default class NavigationButton extends React.Component {
   }
 
   /**
-   * @param {FocusEvent} event 
+   * @param {FocusEvent} event
    */
   onBlur(event) {
     const navButtonWrapper = this.navButtonWrapper
@@ -230,7 +230,7 @@ export default class NavigationButton extends React.Component {
   }
 
   /**
-   * @param {Props} prevProps 
+   * @param {Props} prevProps
    */
   componentDidUpdate(prevProps) {
     if (this.props.type && this.props.type === this.props.nextFocus && prevProps.nextFocus !== this.props.nextFocus) {
@@ -332,18 +332,18 @@ export default class NavigationButton extends React.Component {
     if (preventCameraMovement && this.context.threeSixty) {
       this.context.threeSixty.setPreventCameraMovement(true);
     }
-    const isFocusable = this.context.extras.isEditor
-      && this.navButtonWrapper
-      && this.navButtonWrapper.current;
+
+    const isFocusable = !this.context.extras.isEditor
+      && this.navButton?.current;
     if (isFocusable) {
-      this.navButtonWrapper.current.focus({
+      this.navButton.current.focus({
         preventScroll: true
       });
     }
   }
 
   /**
-   * @param {React.FocusEvent<HTMLElement>} event 
+   * @param {React.FocusEvent<HTMLElement>} event
    */
   handleFocus = (event) => {
     if (this.context.extras.isEditor) {
@@ -383,8 +383,8 @@ export default class NavigationButton extends React.Component {
   }
 
   /**
-   * @param {number} widthX 
-   * @param {number} heightY 
+   * @param {number} widthX
+   * @param {number} heightY
    */
   setHotspotValues(widthX, heightY) {
     const scene = this.context.params.scenes.find(
@@ -403,10 +403,10 @@ export default class NavigationButton extends React.Component {
 
   /**
    * @private
-   * 
+   *
    * Returns the current Interaction,
    * based on current scene id and current interaction id.
-   * 
+   *
    * @returns {Interaction}
    */
   getCurrentInteraction() {
@@ -419,7 +419,7 @@ export default class NavigationButton extends React.Component {
   render() {
     const interaction = this.getCurrentInteraction();
     const [_, libraryName] = interaction ? H5P.libraryFromString(interaction?.action?.library).machineName?.split(".") : [null];
-    
+
     let wrapperClasses = interaction ? [
       'nav-button-wrapper',
       `nav-button-wrapper--${libraryName.toLowerCase()}`,
@@ -436,7 +436,7 @@ export default class NavigationButton extends React.Component {
 
     if (interaction?.isAnswered) {
       wrapperClasses.push('h5p-interaction-answered');
-    } 
+    }
 
     if (this.props.is3d) {
       wrapperClasses = wrapperClasses.concat("nav-btn-hotspot render-in-3d");
@@ -494,7 +494,7 @@ export default class NavigationButton extends React.Component {
         this.setHotspotValues(width, height);
       }
     }
-    
+
     return (
       <div
         ref={this.navButtonWrapper}

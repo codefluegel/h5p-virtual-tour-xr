@@ -832,6 +832,13 @@
         "label": "Hint",
         "importance": "low",
         "default": "Hint"
+      },
+      {
+        "name": "lockedContent",
+        "type": "text",
+        "label": "Locked content",
+        "importance": "low",
+        "default": "Locked content"
       }
     ]
   }

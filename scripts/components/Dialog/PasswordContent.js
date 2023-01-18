@@ -54,9 +54,6 @@ export default class PasswordContent extends React.Component {
       });
     }, 500);
   };
-  componentDidMount(){
-    this.inputRef.setFocus()
-  }
 
   render() {
     return (
@@ -76,14 +73,14 @@ export default class PasswordContent extends React.Component {
             } ${this.state.shakeClass}`}
           />
         </div>
-        <h1>
+        <div className='h1'>
           {this.state.unlocked
             ? this.context.l10n.unlocked
             : this.context.l10n.locked}
-        </h1>
+        </div>
 
         {
-          <span 
+          <span
             className={`h5p-field-description ${
               this.state.unlocked
                 ? "h5p-field-description--correct-code"

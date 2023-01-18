@@ -37,7 +37,7 @@ export const sceneRenderingQualityMapping = {
  *  sceneIcons: { id: number; iconType: string; }[];
  *  updateThreeSixty: boolean;
  *  isEditingInteraction: boolean;
- * }} Props 
+ * }} Props
  */
 
 /** @type {ThreeSixtyScene extends React.Component<Props>} */
@@ -67,7 +67,7 @@ export default class ThreeSixtyScene extends React.Component {
 
   /**
    * @private
-   * 
+   *
    * Locks the dragged Navigation Button to the pointer
    * @param {HTMLElement} element
    */
@@ -92,7 +92,7 @@ export default class ThreeSixtyScene extends React.Component {
 
   /**
    * @private
-   * 
+   *
    * Unlocks the Navigation Button from the pointer.
    */
   cancelPointerLock() {
@@ -106,7 +106,7 @@ export default class ThreeSixtyScene extends React.Component {
    * @private
    *
    * Called when the scene is moved, caused by a drag event.
-   * 
+   *
    * @param {H5PEvent} event
    */
    handleSceneMoveStart = (event) => {
@@ -142,10 +142,10 @@ export default class ThreeSixtyScene extends React.Component {
 
   /**
    * @private
-   * 
+   *
    * Since some interactions don't have titles,
    * this seeks to use the closest thing to a title to prevent "Untitled Text"
-   * 
+   *
    * @param {Action} action
    */
   getInteractionTitle(action) {
@@ -162,7 +162,7 @@ export default class ThreeSixtyScene extends React.Component {
 
   /**
    * @private
-   * 
+   *
    * Called when a scene move is stopped after dragging ends.
    */
   handleSceneMoveStop = (e) => {
@@ -174,7 +174,7 @@ export default class ThreeSixtyScene extends React.Component {
 
   /**
    * @private
-   * 
+   *
    * Creates a ThreeSixty object. If one exists uses that one.
    * Apply all listeners
    */
@@ -219,22 +219,32 @@ export default class ThreeSixtyScene extends React.Component {
       this.setState({
         isRendered: true
       });
-      threeSixty.focus();
+
+      this.focusScene();
     });
 
     threeSixty.startRendering();
     if(this.props.isPanorama){
-      threeSixty.updateCylinder();  
+      threeSixty.updateCylinder();
     } else {
       threeSixty.update();
     }
-    
 
     threeSixty.on('movestart', this.handleSceneMoveStart);
     threeSixty.on('movestop', this.handleSceneMoveStop);
 
     // Add buttons to scene
     this.addInteractionHotspots(threeSixty, this.props.sceneParams.interactions);
+  }
+
+  /**
+   * Focus
+   */
+  focusScene() {
+    // Scene should only take focus if nothing else could
+    if (this.props.takeFocus) {
+      this.props.threeSixty?.focus();
+    }
   }
 
   /**
@@ -269,7 +279,7 @@ export default class ThreeSixtyScene extends React.Component {
 
   /**
    * @private
-   * 
+   *
    * Triggeered when the scene is loaded.  Updates state.threeSixty in Main.js
    */
   sceneLoaded = () => {
@@ -286,7 +296,7 @@ export default class ThreeSixtyScene extends React.Component {
 
   /**
    * @private
-   * 
+   *
    * Create, add and render all interactions in the 3D world.
    *
    * @param {Array} interactions
@@ -309,7 +319,7 @@ export default class ThreeSixtyScene extends React.Component {
     }
 
     this.renderedInteractions = list.length;
-    
+
     /** @type {[HTMLElement, HTMLElement]} */
     const [rendererElement2d, rendererElement3d] = threeSixty.getRenderers();
 
@@ -325,12 +335,12 @@ export default class ThreeSixtyScene extends React.Component {
         { components3d }
       </H5PContext.Provider>,
       /** @type {HTMLElement} */ (rendererElement3d.firstChild),
-    );    
+    );
   }
 
   /**
    * @private
-   * 
+   *
    * Creates a button for each interaction
    *
    * @param {Interaction} interaction
@@ -357,7 +367,7 @@ export default class ThreeSixtyScene extends React.Component {
       title = this.getInteractionTitle(interaction.action);
     }
 
-    const onMount = (/** @type {HTMLElement} */ element) => { 
+    const onMount = (/** @type {HTMLElement} */ element) => {
       element.dataset.interactionId = interaction.id;
 
       this.props.threeSixty.add(
@@ -373,15 +383,15 @@ export default class ThreeSixtyScene extends React.Component {
 
     const onUpdate = (/** @type {HTMLElement} */ element) => {
       const threeElement = this.props.threeSixty.find(element);
-      
+
       H5P.NDLAThreeSixty.setElementPosition(
         threeElement,
         ThreeSixtyScene.getPositionFromString(interaction.interactionpos)
       );
     }
-    
+
     const key = interaction.id || `interaction-${this.props.sceneId}${index}`
-    
+
     const is3d = renderIn3d(interaction);
 
     const component = (
@@ -471,7 +481,7 @@ export default class ThreeSixtyScene extends React.Component {
 
   /**
    * @private
-   * 
+   *
    * Convert params position string.
    * TODO: Use object in params instead of convert all the time.
    *
@@ -489,7 +499,7 @@ export default class ThreeSixtyScene extends React.Component {
 
   /**
    * @private
-   * 
+   *
    * Handle interaction focused.
    *
    * @param {Interaction} interaction
@@ -594,7 +604,7 @@ export default class ThreeSixtyScene extends React.Component {
 
       if (shouldUpdateInteractionHotspots) {
         this.addInteractionHotspots(this.props.threeSixty, this.props.sceneParams.interactions);
-      }      
+      }
       // Check if the scene that interactions point to has changed icon type
       // This is only relevant when changing the icon using the H5P editor
       // @ts-ignore
@@ -628,7 +638,7 @@ export default class ThreeSixtyScene extends React.Component {
     if (!this.props.isActive) {
       return null;
     }
-    
+
     return (
       <div className='three-sixty-scene-wrapper'>
         <div
