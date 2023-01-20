@@ -1,6 +1,7 @@
 import React from 'react';
 import Scene, {SceneTypes} from "./Scene/Scene";
 import Dialog from "./Dialog/Dialog";
+import Screenreader from './Screenreader/Screenreader';
 import InteractionContent from "./Dialog/InteractionContent";
 import {H5PContext} from "../context/H5PContext";
 import './Main.scss';
@@ -591,6 +592,13 @@ export default class Main extends React.Component {
     const isCorrectPassword = passwords.includes(inputPassword.toLowerCase());
     interaction.unlocked = interaction.unlocked || isCorrectPassword;
 
+    if (!isCorrectPassword) {
+      this.read(this.context.l10n.wrongCode);
+    }
+    else {
+      this.read(this.context.l10n.contentUnlocked);
+    }
+
     return isCorrectPassword;
   }
 
@@ -625,6 +633,36 @@ export default class Main extends React.Component {
         totalCodesUnlocked,
       }
     });
+  }
+
+  /**
+   * Read text via aria live region.
+   *
+   * @param {string} text Text to read.
+   */
+  read(text) {
+    let newText = null;
+
+    // Concatenate if there's text already
+    if (this.state.readingText) {
+      const lastChar = this.state.readingText
+        .substring(this.state.readingText.length - 1);
+
+      newText = [
+        `${this.state.readingText}${lastChar === '.' ? '' : '.'}`,
+        text
+      ].join(' ');
+    }
+    else {
+      newText = text;
+    }
+
+    this.setState({ readingText: newText });
+
+    window.clearTimeout(Screenreader.timeout);
+    Screenreader.timeout = window.setTimeout(() => {
+      this.setState({ readingText: null });
+    }, 100);
   }
 
   render() {
@@ -777,6 +815,9 @@ export default class Main extends React.Component {
           showScoresButton={this.context.behavior.showScoresButton && this.hasOneQuestion()}
           updateSceneAudioPlayers={ this.getSceneAudioPlayers }
           interactionAudioPlayers={ this.audioPlayers }
+        />
+        <Screenreader
+          readText = { this.state.readingText }
         />
       </div>
     );
