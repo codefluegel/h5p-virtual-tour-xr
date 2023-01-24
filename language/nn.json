@@ -39,6 +39,10 @@
                 "description": "En beskrivelse av scenen"
               },
               {
+                "label": "Scene description (for screen readers)",
+                "description": "A text that can describe the scene for the end-user. It will not be visible but read by screen readers, so formatting will be ignored."
+              },
+              {
                 "label": "Vis scenens beskrivelse første gang",
                 "description": "Vis scenens beskrivelse første gang scenen vises."
               },

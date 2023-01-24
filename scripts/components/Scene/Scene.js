@@ -51,6 +51,32 @@ export default class Scene extends React.Component {
     super(props);
   }
 
+  /**
+   * React component did update.
+   *
+   * @param {object} prevProps Props before update.
+   */
+  componentDidUpdate(prevProps) {
+    if (!this.props.sceneDescriptionARIA) {
+      return; // No scene description to read
+    }
+
+    // (Re-)Read scene description when (re-)entering
+    if (!prevProps.isActive && this.props.isActive) {
+      this.wasSceneDescriptionAnnounced = false;
+    }
+
+    // Read scene description
+    if (
+      this.props.isActive &&
+      !this.wasSceneDescriptionAnnounced &&
+      !this.props.isHiddenBehindOverlay
+    ) {
+      this.props.read(this.props.sceneDescriptionARIA);
+      this.wasSceneDescriptionAnnounced = true;
+    }
+  }
+
   render() {
     if (this.props.sceneParams.sceneType === SceneTypes.STATIC_SCENE) {
       return (

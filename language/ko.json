@@ -39,6 +39,10 @@
                 "description": "사용자에게 장면을 설명하기 위한 텍스트"
               },
               {
+                "label": "Scene description (for screen readers)",
+                "description": "A text that can describe the scene for the end-user. It will not be visible but read by screen readers, so formatting will be ignored."
+              },
+              {
                 "label": "Display \"Scene Description\" initially",
                 "description": "Display the scene description when the scene starts for the first time"
               },

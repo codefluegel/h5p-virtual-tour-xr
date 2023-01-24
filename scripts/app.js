@@ -4,6 +4,8 @@ import ReactDOM from "react-dom";
 import Main from "./components/Main";
 import {H5PContext} from './context/H5PContext';
 import {sceneRenderingQualityMapping} from "./components/Scene/SceneTypes/ThreeSixtyScene";
+import he from 'he';
+import striptags from 'striptags';
 
 // Load library
 H5P = H5P || {};
@@ -70,7 +72,21 @@ H5P.NDLAThreeImage = (function () {
     if (params.threeImage) {
       params = params.threeImage;
     }
-    this.params = params;
+
+    this.params = params || {};
+    this.params.scenes = this.params.scenes ?? [];
+
+    // Sanitize scene description aria that was entered as HTML
+    this.params.scenes = this.params.scenes.map((sceneParams) => {
+      if (sceneParams.sceneDescriptionARIA) {
+        sceneParams.sceneDescriptionARIA = striptags(
+          he.decode(sceneParams.sceneDescriptionARIA)
+        );
+      }
+
+      return sceneParams;
+    });
+
     this.contentId = contentId;
     this.extras = extras;
     this.sceneRenderingQuality = this.behavior.sceneRenderingQuality || 'high';

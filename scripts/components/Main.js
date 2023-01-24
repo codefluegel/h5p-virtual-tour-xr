@@ -793,6 +793,8 @@ export default class Main extends React.Component {
                 sceneWaitingForLoad={this.state.sceneWaitingForLoad}
                 doneLoadingNextScene={this.doneLoadingNextScene.bind(this)}
                 startBtnClicked={this.state.startBtnClicked}
+                read={ this.read.bind(this) }
+                sceneDescriptionARIA={ sceneParams.sceneDescriptionARIA }
               />
             );
           })
