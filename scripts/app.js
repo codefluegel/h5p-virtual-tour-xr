@@ -168,6 +168,17 @@ H5P.NDLAThreeImage = (function () {
     };
 
     this.attach = ($container) => {
+      /*
+       * Temporary (fingers crossed) hotfix for Firefox on Edlib.
+       * When overflow is set to `hidden` on Edlib (Why? H5P resizes the iframe
+       * that the document lives in), then Firefox will not detect hotspots
+       * as hovered/being clickable. Even with the `overflow` setting removed,
+       * Firefox does require hotspots to be quite centered. When close to the
+       * visible border of the scene, Firefox does not consider the hotspots
+       * to be hovered/clicked.
+       */
+      document.body.style.overflow = '';
+
       if (!wrapper) {
         createElements();
       }
