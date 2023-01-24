@@ -39,6 +39,10 @@
                 "description": "Κείμενο που περιγράφει τη σκηνή"
               },
               {
+                "label": "Scene description (for screen readers)",
+                "description": "A text that can describe the scene for the end-user. It will not be visible but read by screen readers, so formatting will be ignored."
+              },
+              {
                 "label": "Display \"Scene Description\" initially",
                 "description": "Display the scene description when the scene starts for the first time"
               },

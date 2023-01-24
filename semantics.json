@@ -85,6 +85,14 @@
               ]
             },
             {
+              "name": "sceneDescriptionARIA",
+              "type": "text",
+              "widget": "html",
+              "label": "Scene description (for screen readers)",
+              "description": "A text that can describe the scene for the end-user. It will not be visible but read by screen readers, so formatting will be ignored.",
+              "optional": true
+            },
+            {
               "name": "showSceneDescriptionInitially",
               "type": "boolean",
               "label": "Display \"Scene Description\" initially",
