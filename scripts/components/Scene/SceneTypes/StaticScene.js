@@ -375,7 +375,7 @@ export default class StaticScene extends React.Component {
           ref={this.sceneWrapperRef}
         >
           <img
-            tabIndex='-1'
+            tabIndex={-1}
             alt={this.props.sceneParams.scenename}
             className='image-scene'
             src={this.props.imageSrc !== undefined ? H5P.getPath(this.props.imageSrc.path, this.context.contentId) : ''}

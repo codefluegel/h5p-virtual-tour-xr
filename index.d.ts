@@ -15,7 +15,7 @@ declare type Interaction = {
   iconTypeTextBox?: string;
   id: string;
   unlocked?: boolean;
-  isAnswered?: boolean; 
+  isAnswered?: boolean;
 };
 
 declare type InteractionLabel = {
@@ -90,3 +90,8 @@ declare type SceneScoreCardScore = {
   max: number;
   scaled: number;
 };
+
+declare type NavButtonStyle = {
+  height?: string;
+  width?: string;
+}

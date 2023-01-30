@@ -98,36 +98,36 @@ export const getLabelFromInteraction = (interaction) => {
 
 /**
  * @typedef {{
- *  sceneId: number;
- *  interactionIndex: number;
- *  isFocused: boolean;
+ *  sceneId?: number;
+ *  interactionIndex?: number;
+ *  isFocused?: boolean;
  *  buttonClasses: Array<string>;
  *  icon: string;
- *  showAsHotspot: boolean;
+ *  showAsHotspot?: boolean;
  *  isHiddenBehindOverlay: boolean;
  *  title: string;
- *  label: string;
- *  staticScene: boolean;
- *  leftPosition: number;
- *  topPosition: number;
- *  type: string;
- *  forceClickHandler: boolean;
- *  nextFocus: string;
- *  showHotspotOnHover: boolean;
- *  isHotspotTabbable: boolean;
- *  wrapperHeight: number;
- *  rendered: boolean;
- *  is3d: boolean;
- *  children: React.ReactChildren;
+ *  label?: InteractionLabel;
+ *  staticScene?: boolean;
+ *  leftPosition?: number;
+ *  topPosition?: number;
+ *  type?: string;
+ *  forceClickHandler?: boolean;
+ *  nextFocus?: string;
+ *  showHotspotOnHover?: boolean;
+ *  isHotspotTabbable?: boolean;
+ *  wrapperHeight?: number;
+ *  rendered?: boolean;
+ *  is3d?: boolean;
+ *  children?: React.ReactNode;
  *  clickHandler: () => void;
- *  doubleClickHandler: () => void;
- *  mouseDownHandler: (event: MouseEvent) => void;
- *  onFocus: () => void;
- *  onBlur: () => void;
- *  onFocusedInteraction: () => void;
- *  onMount: (wrapper: HTMLElement) => void;
- *  onUnmount: (wrapper: HTMLElement) => void;
- *  onUpdate: (wrapper: HTMLElement) => void;
+ *  doubleClickHandler?: () => void;
+ *  mouseDownHandler?: (event: MouseEvent) => void;
+ *  onFocus?: () => void;
+ *  onBlur?: () => void;
+ *  onFocusedInteraction?: () => void;
+ *  onMount?: (wrapper: HTMLElement) => void;
+ *  onUnmount?: (wrapper: HTMLElement) => void;
+ *  onUpdate?: (wrapper: HTMLElement) => void;
  * }} Props
  */
 
@@ -513,7 +513,7 @@ export default class NavigationButton extends React.Component {
               reference={this.navButton}
               style={{height:'100%', width:'100%'}}
               ariaLabel={getLabelText(label)}
-              tabIndexValue={isInnerButtonTabbable ? undefined : '-1'}
+              tabIndexValue={isInnerButtonTabbable ? undefined : -1}
               onClickEvent={this.onClick.bind(this)}
               onDoubleClickEvent={this.onDoubleClick.bind(this)}
               onMouseDownEvent={this.onMouseDown.bind(this)}

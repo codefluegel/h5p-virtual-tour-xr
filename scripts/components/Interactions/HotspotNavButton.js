@@ -19,10 +19,12 @@ import { clamp } from '../../utils/utils';
  *   onClickEvent: React.MouseEventHandler;
  *   onDoubleClickEvent: React.MouseEventHandler;
  *   onMouseDownEvent: React.MouseEventHandler;
- *   onMouseUpEvent: React.MouseEventHandler;
+ *   onMouseUpEvent?: React.MouseEventHandler;
  *   onFocusEvent: React.FocusEventHandler;
  *   onBlurEvent: React.FocusEventHandler;
  *   getHotspotValues: () => [number, number];
+ *   style: NavButtonStyle;
+ *   resizeOnDrag?: (width: number, height: number) => void;
  * }} Props
  */
 
