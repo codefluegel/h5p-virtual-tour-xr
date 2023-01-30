@@ -9,7 +9,8 @@
     "watch": "cross-env NODE_ENV='development' webpack --watch",
     "start": "npm run watch",
     "storybook": "start-storybook -s ./stories/static -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "lint": "eslint './scripts/**/*.js'"
   },
   "repository": {
     "type": "git",
@@ -42,6 +43,7 @@
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.2",
     "eslint": "^8.28.0",
+    "eslint-config-ndla-h5p": "github:NDLANO/eslint-config-ndla-h5p",
     "eslint-plugin-react": "^7.31.11",
     "mini-css-extract-plugin": "^2.7.0",
     "sass": "^1.56.1",
