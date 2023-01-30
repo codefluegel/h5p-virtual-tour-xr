@@ -237,7 +237,7 @@ export default class NavigationButtonLabel extends React.Component {
           <div
             ref={this.innerLabelDiv}
             // Safari won't show ellipsis unless height is 100%
-            style={{height: this.state.innerLabelHeight}}
+            style={{ height: this.state.innerLabelHeight }}
             className='nav-label-inner'
             dangerouslySetInnerHTML={{ __html: this.props.labelText }}>
           </div>

@@ -1,9 +1,9 @@
 import React from 'react';
-import Scene, {SceneTypes} from './Scene/Scene';
+import Scene, { SceneTypes } from './Scene/Scene';
 import Dialog from './Dialog/Dialog';
 import Screenreader from './Screenreader/Screenreader';
 import InteractionContent from './Dialog/InteractionContent';
-import {H5PContext} from '../context/H5PContext';
+import { H5PContext } from '../context/H5PContext';
 import './Main.scss';
 import HUD from './HUD/HUD';
 import NoScene from './Scene/NoScene';
@@ -72,7 +72,7 @@ export default class Main extends React.Component {
     if (!this.context.extras.isEditor && this.props.currentScene != null) {
       this.handleSceneDescriptionInitially(this.props.currentScene);
     }
-    this.setState({scoreCard: this.initialScoreCard()});
+    this.setState({ scoreCard: this.initialScoreCard() });
 
     if (this.context.extras.isEditor) {
       // Make sure user is warned before closing the window
@@ -218,19 +218,19 @@ export default class Main extends React.Component {
         const libraryName = H5P.libraryFromString(interaction.action.library).machineName;
         switch (libraryName) {
           case 'H5P.Summary':
-            sceneScoreCard.scores[i] = {title: this.getScoreLabelFromInteraction(interaction), raw: 0, max: this.getQuestionMaxScore(interaction), scaled: 0};
+            sceneScoreCard.scores[i] = { title: this.getScoreLabelFromInteraction(interaction), raw: 0, max: this.getQuestionMaxScore(interaction), scaled: 0 };
             sceneScoreCard.numQuestionsInScene += 1;
             break;
           case 'H5P.SingleChoiceSet':
-            sceneScoreCard.scores[i] = {title: this.getScoreLabelFromInteraction(interaction), raw: 0, max: this.getQuestionMaxScore(interaction), scaled: 0};
+            sceneScoreCard.scores[i] = { title: this.getScoreLabelFromInteraction(interaction), raw: 0, max: this.getQuestionMaxScore(interaction), scaled: 0 };
             sceneScoreCard.numQuestionsInScene += 1;
             break;
           case 'H5P.Blanks':
-            sceneScoreCard.scores[i] = {title: this.getScoreLabelFromInteraction(interaction), raw: 0, max: this.getQuestionMaxScore(interaction), scaled: 0};
+            sceneScoreCard.scores[i] = { title: this.getScoreLabelFromInteraction(interaction), raw: 0, max: this.getQuestionMaxScore(interaction), scaled: 0 };
             sceneScoreCard.numQuestionsInScene += 1;
             break;
           case 'H5P.MultiChoice':
-            sceneScoreCard.scores[i] = {title: this.getScoreLabelFromInteraction(interaction), raw: 0, max: this.getQuestionMaxScore(interaction), scaled: 0};
+            sceneScoreCard.scores[i] = { title: this.getScoreLabelFromInteraction(interaction), raw: 0, max: this.getQuestionMaxScore(interaction), scaled: 0 };
             sceneScoreCard.numQuestionsInScene += 1;
             break;
           default:
@@ -608,7 +608,7 @@ export default class Main extends React.Component {
    * @param {SceneScoreCardScore} score
    */
   updateScoreCard(sceneId, interactionId, score) {
-    const newState = {... this.state };
+    const newState = { ... this.state };
 
     newState.scoreCard.totalQuestionsCompleted++;
     if (!this.state.scoreCard.sceneScoreCards[sceneId]) {
@@ -758,7 +758,7 @@ export default class Main extends React.Component {
           takeFocus={ this.isVeryFirstRenderDone }
           ariaRole={ 'alertdialog' }
         >
-          <div dangerouslySetInnerHTML={{__html: this.state.currentText }} />
+          <div dangerouslySetInnerHTML={{ __html: this.state.currentText }} />
         </Dialog>
         }
         { showingScoreSummary &&

@@ -2,8 +2,8 @@
 
 import React from 'react';
 import './NavigationButton.scss';
-import {H5PContext} from '../../context/H5PContext';
-import NavigationButtonLabel, {getLabelPos, getLabelText, isHoverLabel} from './NavigationButtonLabel';
+import { H5PContext } from '../../context/H5PContext';
+import NavigationButtonLabel, { getLabelPos, getLabelText, isHoverLabel } from './NavigationButtonLabel';
 import HotspotNavButton from './HotspotNavButton';
 
 export const Icons = {
@@ -92,7 +92,7 @@ export const getIconFromInteraction = (interaction, scenes) => {
  * @returns {InteractionLabel}
  */
 export const getLabelFromInteraction = (interaction) => {
-  return {...interaction.label, labelText: interaction.labelText};
+  return { ...interaction.label, labelText: interaction.labelText };
 };
 
 
@@ -511,14 +511,14 @@ export default class NavigationButton extends React.Component {
           this.props.showAsHotspot ?
             <HotspotNavButton
               reference={this.navButton}
-              style={{height:'100%', width:'100%'}}
+              style={{ height:'100%', width:'100%' }}
               ariaLabel={getLabelText(label)}
               tabIndexValue={isInnerButtonTabbable ? undefined : -1}
               onClickEvent={this.onClick.bind(this)}
               onDoubleClickEvent={this.onDoubleClick.bind(this)}
               onMouseDownEvent={this.onMouseDown.bind(this)}
-              onFocusEvent={() => this.setState({innerButtonFocused: true})}
-              onBlurEvent={() => this.setState({innerButtonFocused: false})}
+              onFocusEvent={() => this.setState({ innerButtonFocused: true })}
+              onBlurEvent={() => this.setState({ innerButtonFocused: false })}
               resizeOnDrag={this.resizeOnDrag}
               setHotspotValues={this.setHotspotValues.bind(this)}
               getHotspotValues={this.getHotspotValues.bind(this)}
@@ -535,8 +535,8 @@ export default class NavigationButton extends React.Component {
               onClick={this.onClick.bind(this)}
               onDoubleClick={this.onDoubleClick.bind(this)}
               onMouseDown={this.onMouseDown.bind(this)}
-              onFocus={() => this.setState({innerButtonFocused: true})}
-              onBlur={() => this.setState({innerButtonFocused: false})}/>
+              onFocus={() => this.setState({ innerButtonFocused: true })}
+              onBlur={() => this.setState({ innerButtonFocused: false })}/>
         }
         {this.props.children}
         {
@@ -548,7 +548,7 @@ export default class NavigationButton extends React.Component {
             onMount={this.props.onMount}
             forwardRef={this.expandButton}
             onFocus={this.handleExpandButtonFocus.bind(this)}
-            onBlur={() => this.setState({expandButtonFocused: false})}
+            onBlur={() => this.setState({ expandButtonFocused: false })}
             topPosition={this.props.topPosition * this.props.wrapperHeight / 100}
             wrapperHeight={this.props.wrapperHeight}
             leftPosition={this.props.leftPosition}

@@ -2,8 +2,8 @@ import 'core-js/stable';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Main from './components/Main';
-import {H5PContext} from './context/H5PContext';
-import {sceneRenderingQualityMapping} from './components/Scene/SceneTypes/ThreeSixtyScene';
+import { H5PContext } from './context/H5PContext';
+import { sceneRenderingQualityMapping } from './components/Scene/SceneTypes/ThreeSixtyScene';
 import he from 'he';
 import striptags from 'striptags';
 
@@ -273,7 +273,7 @@ H5P.NDLAThreeImage = (function () {
       ? ({
         ...scene,
         interactions: scene.interactions?.map(
-          (interaction) => ({...interaction, id: H5P.createUUID()}),
+          (interaction) => ({ ...interaction, id: H5P.createUUID() }),
         ),
       })
       : scene
@@ -292,7 +292,7 @@ H5P.NDLAThreeImage = (function () {
       ? ({
         ...scene,
         interactions: scene.interactions?.map(
-          (interaction) => ({...interaction, label: interaction.label ?? {}})
+          (interaction) => ({ ...interaction, label: interaction.label ?? {} })
         ),
       })
       : scene

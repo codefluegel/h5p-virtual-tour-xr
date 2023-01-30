@@ -1,6 +1,6 @@
 // @ts-check
 
-import React, {useCallback, useEffect, useRef} from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import './NavigationButton.scss';
 import { H5PContext } from '../../context/H5PContext';
 import { scaleOpenContentElement } from '../../utils/open-content-utils';
@@ -221,7 +221,7 @@ export default class HotspotNavButton extends React.Component {
 
     return (
       <div className={`nav-button-hotspot-wrapper ${this.props.staticScene ? 'nav-button-hotspot-wrapper--is-static' : ''} `}
-        style={this.props.staticScene ? {height:'100%', width:'100%'} : {}}>
+        style={this.props.staticScene ? { height:'100%', width:'100%' } : {}}>
         <button
           ref={this.props.reference}
           aria-label={this.props.ariaLabel}

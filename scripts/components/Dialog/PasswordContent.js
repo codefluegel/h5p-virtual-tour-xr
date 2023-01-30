@@ -8,7 +8,7 @@ const utilizeFocus = () => {
     ref.current &&  ref.current.focus();
   };
 
-  return {setFocus, ref};
+  return { setFocus, ref };
 };
 
 export default class PasswordContent extends React.Component {

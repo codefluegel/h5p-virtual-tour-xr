@@ -4,7 +4,7 @@ import './HUD.scss';
 import { H5PContext } from '../../context/H5PContext';
 import AudioButton from './Buttons/AudioButton';
 import Button from './Buttons/Button/Button';
-import {SceneTypes} from '../Scene/Scene';
+import { SceneTypes } from '../Scene/Scene';
 
 export default class HUD extends React.Component {
   constructor(props) {

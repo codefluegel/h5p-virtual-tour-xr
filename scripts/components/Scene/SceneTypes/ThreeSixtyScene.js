@@ -2,8 +2,8 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import NavigationButton, {getIconFromInteraction, getLabelFromInteraction} from '../../Interactions/NavigationButton';
-import {H5PContext} from '../../../context/H5PContext';
+import NavigationButton, { getIconFromInteraction, getLabelFromInteraction } from '../../Interactions/NavigationButton';
+import { H5PContext } from '../../../context/H5PContext';
 import ContextMenu from '../../Shared/ContextMenu';
 // @ts-expect-error
 import loading from '../../../assets/loading.svg';

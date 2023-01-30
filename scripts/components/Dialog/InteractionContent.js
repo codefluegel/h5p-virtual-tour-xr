@@ -1,6 +1,6 @@
 import React from 'react';
 import './InteractionContent.scss';
-import {H5PContext} from '../../context/H5PContext';
+import { H5PContext } from '../../context/H5PContext';
 import { isVideoAudio } from '../../utils/audio-utils';
 
 export default class InteractionContent extends React.Component {
