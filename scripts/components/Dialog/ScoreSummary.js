@@ -1,61 +1,61 @@
 import React from 'react';
-import Dialog from "./Dialog"
-import SceneScores from "./SceneScores"
-import { H5PContext } from "../../context/H5PContext";
-import "./ScoreSummary.scss";
+import Dialog from './Dialog';
+import SceneScores from './SceneScores';
+import { H5PContext } from '../../context/H5PContext';
+import './ScoreSummary.scss';
 
 export default class ScoreSummary extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  getTotalScores(scores){
+  getTotalScores(scores) {
     const totalScores = {score: 0, max:0};
-    for(const scene in this.context.params.scenes){
+    for (const scene in this.context.params.scenes) {
       const sceneScores = scores[this.context.params.scenes[scene].sceneId];
-      for(const [id, score] of Object.entries(sceneScores.scores)){
-          totalScores.score += score.raw;
-          totalScores.max += score.max;  
+      for (const [score] of Object.entries(sceneScores.scores)) {
+        totalScores.score += score.raw;
+        totalScores.max += score.max;
       }
     }
     return totalScores;
   }
-  
+
   componentDidMount() {
     const totalScores = this.getTotalScores(this.props.scores.sceneScoreCards);
-    const scoreBar = new H5P.JoubelScoreBar(totalScores.max, "label", "helpText", "scoreExplanationButtonLabel");
+    const scoreBar = new H5P.JoubelScoreBar(totalScores.max, 'label', 'helpText', 'scoreExplanationButtonLabel');
     scoreBar.setScore(totalScores.score);
-    const wrapper = H5P.jQuery("#total-scores")
+    const wrapper = H5P.jQuery('#total-scores');
     scoreBar.appendTo(wrapper);
   }
 
   render() {
-    const items = []
+    const items = [];
     for (const [sceneId, sceneScores] of Object.entries(this.props.scores.sceneScoreCards)) {
-        items.push(<SceneScores key={sceneId} sceneId={sceneId} sceneScores={sceneScores}></SceneScores>);
+      items.push(<SceneScores key={sceneId} sceneId={sceneId} sceneScores={sceneScores}></SceneScores>);
     }
     const children = (
-    <div className="h5p-summary-table-pages">
-      <table className="h5p-score-table">
-        <thead>
-          <tr>
-            <th className="h5p-summary-table-header slide">{this.context.l10n.assignment}</th>
-            <th className="h5p-summary-table-header score">{this.context.l10n.score} <span>/</span> {this.context.l10n.total.toLowerCase()}</th>
-          </tr>
-        </thead>
-        {items}
-        <tfoot>
-          <tr><td className="h5p-td h5p-summary-task-title">Total:</td><td id="total-scores" className="h5p-td h5p-summary-score-bar"></td></tr>
-        </tfoot>
-       </table>
-    </div>);
+      <div className="h5p-summary-table-pages">
+        <table className="h5p-score-table">
+          <thead>
+            <tr>
+              <th className="h5p-summary-table-header slide">{this.context.l10n.assignment}</th>
+              <th className="h5p-summary-table-header score">{this.context.l10n.score} <span>/</span> {this.context.l10n.total.toLowerCase()}</th>
+            </tr>
+          </thead>
+          {items}
+          <tfoot>
+            <tr><td className="h5p-td h5p-summary-task-title">Total:</td><td id="total-scores" className="h5p-td h5p-summary-score-bar"></td></tr>
+          </tfoot>
+        </table>
+      </div>);
 
     return (
       <Dialog
-          title={this.props.title}
-          onHideTextDialog={this.props.onHideTextDialog}
-        >
-          {children}
+        title={this.props.title}
+        onHideTextDialog={this.props.onHideTextDialog}
+      >
+        {children}
       </Dialog>
     );
   }

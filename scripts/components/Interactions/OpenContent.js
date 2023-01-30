@@ -1,9 +1,9 @@
 // @ts-check
 
-import React, { useCallback, useEffect, useRef } from "react";
-import "./OpenContent.scss";
-import { H5PContext } from "../../context/H5PContext";
-import { scaleOpenContentElement } from "../../utils/open-content-utils";
+import React, { useCallback, useEffect, useRef } from 'react';
+import './OpenContent.scss';
+import { H5PContext } from '../../context/H5PContext';
+import { scaleOpenContentElement } from '../../utils/open-content-utils';
 
 /**
  * @typedef {{
@@ -46,7 +46,7 @@ import { scaleOpenContentElement } from "../../utils/open-content-utils";
  */
 export default class OpenContent extends React.Component {
   /**
-   * @param {Props} props 
+   * @param {Props} props
    */
   constructor(props) {
     super(props);
@@ -77,8 +77,8 @@ export default class OpenContent extends React.Component {
   }
 
   addFocusListener() {
-    if (this.openContentWrapper) {
-      this.openContentWrapper.current.addEventListener("focus", this.onFocus);
+    if (this.openContentWrapper?.current) {
+      this.openContentWrapper.current.addEventListener('focus', this.onFocus);
     }
   }
 
@@ -162,7 +162,7 @@ export default class OpenContent extends React.Component {
     const interaction = scene.interactions[this.props.interactionIndex];
 
     return interaction.label.hotSpotSizeValues
-      ? interaction.label.hotSpotSizeValues.split(",")
+      ? interaction.label.hotSpotSizeValues.split(',')
       : [256, 128];
   }
 
@@ -175,9 +175,9 @@ export default class OpenContent extends React.Component {
       (/** @type {SceneParams} */ scene) => scene.sceneId === this.props.sceneId
     );
     const interaction = scene.interactions[this.props.interactionIndex];
-    interaction.label.hotSpotSizeValues = widthX + "," + heightY;
+    interaction.label.hotSpotSizeValues = widthX + ',' + heightY;
   }
-  toggleDrag = (e) => {
+  toggleDrag = () => {
     const dragBool = !this.state.canDrag;
     this.setState({
       canDrag: dragBool,
@@ -191,7 +191,8 @@ export default class OpenContent extends React.Component {
           this.state.camPosYaw,
           this.state.camPosPitch
         );
-      } else {
+      }
+      else {
         //We store the current position, because we are technically still dragging the background around here
         this.setState({
           camPosYaw: this.context.threeSixty.getCurrentPosition().yaw,
@@ -204,8 +205,8 @@ export default class OpenContent extends React.Component {
   };
 
   /**
-   * @param {PointerEvent} e 
-   * @param {boolean} horizontalDrag 
+   * @param {PointerEvent} e
+   * @param {boolean} horizontalDrag
    */
   onAnchorDragMouseDown = (e, horizontalDrag) => {
     /*Based on the direction, we store the X or Y start position of the mouse,
@@ -221,11 +222,11 @@ export default class OpenContent extends React.Component {
   };
 
   /**
-   * 
-   * @param {React.MouseEvent} event 
-   * @param {boolean} isHorizontalDrag 
+   *
+   * @param {React.MouseEvent} event
+   * @param {boolean} isHorizontalDrag
    */
-  onMouseMove = (event, isHorizontalDrag) => {    
+  onMouseMove = (event, isHorizontalDrag) => {
     const { clientX, clientY } = event;
     const newSize = scaleOpenContentElement(
       clientX,
@@ -246,11 +247,11 @@ export default class OpenContent extends React.Component {
         updating the div dimensions when the mousemove event fires*/
       isHorizontalDrag
         ? this.setState({
-            sizeWidth: newSize,
-          })
+          sizeWidth: newSize,
+        })
         : this.setState({
-            sizeHeight: newSize,
-          });
+          sizeHeight: newSize,
+        });
     }
   };
 
@@ -268,11 +269,11 @@ export default class OpenContent extends React.Component {
   getStyle() {
     const style = {};
     if (this.props.topPosition !== undefined) {
-      style.top = this.props.topPosition + "%";
+      style.top = this.props.topPosition + '%';
     }
 
     if (this.props.leftPosition !== undefined) {
-      style.left = this.props.leftPosition + "%";
+      style.left = this.props.leftPosition + '%';
     }
     return style;
   }
@@ -284,17 +285,19 @@ export default class OpenContent extends React.Component {
     const interaction = scene.interactions[this.props.interactionIndex];
     const library = interaction.action.library;
     const machineName = H5P.libraryFromString(library).machineName;
-    if (machineName === "H5P.AdvancedText") {
+    if (machineName === 'H5P.AdvancedText') {
       return interaction.action.params.text;
-    } else if (machineName === "H5P.Image") {
+    }
+    else if (machineName === 'H5P.Image') {
       const imgSrc = H5P.getPath(
         interaction.action.params.file.path,
         this.context.contentId
       );
       const image = `<img src=${imgSrc} alt=${interaction.action.params.alt}/>`;
       return image;
-    } else {
-      return "";
+    }
+    else {
+      return '';
     }
   }
 
@@ -343,27 +346,28 @@ export default class OpenContent extends React.Component {
     if (!this.context.extras.isEditor && this.props.onFocus) {
       if (this.skipFocus) {
         this.skipFocus = false;
-      } else {
+      }
+      else {
         this.props.onFocus();
       }
     }
   };
 
   render() {
-    let wrapperClasses = ["open-content-wrapper"];
+    let wrapperClasses = ['open-content-wrapper'];
 
     if (this.state.isMouseOver) {
-      wrapperClasses.push("hover");
+      wrapperClasses.push('hover');
     }
 
     // only apply custom focus if we have children that are shown on focus
     if (this.state.isFocused && this.props.children) {
-      wrapperClasses.push("focused");
+      wrapperClasses.push('focused');
     }
 
     // Add classname to current active element (wrapper, button or expand label button) so it can be shown on top
     if (this.state.isFocused && this.props.children) {
-      wrapperClasses.push("active-element");
+      wrapperClasses.push('active-element');
     }
 
     const DragButton = (innerProps) => {
@@ -376,12 +380,12 @@ export default class OpenContent extends React.Component {
       const handleMouseDown = useCallback((e) => {
         this.onAnchorDragMouseDown(e, innerProps.horizontalDrag);
         this.toggleDrag();
-        document.addEventListener("mousemove", mouseMoveHandler);
+        document.addEventListener('mousemove', mouseMoveHandler);
 
         document.addEventListener(
-          "mouseup",
+          'mouseup',
           () => {
-            document.removeEventListener("mousemove", mouseMoveHandler);
+            document.removeEventListener('mousemove', mouseMoveHandler);
             this.toggleDrag();
             this.onAnchorDragMouseUp();
           },
@@ -392,7 +396,7 @@ export default class OpenContent extends React.Component {
       useEffect(() => {
         /*In order to take control of the mousedown listener, we have to it when the component mount,
        the reason for this is that we have to stop the propagation early on, since mousedown is already listened to by threesixty */
-        hotspotBtnRef.current.addEventListener("mousedown", (e) => {
+        hotspotBtnRef.current.addEventListener('mousedown', (e) => {
           e.stopPropagation();
           handleMouseDown(e);
         });
@@ -402,8 +406,8 @@ export default class OpenContent extends React.Component {
         <button
           className={
             innerProps.horizontalDrag
-              ? "drag drag--horizontal"
-              : "drag drag--vertical"
+              ? 'drag drag--horizontal'
+              : 'drag drag--vertical'
           }
           tabIndex={innerProps.tabIndex}
           ref={hotspotBtnRef}
@@ -419,7 +423,7 @@ export default class OpenContent extends React.Component {
     return (
       <div
         ref={this.openContentWrapper}
-        className={wrapperClasses.join(" ")}
+        className={wrapperClasses.join(' ')}
         style={this.getStyle()}
         tabIndex={0}
         onFocus={this.handleFocus}
@@ -427,20 +431,20 @@ export default class OpenContent extends React.Component {
       >
         <div
           className={`open-content ${
-            this.context.extras.isEditor ? "open-content--editor" : ""
+            this.context.extras.isEditor ? 'open-content--editor' : ''
           }`}
           ref={this.openContent}
           aria-label={this.props.ariaLabel}
           style={{
-            width: this.state.sizeWidth + "px",
-            height: this.state.sizeHeight + "px",
+            width: this.state.sizeWidth + 'px',
+            height: this.state.sizeHeight + 'px',
           }}
           onDoubleClick={this.onDoubleClick.bind(this)}
           onMouseDown={this.onMouseDown.bind(this)}
           onClick={this.setFocus.bind(this)}
         >
           <div
-            className={"inner-content"}
+            className={'inner-content'}
             dangerouslySetInnerHTML={{
               __html: this.getContentFromInteraction(),
             }}
@@ -451,7 +455,7 @@ export default class OpenContent extends React.Component {
               <DragButton horizontalDrag={false} tabIndex={-1} />
             </>
           ) : (
-            ""
+            ''
           )}
         </div>
 

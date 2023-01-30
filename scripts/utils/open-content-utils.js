@@ -34,7 +34,8 @@ export const scaleOpenContentElement = (
     everytime we drag */
     const divStartWidth = startMousePos - startMidPoint;
     newSize = (currentMousePosition - divStartWidth) * 2;
-  } else {
+  }
+  else {
     const { x: elementX, y: elementY } = elementRect;
 
     // We record the currentMouseposition for everytime the mouse moves

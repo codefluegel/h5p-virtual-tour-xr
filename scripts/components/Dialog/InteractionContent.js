@@ -1,7 +1,6 @@
 import React from 'react';
 import './InteractionContent.scss';
 import {H5PContext} from '../../context/H5PContext';
-import AudioButton from '../HUD/Buttons/AudioButton';
 import { isVideoAudio } from '../../utils/audio-utils';
 
 export default class InteractionContent extends React.Component {
@@ -45,7 +44,7 @@ export default class InteractionContent extends React.Component {
       contentRef.removeChild(contentRef.firstChild);
     }
 
-    const scene = this.context.params.scenes.find(scene => {
+    const scene = this.context.params.scenes.find((scene) => {
       return scene.sceneId === this.props.currentScene;
     });
     const interaction = scene.interactions[this.props.currentInteraction];
@@ -57,7 +56,7 @@ export default class InteractionContent extends React.Component {
       H5P.jQuery(contentRef)
     );
     if (library.library.split(' ')[0] === 'H5P.Video') {
-      this.instance.on('stateChange', e => {
+      this.instance.on('stateChange', (e) => {
         if (e.data === H5P.Video.PLAYING) {
           this.props.onAudioIsPlaying('video-' + scene.sceneId + '-' + this.props.currentInteraction);
         }
@@ -80,16 +79,16 @@ export default class InteractionContent extends React.Component {
     }
 
     this.instance.on('resize', () => this.props.onResize());
-    this.instance.on("xAPI", (event) => {
-        if(event.data.statement.verb.id === "http://adlnet.gov/expapi/verbs/answered"){
-          this.props.updateScoreCard(this.props.currentScene, this.props.currentInteraction, event.data.statement.result.score);
-        }
+    this.instance.on('xAPI', (event) => {
+      if (event.data.statement.verb.id === 'http://adlnet.gov/expapi/verbs/answered') {
+        this.props.updateScoreCard(this.props.currentScene, this.props.currentInteraction, event.data.statement.result.score);
+      }
     });
   }
-  
+
   render() {
     return (
-      <div ref={ el => this.initializeContent(el) } />
+      <div ref={ (el) => this.initializeContent(el) } />
     );
   }
 }

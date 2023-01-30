@@ -1,7 +1,7 @@
 import React from 'react';
 import './Dialog.scss';
 import FocusTrap from '../../utils/focus-trap';
-import { H5PContext } from "../../context/H5PContext";
+import { H5PContext } from '../../context/H5PContext';
 
 export default class Dialog extends React.Component {
   constructor(props) {
@@ -71,7 +71,7 @@ export default class Dialog extends React.Component {
       dialogClasses = dialogClasses.concat(this.props.dialogClasses);
     }
 
-    const children = (this.props.children.type === 'div' ? this.props.children : React.Children.map(this.props.children, child =>
+    const children = (this.props.children.type === 'div' ? this.props.children : React.Children.map(this.props.children, (child) =>
       React.cloneElement(child, {
         onResize: this.handleResize
       })
@@ -95,7 +95,7 @@ export default class Dialog extends React.Component {
             { children }
           </div>
           <button
-            ref={ el => this.closeButton = el }
+            ref={ (el) => this.closeButton = el }
             aria-label={ this.context.l10n.closeDialog }
             className='close-button-wrapper'
             onClick={ this.props.onHideTextDialog }

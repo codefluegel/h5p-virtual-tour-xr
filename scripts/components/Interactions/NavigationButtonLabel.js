@@ -1,7 +1,7 @@
 import React from 'react';
 import './NavigationButton.scss';
 import './NavigationButtonLabel.scss';
-import { H5PContext } from "../../context/H5PContext";
+import { H5PContext } from '../../context/H5PContext';
 import { willOverflow } from '../Shared/OverflowHelpers';
 
 export const getLabelPos = (globalLabel, label) => {
@@ -58,7 +58,7 @@ export default class NavigationButtonLabel extends React.Component {
     if (!this.state.isExpanded) {
       setTimeout(() => {
         this.setState({
-          divHeight: this.innerLabelDiv.current ? this.innerLabelDiv.current.scrollHeight: 0,
+          divHeight: this.innerLabelDiv.current ? this.innerLabelDiv.current.scrollHeight : 0,
           isExpanded: true
         });
       }, 0);
@@ -135,7 +135,7 @@ export default class NavigationButtonLabel extends React.Component {
       // Safari won't show ellipsis unless height is 100%
       // Ellipsis should only be shown if it is expandable
       // If not the calculated height will be incorrect
-      innerLabelHeight: isExpandable ? '100%': ''
+      innerLabelHeight: isExpandable ? '100%' : ''
     });
   }
 
@@ -166,7 +166,7 @@ export default class NavigationButtonLabel extends React.Component {
    */
   isExpandable() {
     // If not fully loaded the scrollheight might be wrong, therefore we check if it is to wide and two lines
-    if (this.innerLabelDiv.current.scrollHeight > INNER_LABEL_HEIGHT_THRESHOLD_HIGH 
+    if (this.innerLabelDiv.current.scrollHeight > INNER_LABEL_HEIGHT_THRESHOLD_HIGH
       || (this.getDivHeight() === '3em' && this.innerLabelDiv.current.scrollWidth > this.innerLabelDiv.current.offsetWidth * 2)) {
       return true;
     }
@@ -208,7 +208,7 @@ export default class NavigationButtonLabel extends React.Component {
     const hoverOnly = this.props.hoverOnly ? 'hover-only' : '';
     const isExpanded = this.state.isExpanded ? 'is-expanded' : '';
     const canExpand = this.state.expandable ? 'can-expand' : '';
-    const isMultline = (this.state.divHeight != '1.5em') ? 'is-multiline' : '';
+    const isMultline = (this.state.divHeight !== '1.5em') ? 'is-multiline' : '';
     const expandDirection = this.state.expandDirection ? 'expand-' + this.state.expandDirection : '';
     const alignment = this.state.alignment || this.props.labelPos;
     const showLabel = this.props.navButtonFocused && !this.context.extras.isEditor ? 'show-label' : '';
@@ -219,12 +219,12 @@ export default class NavigationButtonLabel extends React.Component {
     return (
       <div
         className={`nav-label-container
-        ${alignment} 
-        ${isExpanded} 
-        ${canExpand} 
-        ${hoverOnly} 
-        ${expandDirection} 
-        ${isMultline} 
+        ${alignment}
+        ${isExpanded}
+        ${canExpand}
+        ${hoverOnly}
+        ${expandDirection}
+        ${isMultline}
         ${showLabel}
         `}
         onDoubleClick={this.props.onDoubleClick}
@@ -232,7 +232,7 @@ export default class NavigationButtonLabel extends React.Component {
         <div
           style={{ height: this.state.divHeight }}
           aria-hidden='true'
-          className={`nav-label`}
+          className={'nav-label'}
           ref={this.navLabel}>
           <div
             ref={this.innerLabelDiv}

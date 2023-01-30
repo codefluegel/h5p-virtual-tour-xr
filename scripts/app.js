@@ -1,9 +1,9 @@
 import 'core-js/stable';
 import React from 'react';
-import ReactDOM from "react-dom";
-import Main from "./components/Main";
+import ReactDOM from 'react-dom';
+import Main from './components/Main';
 import {H5PContext} from './context/H5PContext';
-import {sceneRenderingQualityMapping} from "./components/Scene/SceneTypes/ThreeSixtyScene";
+import {sceneRenderingQualityMapping} from './components/Scene/SceneTypes/ThreeSixtyScene';
 import he from 'he';
 import striptags from 'striptags';
 
@@ -103,8 +103,8 @@ H5P.NDLAThreeImage = (function () {
             forceStartCamera={this.forceStartCamera}
             currentScene={this.currentScene}
             setCurrentSceneId={setCurrentSceneId}
-            addThreeSixty={ tS => this.threeSixty = tS }
-            onSetCameraPos={setCameraPosition}
+            addThreeSixty={ (tS) => this.threeSixty = tS }
+            onSetCameraPos={this.setCameraPosition.bind(this)}
           />
         </H5PContext.Provider>,
         wrapper
@@ -131,8 +131,8 @@ H5P.NDLAThreeImage = (function () {
             forceStartCamera={this.forceStartCamera}
             currentScene={this.currentScene}
             setCurrentSceneId={setCurrentSceneId}
-            addThreeSixty={ tS => this.threeSixty = tS }
-            onSetCameraPos={setCameraPosition}
+            addThreeSixty={ (tS) => this.threeSixty = tS }
+            onSetCameraPos={this.setCameraPosition.bind(this)}
             isVeryFirstRender={ true }
           />
         </H5PContext.Provider>,
@@ -159,8 +159,8 @@ H5P.NDLAThreeImage = (function () {
             forceStartCamera={this.forceStartCamera}
             currentScene={this.currentScene}
             setCurrentSceneId={setCurrentSceneId}
-            addThreeSixty={ tS => this.threeSixty = tS }
-            onSetCameraPos={setCameraPosition}
+            addThreeSixty={ (tS) => this.threeSixty = tS }
+            onSetCameraPos={this.setCameraPosition.bind(this)}
           />
         </H5PContext.Provider>,
         wrapper
@@ -228,7 +228,7 @@ H5P.NDLAThreeImage = (function () {
       return (rect.width / rect.height);
     };
 
-    const setCameraPosition = (cameraPosition, focus) => {
+    this.setCameraPosition = (cameraPosition, focus) => {
       if (this.currentScene === null || !this.threeSixty) {
         return;
       }
@@ -268,14 +268,14 @@ H5P.NDLAThreeImage = (function () {
   * @param {Array<SceneParams>} scenes
   * @returns {Array<SceneParams>}
   */
-  Wrapper.addUniqueIdsToInteractions = scenes =>
-    scenes?.map(scene => scene.interactions
+  Wrapper.addUniqueIdsToInteractions = (scenes) =>
+    scenes?.map((scene) => scene.interactions
       ? ({
-          ...scene,
-          interactions: scene.interactions?.map(
-            interaction => ({...interaction, id: H5P.createUUID()}),
-          ),
-        })
+        ...scene,
+        interactions: scene.interactions?.map(
+          (interaction) => ({...interaction, id: H5P.createUUID()}),
+        ),
+      })
       : scene
     );
 
@@ -287,16 +287,16 @@ H5P.NDLAThreeImage = (function () {
    * @param {Array<SceneParams>} scenes
    * @returns {Array<SceneParams>}
    */
-  Wrapper.addMissingLabelSettings = scenes =>
-      scenes?.map(scene => scene.interactions
-        ? ({
-          ...scene,
-          interactions: scene.interactions?.map(
-            interaction => ({...interaction, label: interaction.label ?? {}})
-          ),
-        })
-        : scene
-      );
+  Wrapper.addMissingLabelSettings = (scenes) =>
+    scenes?.map((scene) => scene.interactions
+      ? ({
+        ...scene,
+        interactions: scene.interactions?.map(
+          (interaction) => ({...interaction, label: interaction.label ?? {}})
+        ),
+      })
+      : scene
+    );
 
   return Wrapper;
 })();
