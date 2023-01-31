@@ -9,16 +9,21 @@ export default class ScoreSummary extends React.Component {
     super(props);
   }
 
-  getTotalScores(scores) {
-    const totalScores = { score: 0, max:0 };
-    for (const scene in this.context.params.scenes) {
-      const sceneScores = scores[this.context.params.scenes[scene].sceneId];
-      for (const [score] of Object.entries(sceneScores.scores)) {
-        totalScores.score += score.raw;
-        totalScores.max += score.max;
-      }
-    }
-    return totalScores;
+  /**
+   * Get total scores of all scenes.
+   *
+   * @param {object} sceneScoreCards Score cards.
+   * @returns {object} Overall score and total score of all scenes.
+   */
+  getTotalScores(sceneScoreCards) {
+    return Object.values(sceneScoreCards)
+      .map((item) => [...Object.values(item.scores)])
+      .flat()
+      .reduce((sum, info) => {
+        sum.score += info?.raw ?? 0;
+        sum.max += info?.max ?? 0;
+        return sum;
+      }, { score: 0, max:0 });
   }
 
   componentDidMount() {
