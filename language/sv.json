@@ -98,46 +98,46 @@
                           ]
                         },
                         {
-                          "label": "Show as hotspot",
-                          "description": "Allows for adding interaction areas to the background image that can be custom size."
+                          "label": "Visa som hotspot",
+                          "description": "Möjliggör att lägga till interaktions-områden på bakgrundsbilden som kan av vara anpassad storlek."
                         },
                         {
-                          "label": "Show hotspot when mouse is hovering",
-                          "description": "Will allow hotspot to be visible when mouse is hovering the area."
+                          "label": "Visa hotspot vid hovring med markör",
+                          "description": "Låter hotspot bli synlig vid hovring med markör över området."
                         },
                         {
-                          "label": "Set the hotspot be tabbable",
-                          "description": "Will allow hotspot to be tabbable. Can be used for accessibilty."
+                          "label": "Gör så att det går att använda tabb för att nå hotspot",
+                          "description": "Gör så att hotspot kan nås via tabbning. Användbart för webbtillgänglighet."
                         },
                         {
-                          "label": "Show as open content in the scene",
-                          "description": "Allows the content to be shown in an open dialog box directly in the scene."
+                          "label": "Visa som öppet innehåll i scenen",
+                          "description": "Tillåter att innehållet visas i en öppen dialogbox, direkt i scenen."
                         },
                         {
                           "default": "256,128",
-                          "label": "Values for storing the height and width for hotspot"
+                          "label": "Värden för att lagra höjd och bredd för hotspot"
                         },
                         {
-                          "label": "Code for the interaction",
+                          "label": "Kod för interaktionen",
                           "description": "If not empty, the user has to input the code in order to open this content."
                         },
                         {
-                          "label": "A hint for the interaction code",
-                          "description": "An optional hint for the code, can be left empty if wanted"
+                          "label": "En ledtråd för interaktionskoden",
+                          "description": "En valfri ledtråd för koden, kan lämnas tomt om så önskas"
                         }
                       ]
                     },
                     {},
                     {},
                     {
-                      "label": "Button style",
-                      "description": "Decide how the icon should look.",
+                      "label": "Knapptyp",
+                      "description": "Avgör hur ikonen ska se ut.",
                       "options": [
                         {
-                          "label": "Text icon"
+                          "label": "Textikon"
                         },
                         {
-                          "label": "Info icon"
+                          "label": "Info-ikon"
                         }
                       ]
                     }
@@ -161,10 +161,10 @@
                 "description": "Decide what audio type this scene will use, either use an audio track or choose an existing audio playlist.",
                 "options": [
                   {
-                    "label": "Audio Track"
+                    "label": "Ljudspår"
                   },
                   {
-                    "label": "Playlist"
+                    "label": "Spellista"
                   }
                 ]
               },
@@ -174,10 +174,10 @@
               },
               {
                 "label": "Playlist",
-                "description": "Here you can pick an existing playlist as audio."
+                "description": "Här kan du välja en befintlig spellista som ljud."
               },
               {
-                "label": "Restart audio when scene is reopened"
+                "label": "Starta om ljud när scenen återöppnas"
               }
             ]
           }
@@ -197,8 +197,7 @@
               {
                 "label": "Audio Tracks",
                 "description": "Add audio tracks to the playlist."
-              },
-              {}
+              }
             ]
           }
         }
@@ -434,8 +433,8 @@
           "default": "Hint"
         },
         {
-          "label": "Locked content",
-          "default": "Locked content"
+          "label": "Låst innehåll",
+          "default": "Låst innehåll"
         }
       ]
     }
