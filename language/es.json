@@ -1,7 +1,7 @@
 {
   "semantics": [
     {
-      "label": "Editor del Tour Virtual",
+      "label": "Editor de Imágenes Tres",
       "fields": [
         {
           "label": "Escenas",
@@ -15,7 +15,7 @@
                     "label": "Imagen 360"
                   },
                   {
-                    "label": "Panoramic image"
+                    "label": "Imagen panorámica"
                   },
                   {
                     "label": "Imagen estática"
@@ -39,16 +39,16 @@
                 "description": "Un texto que puede describir la escena para el usuario final"
               },
               {
-                "label": "Scene description (for screen readers)",
-                "description": "A text that can describe the scene for the end-user. It will not be visible but read by screen readers, so formatting will be ignored."
+                "label": "Descripción de la escena (para lectores de pantalla)",
+                "description": "Un texto que puede describir la escena para el usuario final. No será visible, pero será leído por lectores de pantalla, por lo que el formato será ignorado."
               },
               {
-                "label": "Display \"Scene Description\" initially",
-                "description": "Display the scene description when the scene starts for the first time"
+                "label": "Mostrar \"Descripción de Escena\" inicialmente",
+                "description": "Muestra la descripción de la escena cuando la escena inicia por primera vez"
               },
               {
                 "label": "Posición inicial de la cámara",
-                "description": "Posición de la cámara en in pitch y yaw"
+                "description": "Posición de la cámara en pitch y yaw"
               },
               {
                 "label": "Interacciones",
@@ -66,7 +66,7 @@
                           "description": "Elegir donde debería aparecer la etiqueta",
                           "options": [
                             {
-                              "label": "Usar configuración del comportamiento"
+                              "label": "Usar configuraciones del comportamiento"
                             },
                             {
                               "label": "Alineada por la derecha"
@@ -87,7 +87,7 @@
                           "description": "Si oculta - las etiquetas se mostrarán solo al pasar el ratón encima",
                           "options": [
                             {
-                              "label": "Usar configuración del comportamiento"
+                              "label": "Usar configuraciones del comportamiento"
                             },
                             {
                               "label": "Mostrar"
@@ -98,46 +98,46 @@
                           ]
                         },
                         {
-                          "label": "Show as hotspot",
-                          "description": "Allows for adding interaction areas to the background image that can be custom size."
+                          "label": "Mostrar como punto caliente (hotspot)",
+                          "description": "Permite añadir áreas de interacciones a la imagen del fondo, las que pueden ser de tamaño personalizado."
                         },
                         {
-                          "label": "Show hotspot when mouse is hovering",
-                          "description": "Will allow hotspot to be visible when mouse is hovering the area."
+                          "label": "Mostrar hotspot cuando el ratón le pasa encima",
+                          "description": "Permitirá que el hotspot sea visible cuando el ratón está pasando por encima del área."
                         },
                         {
-                          "label": "Set the hotspot be tabbable",
-                          "description": "Will allow hotspot to be tabbable. Can be used for accessibilty."
+                          "label": "Configurar que el hotspot sea reactivo al tabulador",
+                          "description": "Configurar que el hotspot sea reactivo al tabulador. Puede ser usado por accesibilidad."
                         },
                         {
-                          "label": "Show as open content in the scene",
-                          "description": "Allows the content to be shown in an open dialog box directly in the scene."
+                          "label": "Mostrar como contenido abierto en la escena",
+                          "description": "Permite que el contenido sea mostrado en la caja de diálogo abierta directamente en la escena."
                         },
                         {
                           "default": "256,128",
-                          "label": "Values for storing the height and width for hotspot"
+                          "label": "Valores para almacenar la altura y ancho del hotspot"
                         },
                         {
-                          "label": "Code for the interaction",
-                          "description": "If not empty, the user has to input the code in order to open this content."
+                          "label": "Código para la interacción",
+                          "description": "Si no está vacío, el usuario tiene que escribir el código para abrir este contenido."
                         },
                         {
-                          "label": "A hint for the interaction code",
-                          "description": "An optional hint for the code, can be left empty if wanted"
+                          "label": "Una pista para el código de la interacción",
+                          "description": "Una pista opcional para el código, puede dejarse vacía si lo desea"
                         }
                       ]
                     },
                     {},
                     {},
                     {
-                      "label": "Button style",
-                      "description": "Decide how the icon should look.",
+                      "label": "Estilo del botón",
+                      "description": "Decidir cómo debería verse el ícono.",
                       "options": [
                         {
-                          "label": "Text icon"
+                          "label": "Ícono de texto"
                         },
                         {
-                          "label": "Info icon"
+                          "label": "Ícono de información"
                         }
                       ]
                     }
@@ -157,14 +157,14 @@
                 ]
               },
               {
-                "label": "Audio type",
-                "description": "Decide what audio type this scene will use, either use an audio track or choose an existing audio playlist.",
+                "label": "Tipo de audio",
+                "description": "Decidir el tipo de audio que usará esta escena, ya sea una pista de audio o elegir una lista de reproducción de audio.",
                 "options": [
                   {
-                    "label": "Audio Track"
+                    "label": "Pista de Audio"
                   },
                   {
-                    "label": "Playlist"
+                    "label": "Lista de reproducción"
                   }
                 ]
               },
@@ -173,11 +173,11 @@
                 "description": "Añadir una pista de audio que es específica para esta escena."
               },
               {
-                "label": "Playlist",
-                "description": "Here you can pick an existing playlist as audio."
+                "label": "Lista de reproducción",
+                "description": "Aquí puede usted elegir como audio una lista de reproducción existente."
               },
               {
-                "label": "Restart audio when scene is reopened"
+                "label": "Reiniciar audio cuando la escena se vuelve a abrir"
               }
             ]
           }
@@ -187,46 +187,45 @@
           "label": "Pista de Audio"
         },
         {
-          "label": "Playlists",
+          "label": "Listas de reproducción",
           "field": {
             "fields": [
               {
-                "label": "Playlist Title",
-                "description": "Used to identify the playlist"
+                "label": "Título de Lista de reproducción",
+                "description": "Usado para identificar la lista de reproducción"
               },
               {
-                "label": "Audio Tracks",
-                "description": "Add audio tracks to the playlist."
-              },
-              {}
+                "label": "Pistas de Audio",
+                "description": "Añadir pistas de audio a la lista de reproducción."
+              }
             ]
           }
         }
       ]
     },
     {
-      "label": "Playlists",
-      "description": "These options will let you add playlists for the scenes.",
+      "label": "Listas de reproducción",
+      "description": "Estas opciones le permitirán añadir pistas de reproducción para las escenas.",
       "fields": [
         {
-          "label": "Added playlists",
-          "description": "Make playlists that's available for all scenes by default."
+          "label": "Listas de reproducción añadidas",
+          "description": "Hacer listas de reproducción que estén disponibles para todas las escenas de forma predeterminada."
         }
       ]
     },
     {
-      "label": "Configuraciones de Comportamiento",
+      "label": "Configuraciones del Comportamiento",
       "description": "Estas opciones le permitirán controlar como se comporta el mundo.",
       "fields": [
         {
-          "label": "Audio type",
-          "description": "Decide what audio type this scene will use, either use an audio track or choose an existing audio playlist.",
+          "label": "Tipo de audio",
+          "description": "Decidir qué tipo de audio usará esta escena, ya sea una pista de audio o elegir una lista de reproducción de audio existente.",
           "options": [
             {
-              "label": "Global Audio"
+              "label": "Audio Global"
             },
             {
-              "label": "Playlist"
+              "label": "Lista de reproducción"
             }
           ]
         },
@@ -235,16 +234,16 @@
           "description": "Añadir una pista de audio que está disponible para todas las escenas por defecto."
         },
         {
-          "label": "Playlist",
-          "description": "Here you can pick an existing playlist as audio."
+          "label": "Lista de reproducción",
+          "description": "Aquí puede usted elegir una lista de reproducción como audio."
         },
         {
-          "label": "Display \"Scores\" button",
-          "description": "Display button for showing the scores from assignments."
+          "label": "Mostrar botón de \"Puntajes\"",
+          "description": "Ver botón para mostrar los puntajes de tareas."
         },
         {
-          "label": "Display \"Home\" button",
-          "description": "Display button for going to start scene."
+          "label": "Mostrar botón \"Inicio\"",
+          "description": "Mostrar botón para ir a la escena inicial."
         },
         {
           "label": "Calidad del renderizado de escena",
@@ -284,14 +283,14 @@
             },
             {
               "label": "Mostrar Etiquetas",
-              "description": "Si no se activara - etiquetas serán mostradas solamente al pasarles el ratón encima"
+              "description": "Si no se activara - etiquetas serán mostradas solamente al pasar el ratón encima"
             }
           ]
         }
       ]
     },
     {
-      "label": "Localizar",
+      "label": "Adaptación local",
       "fields": [
         {
           "label": "Etiqueta Aria para tipo de contenido",
@@ -306,7 +305,7 @@
           "default": "Pausar Pista de Audio"
         },
         {
-          "label": "Diálogo de título a escena",
+          "label": "Título para diálogo de escena",
           "default": "Descripción de Escena"
         },
         {
@@ -334,108 +333,108 @@
           "default": "Sin contenido"
         },
         {
-          "label": "Label for context menu button for go to scene",
-          "default": "Go to scene"
+          "label": "Etiqueta para botón de menú contextual para ir a escena",
+          "default": "Ir a escena"
         },
         {
-          "label": "Label for context menu button for edit",
-          "default": "Edit"
+          "label": "Etiqueta para botón de menú contextual para editar",
+          "default": "Editar"
         },
         {
-          "label": "Label for context menu button for delete",
-          "default": "Delete"
+          "label": "Etiqueta para botón de menú contextual para eliminar",
+          "default": "Eliminar"
         },
         {
-          "label": "Translation for \"Score\"",
-          "default": "Score"
+          "label": "Traducción para \"Puntaje\"",
+          "default": "Puntaje"
         },
         {
-          "label": "Translation for \"Assignment\"",
-          "default": "Assignment"
+          "label": "Traducción para \"Tarea\"",
+          "default": "Tarea"
         },
         {
-          "label": "Translation for \"Total\"",
+          "label": "Traducción para \"Total\"",
           "default": "Total"
         },
         {
-          "label": "Translation for \"Total Score\"",
-          "default": "Total Score"
+          "label": "Traducción para \"Puntaje Total\"",
+          "default": "Puntaje Total"
         },
         {
-          "label": "Label for button to show score summary",
-          "default": "Show Score Summary"
+          "label": "Etiqueta para botón para mostrar resumen de puntaje",
+          "default": "Mostrar Resumen de Puntaje"
         },
         {
-          "label": "Translation for 'Scene'",
-          "default": "Scene"
+          "label": "Traducción para 'Escena'",
+          "default": "Escena"
         },
         {
-          "label": "Untitled",
-          "default": "Untitled"
+          "label": "Sin título",
+          "default": "Sin título"
         },
         {
-          "label": "Go to start scene",
-          "default": "Go to start scene"
+          "label": "Ir a escena inicial",
+          "default": "Ir a escena inicial"
         },
         {
-          "label": "You are at the start scene",
-          "default": "You are at the start scene"
+          "label": "Usted está en la escena inicial",
+          "default": "Usted está en la escena inicial"
         },
         {
-          "label": "Unlocked",
-          "default": "Unlocked"
+          "label": "Desbloqueado",
+          "default": "Desbloqueado"
         },
         {
-          "label": "Locked",
-          "default": "Locked"
+          "label": "Bloqueado",
+          "default": "Bloqueado"
         },
         {
-          "label": "Search the room until you find the code",
-          "default": "Search the room until you find the code"
+          "label": "Buscar en la habitación hasta que encuentre el código",
+          "default": "Buscar en la habitación hasta que usted encuentre el código"
         },
         {
-          "label": "The code was wrong, try again.",
-          "default": "The code was wrong, try again."
+          "label": "El código era incorrecto; inténtalo de nuevo.",
+          "default": "El código era incorrecto; inténtalo de nuevo."
         },
         {
-          "label": "The content has been unlocked!",
-          "default": "The content has been unlocked!"
+          "label": "¡El contenido ha sido desbloqueado!",
+          "default": "¡El contenido ha sido desbloqueado!"
         },
         {
-          "label": "Code",
-          "default": "Code"
+          "label": "Código",
+          "default": "Código"
         },
         {
-          "label": "Show code",
-          "default": "Show code"
+          "label": "Mostrar código",
+          "default": "Mostrar código"
         },
         {
-          "label": "Hide code",
-          "default": "Hide code"
+          "label": "Ocultar código",
+          "default": "Ocultar código"
         },
         {
-          "label": "Unlocked interaction action (Continue)",
-          "default": "Continue"
+          "label": "Acción de interacción desbloqueada (Continuar)",
+          "default": "Continuar"
         },
         {
-          "label": "Locked interaction action (Unlock)",
-          "default": "Unlock"
+          "label": "Acción de interacción bloqueada (Desbloquear)",
+          "default": "Desbloquear"
         },
         {
-          "label": "Drag horizontally to scale (for screen readers)",
-          "default": "Drag horizontally to scale"
+          "label": "Arrastrar horizontalmente para cambiar tamaño (para lectores de pantalla)",
+          "default": "Arrastrar horizontalmente para cambiar el tamaño"
         },
         {
-          "label": "Drag vertically to scale (for screen readers)",
-          "default": "Drag vertically to scale"
+          "label": "Arrastrar verticalmente para cambiar el tamaño (para lectores de pantalla)",
+          "default": "Arrastrar verticalmente para cambiar el tamaño"
         },
         {
-          "label": "Hint",
-          "default": "Hint"
+          "label": "Pista",
+          "default": "Pista"
         },
         {
-          "label": "Locked content",
-          "default": "Locked content"
+          "label": "Contenido bloqueado",
+          "default": "Contenido bloqueado"
         }
       ]
     }
