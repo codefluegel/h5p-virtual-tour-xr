@@ -328,18 +328,26 @@ export default class NavigationButton extends React.Component {
     }
   }
 
+  /**
+   * Set focus to relevant button element.
+   *
+   * @param {boolean} preventCameraMovement If true, don't move camera on focus.
+   */
   setFocus(preventCameraMovement = false) {
-    if (preventCameraMovement && this.context.threeSixty) {
-      this.context.threeSixty.setPreventCameraMovement(true);
+    if (preventCameraMovement) {
+      this.context.threeSixty?.setPreventCameraMovement(true);
     }
 
-    const isFocusable = !this.context.extras.isEditor
-      && this.navButton?.current;
-    if (isFocusable) {
-      this.navButton.current.focus({
-        preventScroll: true
-      });
-    }
+    /*
+     * In editor, wrapper needs to get focus, or DragNBar context menu is not
+     * available when selecting button. In the view, button needs to get focus
+     * or after closing modal the scene will lose focus.
+     */
+    const focusElement = this.context.extras.isEditor ?
+      this.navButtonWrapper?.current :
+      this.navButton?.current;
+
+    focusElement?.focus({ preventScroll: true });
   }
 
   /**
