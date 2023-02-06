@@ -82,9 +82,8 @@ export default class Dialog extends React.Component {
     return (
       <div
         className='h5p-text-overlay'
-        role={ this.props.ariaRole }
+        role='dialog'
         aria-labelledby={ 'h5p-dialog-label' }
-        aria-describedby={ this.props.ariarole === 'alertdialog' ? 'h5p-dialog-description' : undefined }
         aria-modal={ 'true' }
         ref={ this.overlayRef }
         onKeyDown={ this.handleKeyDown }
@@ -93,7 +92,7 @@ export default class Dialog extends React.Component {
           { this.props.title }
         </div>
         <div className={dialogClasses.join(' ')} ref={ this.handleDialogRef }>
-          <div id='h5p-dialog-description' className='h5p-text-content'>
+          <div className='h5p-text-content'>
             { children }
           </div>
           <button
