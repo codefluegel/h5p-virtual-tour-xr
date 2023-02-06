@@ -146,7 +146,22 @@ export default class FocusTrap {
     }
 
     if (!this.currentFocusElement && this.focusableElements.length) {
-      this.currentFocusElement = this.focusableElements[0];
+      if (
+        this.focusableElements[0] === this.params.closeElement &&
+        this.params.fallbackContainer?.firstChild &&
+        this.focusableElements.length === 1
+      ) {
+        /*
+         * Advisable to set tabindex -1 and focus on static element instead of
+         * focusing the close button and not announcing anything
+         * @see https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/
+         */
+        this.params.fallbackContainer.firstChild.setAttribute('tabindex', '-1');
+        this.currentFocusElement = this.params.fallbackContainer.firstChild;
+      }
+      else {
+        this.currentFocusElement = this.focusableElements[0];
+      }
     }
 
     if (this.currentFocusElement && this.params.takeFocus) {

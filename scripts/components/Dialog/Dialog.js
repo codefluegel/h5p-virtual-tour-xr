@@ -35,7 +35,9 @@ export default class Dialog extends React.Component {
   initializeFocusTrap() {
     this.focusTrap = new FocusTrap({
       trapElement: this.el,
-      takeFocus: this.props.takeFocus
+      takeFocus: this.props.takeFocus,
+      closeElement: this.closeButton,
+      fallbackContainer: this.el
     });
 
     this.focusTrap.activate();
