@@ -71,7 +71,7 @@ export default class FocusTrap {
       return;
     }
 
-    this.observer.unobserve(this.params.trapElement);
+    this.observer?.unobserve(this.params.trapElement);
 
     this.params.trapElement.removeEventListener('keydown', this.handleKeydownEvent, true);
     this.isActivated = false;
@@ -139,12 +139,29 @@ export default class FocusTrap {
       'keydown', this.handleKeydownEvent, true
     );
 
+    this.currentFocusElement = null;
+
     if (this.params.initialFocus && this.isChild(this.params.initialFocus)) {
       this.currentFocusElement = this.params.initialFocus;
     }
 
     if (!this.currentFocusElement && this.focusableElements.length) {
-      this.currentFocusElement = this.focusableElements[0];
+      if (
+        this.focusableElements[0] === this.params.closeElement &&
+        this.params.fallbackContainer?.firstChild &&
+        this.focusableElements.length === 1
+      ) {
+        /*
+         * Advisable to set tabindex -1 and focus on static element instead of
+         * focusing the close button and not announcing anything
+         * @see https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/
+         */
+        this.params.fallbackContainer.firstChild.setAttribute('tabindex', '-1');
+        this.currentFocusElement = this.params.fallbackContainer.firstChild;
+      }
+      else {
+        this.currentFocusElement = this.focusableElements[0];
+      }
     }
 
     if (this.currentFocusElement && this.params.takeFocus) {

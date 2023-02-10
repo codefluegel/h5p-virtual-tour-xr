@@ -737,7 +737,6 @@ export default class Main extends React.Component {
             onHideTextDialog={this.hideInteraction.bind(this)}
             dialogClasses={dialogClasses}
             takeFocus={ this.isVeryFirstRenderDone }
-            ariaRole={ 'dialog' }
           >
             <PasswordContent
               handlePassword={this.handlePassword.bind(this)}
@@ -756,7 +755,6 @@ export default class Main extends React.Component {
           title={ this.context.l10n.sceneDescription }
           onHideTextDialog={  this.handleCloseTextDialog  }
           takeFocus={ this.isVeryFirstRenderDone }
-          ariaRole={ 'alertdialog' }
         >
           <div dangerouslySetInnerHTML={{ __html: this.state.currentText }} />
         </Dialog>
