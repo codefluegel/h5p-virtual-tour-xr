@@ -48,7 +48,7 @@
               },
               {
                 "label": "Kameraets startposisjon",
-                "description": ""
+                "description": "Camera position in pitch and yaw"
               },
               {
                 "label": "Interactions",
@@ -197,8 +197,7 @@
               {
                 "label": "Lydspor",
                 "description": "Legg ett eller flere lydspor til i spillelisten."
-              },
-              {}
+              }
             ]
           }
         }
