@@ -1,13 +1,13 @@
 import React from 'react';
-import Scene, {SceneTypes} from "./Scene/Scene";
-import Dialog from "./Dialog/Dialog";
+import Scene, { SceneTypes } from './Scene/Scene';
+import Dialog from './Dialog/Dialog';
 import Screenreader from './Screenreader/Screenreader';
-import InteractionContent from "./Dialog/InteractionContent";
-import {H5PContext} from "../context/H5PContext";
+import InteractionContent from './Dialog/InteractionContent';
+import { H5PContext } from '../context/H5PContext';
 import './Main.scss';
 import HUD from './HUD/HUD';
-import NoScene from "./Scene/NoScene";
-import PasswordContent from "./Dialog/PasswordContent";
+import NoScene from './Scene/NoScene';
+import PasswordContent from './Dialog/PasswordContent';
 import ScoreSummary from './Dialog/ScoreSummary';
 import {
   createAudioPlayer,
@@ -15,7 +15,7 @@ import {
   fadeAudioInAndOut,
   isSceneAudio,
   isPlaylistAudio
-} from "../utils/audio-utils";
+} from '../utils/audio-utils';
 
 export default class Main extends React.Component {
   constructor(props) {
@@ -45,7 +45,7 @@ export default class Main extends React.Component {
       /** @type {ScoreCard} */ scoreCard: {},
       labelBehavior: {
         showLabel: true,
-        labelPosition: "right"
+        labelPosition: 'right'
       }
     };
 
@@ -69,10 +69,10 @@ export default class Main extends React.Component {
     });
 
     // Show scene description when scene starts for the first time, if specified
-	  if (!this.context.extras.isEditor && this.props.currentScene != null) {
+    if (!this.context.extras.isEditor && this.props.currentScene != null) {
       this.handleSceneDescriptionInitially(this.props.currentScene);
     }
-    this.setState({scoreCard: this.initialScoreCard()});
+    this.setState({ scoreCard: this.initialScoreCard() });
 
     if (this.context.extras.isEditor) {
       // Make sure user is warned before closing the window
@@ -119,11 +119,11 @@ export default class Main extends React.Component {
         startBtnClicked: false
       });
     }
-    const validScenes = this.context.params.scenes.map(scene => {
+    const validScenes = this.context.params.scenes.map((scene) => {
       return scene.sceneId;
     });
 
-    const prunedHistory = this.state.sceneHistory.filter(sceneId => {
+    const prunedHistory = this.state.sceneHistory.filter((sceneId) => {
       return validScenes.includes(sceneId);
     });
     // Scene has been removed from params, but not yet from history
@@ -192,10 +192,10 @@ export default class Main extends React.Component {
       totalCodesUnlocked: 0,
       sceneScoreCards: {}
     };
-    for(const sceneId in this.context.params.scenes){
+    for (const sceneId in this.context.params.scenes) {
       const scene = this.context.params.scenes[sceneId];
       scoreCard.sceneScoreCards[scene.sceneId] = this.initialSceneScoreCard(scene);
-      scoreCard.numQuestionsInTour += scoreCard.sceneScoreCards[scene.sceneId].numQuestionsInScene
+      scoreCard.numQuestionsInTour += scoreCard.sceneScoreCards[scene.sceneId].numQuestionsInScene;
     }
     return scoreCard;
   }
@@ -213,24 +213,24 @@ export default class Main extends React.Component {
     };
 
     if (scene.interactions) {
-      for(let i = 0; i < scene.interactions.length; i++){
+      for (let i = 0; i < scene.interactions.length; i++) {
         const interaction = scene.interactions[i];
         const libraryName = H5P.libraryFromString(interaction.action.library).machineName;
-        switch(libraryName) {
-          case "H5P.Summary":
-            sceneScoreCard.scores[i]={title: this.getScoreLabelFromInteraction(interaction), raw: 0, max: this.getQuestionMaxScore(interaction), scaled: 0};
+        switch (libraryName) {
+          case 'H5P.Summary':
+            sceneScoreCard.scores[i] = { title: this.getScoreLabelFromInteraction(interaction), raw: 0, max: this.getQuestionMaxScore(interaction), scaled: 0 };
             sceneScoreCard.numQuestionsInScene += 1;
             break;
-          case "H5P.SingleChoiceSet":
-            sceneScoreCard.scores[i]={title: this.getScoreLabelFromInteraction(interaction), raw: 0, max: this.getQuestionMaxScore(interaction), scaled: 0};
+          case 'H5P.SingleChoiceSet':
+            sceneScoreCard.scores[i] = { title: this.getScoreLabelFromInteraction(interaction), raw: 0, max: this.getQuestionMaxScore(interaction), scaled: 0 };
             sceneScoreCard.numQuestionsInScene += 1;
             break;
-          case "H5P.Blanks":
-            sceneScoreCard.scores[i]={title: this.getScoreLabelFromInteraction(interaction), raw: 0, max: this.getQuestionMaxScore(interaction), scaled: 0};
+          case 'H5P.Blanks':
+            sceneScoreCard.scores[i] = { title: this.getScoreLabelFromInteraction(interaction), raw: 0, max: this.getQuestionMaxScore(interaction), scaled: 0 };
             sceneScoreCard.numQuestionsInScene += 1;
             break;
-          case "H5P.MultiChoice":
-            sceneScoreCard.scores[i]={title: this.getScoreLabelFromInteraction(interaction), raw: 0, max: this.getQuestionMaxScore(interaction), scaled: 0};
+          case 'H5P.MultiChoice':
+            sceneScoreCard.scores[i] = { title: this.getScoreLabelFromInteraction(interaction), raw: 0, max: this.getQuestionMaxScore(interaction), scaled: 0 };
             sceneScoreCard.numQuestionsInScene += 1;
             break;
           default:
@@ -242,7 +242,7 @@ export default class Main extends React.Component {
     return sceneScoreCard;
   }
 
-  getScoreLabelFromInteraction(interaction){
+  getScoreLabelFromInteraction(interaction) {
     return interaction.labelText ? interaction.labelText : interaction.action?.metadata?.title;
   }
 
@@ -251,7 +251,7 @@ export default class Main extends React.Component {
    * @returns {number}
    */
   getQuestionMaxScore(interaction) {
-    if(this.context.extras.isEditor){
+    if (this.context.extras.isEditor) {
       return 1;
     }
 
@@ -261,8 +261,8 @@ export default class Main extends React.Component {
     );
 
     const libraryName = H5P.libraryFromString(interaction.action.library).machineName;
-    if(libraryName === "H5P.Blanks"){
-      question.createQuestions("");
+    if (libraryName === 'H5P.Blanks') {
+      question.createQuestions('');
     }
 
     return question.getMaxScore();
@@ -272,23 +272,23 @@ export default class Main extends React.Component {
    * @returns {boolean}
    */
   hasOneQuestion() {
-    if(this.context.extras.isEditor || !this.context.params.scenes) {
+    if (this.context.extras.isEditor || !this.context.params.scenes) {
       return false;
     }
 
-    for(const sceneId in this.context.params.scenes){
+    for (const sceneId in this.context.params.scenes) {
       const scene = this.context.params.scenes[sceneId];
-      for(let i = 0; i < scene?.interactions?.length; i++){
+      for (let i = 0; i < scene?.interactions?.length; i++) {
         const interaction = scene.interactions[i];
         const libraryName = H5P.libraryFromString(interaction.action.library).machineName;
-        switch(libraryName) {
-          case "H5P.Summary":
+        switch (libraryName) {
+          case 'H5P.Summary':
             return true;
-          case "H5P.SingleChoiceSet":
+          case 'H5P.SingleChoiceSet':
             return true;
-          case "H5P.Blanks":
+          case 'H5P.Blanks':
             return true;
-          case "H5P.MultiChoice":
+          case 'H5P.MultiChoice':
             return true;
           default:
             // Noop
@@ -316,7 +316,7 @@ export default class Main extends React.Component {
       });
     }
     else {
-      nextSceneId = this.context.params.scenes.find(scene => {
+      nextSceneId = this.context.params.scenes.find((scene) => {
         return scene.sceneId === sceneId;
       }).sceneId;
     }
@@ -359,7 +359,7 @@ export default class Main extends React.Component {
         scenesOpened: newSceneOpened
       });
     }
-  }
+  };
 
   /**
    * The user wants to see the scene description, handling it.
@@ -372,17 +372,17 @@ export default class Main extends React.Component {
       currentText: text,
       nextFocus: null
     });
-  }
+  };
 
   /**
    * The user wants to see the score summary, handling it.
    */
-   handleScoreSummary = () => {
+  handleScoreSummary = () => {
     this.setState({
       showingScoreSummary: true,
       nextFocus: null
     });
-  }
+  };
 
   /**
    * The user wants to close the text dialog, handling it.
@@ -394,7 +394,7 @@ export default class Main extends React.Component {
       currentText: null,
       nextFocus: 'scene-description' // Should probably come in as an arg when opening the dialog
     });
-  }
+  };
 
   /**
    * Get the audio player for the current track.
@@ -437,7 +437,7 @@ export default class Main extends React.Component {
       );
     }
     return this.audioPlayers[id];
-  }
+  };
 
   /**
    * @param {number} interactionIndex
@@ -445,7 +445,7 @@ export default class Main extends React.Component {
    */
   getInteractionFromCurrentScene(interactionIndex) {
     const scene = this.context.params.scenes.find(
-      scene => scene.sceneId === this.props.currentScene,
+      (scene) => scene.sceneId === this.props.currentScene,
     );
 
     return scene.interactions[interactionIndex];
@@ -457,7 +457,7 @@ export default class Main extends React.Component {
     const machineName = library.machineName;
 
     //Check if it has password and is unlocked
-    if (interaction.label && interaction.label.interactionPassword && !interaction.unlocked){
+    if (interaction.label && interaction.label.interactionPassword && !interaction.unlocked) {
       this.setState({
         showingInteraction: true,
         currentInteraction: interactionIndex,
@@ -514,7 +514,7 @@ export default class Main extends React.Component {
   }
 
   hideInteraction() {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       showingInteraction: false,
       currentInteraction: null,
       nextFocus: 'interaction-' + prevState.currentInteraction
@@ -528,7 +528,7 @@ export default class Main extends React.Component {
   }
 
   hidePasswordDialog() {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       showingPassword: false,
       currentInteraction: null,
       nextFocus: 'interaction-' + prevState.currentInteraction
@@ -540,27 +540,27 @@ export default class Main extends React.Component {
     this.setState({
       threeSixty: threeSixty
     });
-  }
+  };
 
   handleAudioIsPlaying = (id) => {
     this.setState({
       audioIsPlaying: id // Change the player
     });
-  }
+  };
 
   handleSceneAudioWasPlaying = (id) => {
     this.setState({
       sceneAudioWasPlaying: id // Set the prev player
     });
-  }
+  };
 
   getSceneAudioPlayers = (players) => {
     this.sceneAudioPlayers = players;
-  }
+  };
 
   centerScene() {
     const sceneParams = this.context.params.scenes;
-    const scene = sceneParams.find(scene => {
+    const scene = sceneParams.find((scene) => {
       return scene.sceneId === this.props.currentScene;
     });
     if (!scene) {
@@ -607,24 +607,28 @@ export default class Main extends React.Component {
    * @param {number} interactionId
    * @param {SceneScoreCardScore} score
    */
-  updateScoreCard(sceneId, interactionId, score){
-    this.state.scoreCard.totalQuestionsCompleted += 1;
-    if(!this.state.scoreCard.sceneScoreCards[sceneId]){
-      this.state.scoreCard[sceneId] = {};
+  updateScoreCard(sceneId, interactionId, score) {
+    const newState = { ... this.state };
+
+    newState.scoreCard.totalQuestionsCompleted++;
+    if (!this.state.scoreCard.sceneScoreCards[sceneId]) {
+      newState.scoreCard[sceneId] = {};
     }
-    this.state.scoreCard.sceneScoreCards[sceneId].scores[interactionId] = score;
+    newState.scoreCard.sceneScoreCards[sceneId].scores[interactionId] = score;
+
+    this.setState(newState);
 
     /** @type {SceneParams} */
-    const scene = this.context.params.scenes.find(scene => {
+    const scene = this.context.params.scenes.find((scene) => {
       return scene.sceneId === sceneId;
     });
 
     scene.interactions[interactionId].isAnswered = true;
   }
 
-  updateEscapeScoreCard(isUnlocked){
+  updateEscapeScoreCard(isUnlocked) {
     const totalCodesEntered = this.state.scoreCard.totalCodesEntered + 1;
-	const totalCodesUnlocked = this.state.scoreCard.totalCodesUnlocked + (isUnlocked ? 1 : 0);
+    const totalCodesUnlocked = this.state.scoreCard.totalCodesUnlocked + (isUnlocked ? 1 : 0);
 
     this.setState({
       scoreCard: {
@@ -671,7 +675,7 @@ export default class Main extends React.Component {
       return <NoScene label={this.context.l10n.noContent} />;
     }
 
-    const scene = sceneParams.find(scene => {
+    const scene = sceneParams.find((scene) => {
       return scene.sceneId === this.props.currentScene;
     });
     if (!scene) {
@@ -700,7 +704,7 @@ export default class Main extends React.Component {
     // Whenever a dialog is shown we need to hide all the elements behind the overlay
     const isHiddenBehindOverlay = (showInteractionDialog || showTextDialog);
 
-    const sceneIcons = this.context.params.scenes.map(sceneParams => {
+    const sceneIcons = this.context.params.scenes.map((sceneParams) => {
       return {
         id: sceneParams.sceneId,
         iconType: sceneParams.iconType,
@@ -754,7 +758,7 @@ export default class Main extends React.Component {
           takeFocus={ this.isVeryFirstRenderDone }
           ariaRole={ 'alertdialog' }
         >
-          <div dangerouslySetInnerHTML={{__html: this.state.currentText }} />
+          <div dangerouslySetInnerHTML={{ __html: this.state.currentText }} />
         </Dialog>
         }
         { showingScoreSummary &&
@@ -765,7 +769,7 @@ export default class Main extends React.Component {
 
         }
         {
-          this.context.params.scenes.map(sceneParams => {
+          this.context.params.scenes.map((sceneParams) => {
             return (
               <Scene
                 key={sceneParams.sceneId}

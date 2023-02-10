@@ -2,11 +2,11 @@
 
 import React from 'react';
 import './StaticScene.scss';
-import NavigationButton, {getIconFromInteraction, getLabelFromInteraction, Icons} from "../../Interactions/NavigationButton";
-import {H5PContext} from "../../../context/H5PContext";
-import {SceneTypes} from "../Scene";
-import ContextMenu from "../../Shared/ContextMenu";
-import OpenContent from "../../Interactions/OpenContent";
+import NavigationButton, { getIconFromInteraction, getLabelFromInteraction, Icons } from '../../Interactions/NavigationButton';
+import { H5PContext } from '../../../context/H5PContext';
+import { SceneTypes } from '../Scene';
+import ContextMenu from '../../Shared/ContextMenu';
+import OpenContent from '../../Interactions/OpenContent';
 export let staticSceneWidth, staticSceneHeight;
 
 export default class StaticScene extends React.Component {
@@ -73,7 +73,7 @@ export default class StaticScene extends React.Component {
     const wrapperSize = wrapper.getBoundingClientRect();
     const defaultSize = 938;
     const defaultFontSize = 16;
-    this.sceneWrapperRef.current.style.width = `100%`;
+    this.sceneWrapperRef.current.style.width = '100%';
 
     // Specific to Firefox - Interaction buttons are moving out of scope when image is potrait
     if (this.imageElementRef.current.clientWidth > 0) {
@@ -375,10 +375,10 @@ export default class StaticScene extends React.Component {
           ref={this.sceneWrapperRef}
         >
           <img
-            tabIndex='-1'
+            tabIndex={-1}
             alt={this.props.sceneParams.scenename}
             className='image-scene'
-            src={this.props.imageSrc !== undefined?H5P.getPath(this.props.imageSrc.path, this.context.contentId):""}
+            src={this.props.imageSrc !== undefined ? H5P.getPath(this.props.imageSrc.path, this.context.contentId) : ''}
             onLoad={this.onSceneLoaded.bind(this)}
             ref={this.imageElementRef}
             draggable={false}
@@ -428,7 +428,7 @@ export default class StaticScene extends React.Component {
               const isGoToSceneInteraction = machineName === 'H5P.GoToScene';
               const scenes = this.context.params.scenes;
               if (isGoToSceneInteraction) {
-                const nextScene = scenes.find(scene => {
+                const nextScene = scenes.find((scene) => {
                   return scene.sceneId === interaction.action.params.nextSceneId;
                 });
                 title = nextScene.scenename;
@@ -437,71 +437,71 @@ export default class StaticScene extends React.Component {
                 title = this.getInteractionTitle(interaction.action);
               }
 
-              const key = interaction.id || `interaction-${this.props.sceneId}${index}`
+              const key = interaction.id || `interaction-${this.props.sceneId}${index}`;
 
               return (
                 interaction.label.showAsOpenSceneContent ?
-                <OpenContent
-                  key={key}
-                  staticScene={true}
-                  sceneId={this.props.sceneId}
-                  leftPosition={posX}
-                  topPosition={posY}
-                  interactionIndex={index}
-                  mouseDownHandler={this.startDragging.bind(this, index)}
-                  doubleClickHandler={() => {
-                    this.context.trigger('doubleClickedInteraction', index);
-                  }}
-                  ariaLabel={null}
-                  isFocused={this.props.focusedInteraction === index}
-                  onBlur={this.props.onBlurInteraction}
-                  is3DScene={false}
-                >
-                  {
-                    this.context.extras.isEditor &&
+                  <OpenContent
+                    key={key}
+                    staticScene={true}
+                    sceneId={this.props.sceneId}
+                    leftPosition={posX}
+                    topPosition={posY}
+                    interactionIndex={index}
+                    mouseDownHandler={this.startDragging.bind(this, index)}
+                    doubleClickHandler={() => {
+                      this.context.trigger('doubleClickedInteraction', index);
+                    }}
+                    ariaLabel={null}
+                    isFocused={this.props.focusedInteraction === index}
+                    onBlur={this.props.onBlurInteraction}
+                    is3DScene={false}
+                  >
+                    {
+                      this.context.extras.isEditor &&
                     <ContextMenu
                       isGoToScene={isGoToSceneInteraction}
                       interactionIndex={index}
                     />
-                  }
-                </OpenContent>
-                :
-                <NavigationButton
-                  key={key}
-                  title={title}
-                  icon={getIconFromInteraction(interaction, scenes)}
-                  label={getLabelFromInteraction(interaction)}
-                  type={'interaction-' + index}
-                  isHiddenBehindOverlay={this.props.isHiddenBehindOverlay}
-                  nextFocus={this.props.nextFocus}
-                  topPosition={posY}
-                  leftPosition={posX}
-                  mouseDownHandler={this.startDragging.bind(this, index)}
-                  clickHandler={this.props.showInteraction.bind(this, index)}
-                  doubleClickHandler={() => {
-                    this.context.trigger('doubleClickedInteraction', index);
-                  }}
-                  buttonClasses={buttonClasses}
-                  onBlur={this.props.onBlurInteraction}
-                  isFocused={this.props.focusedInteraction === index}
-                  // Use the overlay height instead of getWrapperSize because
-                  // That is not correct when moving to a new scene without resizing
-                  wrapperHeight={this.overLayRef.current ? this.overLayRef.current.clientHeight : 0}
-                  staticScene={true}
-                  showAsHotspot={interaction.label.showAsHotspot}
-                  sceneId = {this.props.sceneId}
-                  interactionIndex = {index}
-                  isHotspotTabbable={interaction.label.isHotspotTabbable}
-                  showHotspotOnHover={interaction.label.showHotspotOnHover}
-                >
-                  {
-                    this.context.extras.isEditor &&
+                    }
+                  </OpenContent>
+                  :
+                  <NavigationButton
+                    key={key}
+                    title={title}
+                    icon={getIconFromInteraction(interaction, scenes)}
+                    label={getLabelFromInteraction(interaction)}
+                    type={'interaction-' + index}
+                    isHiddenBehindOverlay={this.props.isHiddenBehindOverlay}
+                    nextFocus={this.props.nextFocus}
+                    topPosition={posY}
+                    leftPosition={posX}
+                    mouseDownHandler={this.startDragging.bind(this, index)}
+                    clickHandler={this.props.showInteraction.bind(this, index)}
+                    doubleClickHandler={() => {
+                      this.context.trigger('doubleClickedInteraction', index);
+                    }}
+                    buttonClasses={buttonClasses}
+                    onBlur={this.props.onBlurInteraction}
+                    isFocused={this.props.focusedInteraction === index}
+                    // Use the overlay height instead of getWrapperSize because
+                    // That is not correct when moving to a new scene without resizing
+                    wrapperHeight={this.overLayRef.current ? this.overLayRef.current.clientHeight : 0}
+                    staticScene={true}
+                    showAsHotspot={interaction.label.showAsHotspot}
+                    sceneId = {this.props.sceneId}
+                    interactionIndex = {index}
+                    isHotspotTabbable={interaction.label.isHotspotTabbable}
+                    showHotspotOnHover={interaction.label.showHotspotOnHover}
+                  >
+                    {
+                      this.context.extras.isEditor &&
                     <ContextMenu
                       isGoToScene={isGoToSceneInteraction}
                       interactionIndex={index}
                     />
-                  }
-                </NavigationButton>
+                    }
+                  </NavigationButton>
               );
             })
           }

@@ -2,9 +2,9 @@
 
 import React from 'react';
 import './NavigationButton.scss';
-import {H5PContext} from "../../context/H5PContext";
-import NavigationButtonLabel, {getLabelPos, getLabelText, isHoverLabel} from "./NavigationButtonLabel";
-import HotspotNavButton from "./HotspotNavButton";
+import { H5PContext } from '../../context/H5PContext';
+import NavigationButtonLabel, { getLabelPos, getLabelText, isHoverLabel } from './NavigationButtonLabel';
+import HotspotNavButton from './HotspotNavButton';
 
 export const Icons = {
   INFO: 'h5p-info-button h5p-interaction-button',
@@ -22,13 +22,13 @@ export const Icons = {
 };
 
 const infoInteractions = [
-  "H5P.AdvancedText",
-  "H5P.Image",
-  "H5P.Video",
-  "H5P.Summary",
-  "H5P.SingleChoiceSet",
-  "H5P.MultiChoice",
-  "H5P.Blanks"
+  'H5P.AdvancedText',
+  'H5P.Image',
+  'H5P.Video',
+  'H5P.Summary',
+  'H5P.SingleChoiceSet',
+  'H5P.MultiChoice',
+  'H5P.Blanks'
 ];
 
 /**
@@ -54,7 +54,7 @@ export const getIconFromInteraction = (interaction, scenes) => {
   else if (machineName === 'H5P.GoToScene') {
     icon = Icons.GO_TO_SCENE;
 
-    const nextScene = scenes.find(scene => {
+    const nextScene = scenes.find((scene) => {
       return scene.sceneId === interaction.action.params.nextSceneId;
     });
     if (nextScene && nextScene.iconType === 'plus') {
@@ -67,7 +67,8 @@ export const getIconFromInteraction = (interaction, scenes) => {
   else if (machineName === 'H5P.AdvancedText') {
     if (interaction.iconTypeTextBox === 'text-icon') {
       icon = Icons.TEXT_BLOCK;
-    } else {
+    }
+    else {
       icon = Icons.INFO_MARK;
     }
   }
@@ -91,42 +92,42 @@ export const getIconFromInteraction = (interaction, scenes) => {
  * @returns {InteractionLabel}
  */
 export const getLabelFromInteraction = (interaction) => {
-  return {...interaction.label, labelText: interaction.labelText};
+  return { ...interaction.label, labelText: interaction.labelText };
 };
 
 
 /**
  * @typedef {{
- *  sceneId: number;
- *  interactionIndex: number;
- *  isFocused: boolean;
+ *  sceneId?: number;
+ *  interactionIndex?: number;
+ *  isFocused?: boolean;
  *  buttonClasses: Array<string>;
  *  icon: string;
- *  showAsHotspot: boolean;
+ *  showAsHotspot?: boolean;
  *  isHiddenBehindOverlay: boolean;
  *  title: string;
- *  label: string;
- *  staticScene: boolean;
- *  leftPosition: number;
- *  topPosition: number;
- *  type: string;
- *  forceClickHandler: boolean;
- *  nextFocus: string;
- *  showHotspotOnHover: boolean;
- *  isHotspotTabbable: boolean;
- *  wrapperHeight: number;
- *  rendered: boolean;
- *  is3d: boolean;
- *  children: React.ReactChildren;
+ *  label?: InteractionLabel;
+ *  staticScene?: boolean;
+ *  leftPosition?: number;
+ *  topPosition?: number;
+ *  type?: string;
+ *  forceClickHandler?: boolean;
+ *  nextFocus?: string;
+ *  showHotspotOnHover?: boolean;
+ *  isHotspotTabbable?: boolean;
+ *  wrapperHeight?: number;
+ *  rendered?: boolean;
+ *  is3d?: boolean;
+ *  children?: React.ReactNode;
  *  clickHandler: () => void;
- *  doubleClickHandler: () => void;
- *  mouseDownHandler: (event: MouseEvent) => void;
- *  onFocus: () => void;
- *  onBlur: () => void;
- *  onFocusedInteraction: () => void;
- *  onMount: (wrapper: HTMLElement) => void;
- *  onUnmount: (wrapper: HTMLElement) => void;
- *  onUpdate: (wrapper: HTMLElement) => void;
+ *  doubleClickHandler?: () => void;
+ *  mouseDownHandler?: (event: MouseEvent) => void;
+ *  onFocus?: () => void;
+ *  onBlur?: () => void;
+ *  onFocusedInteraction?: () => void;
+ *  onMount?: (wrapper: HTMLElement) => void;
+ *  onUnmount?: (wrapper: HTMLElement) => void;
+ *  onUpdate?: (wrapper: HTMLElement) => void;
  * }} Props
  */
 
@@ -171,7 +172,7 @@ export default class NavigationButton extends React.Component {
     if (this.context.extras.isEditor) {
       this.forceUpdate();
     }
-  }
+  };
 
   addFocusListener() {
     if (this.navButtonWrapper) {
@@ -361,7 +362,7 @@ export default class NavigationButton extends React.Component {
         this.props.onFocus();
       }
     }
-  }
+  };
 
   /**
    * Handle changing scenes
@@ -371,7 +372,7 @@ export default class NavigationButton extends React.Component {
     this.setState({
       isFocused: false,
     });
-  }
+  };
 
   handleExpandButtonFocus = () => {
     this.setState({
@@ -380,7 +381,7 @@ export default class NavigationButton extends React.Component {
     if (this.props.onFocusedInteraction) {
       this.props.onFocus();
     }
-  }
+  };
 
   /**
    * @param {number} widthX
@@ -391,14 +392,14 @@ export default class NavigationButton extends React.Component {
       (/** @type {SceneParams} */ scene) => scene.sceneId === this.props.sceneId,
     );
     const interaction = scene.interactions[this.props.interactionIndex];
-    interaction.label.hotSpotSizeValues = widthX + "," + heightY;
+    interaction.label.hotSpotSizeValues = widthX + ',' + heightY;
   }
 
   getHotspotValues() {
     const interaction = this.getCurrentInteraction();
 
     return interaction.label.hotSpotSizeValues ?
-      interaction.label.hotSpotSizeValues.split(",") : [256,128]
+      interaction.label.hotSpotSizeValues.split(',') : [256, 128];
   }
 
   /**
@@ -418,7 +419,10 @@ export default class NavigationButton extends React.Component {
 
   render() {
     const interaction = this.getCurrentInteraction();
-    const [_, libraryName] = interaction ? H5P.libraryFromString(interaction?.action?.library).machineName?.split(".") : [null];
+    const [libraryName] = interaction ?
+      (H5P.libraryFromString(interaction?.action?.library).machineName || '')
+        .split('.') :
+      [null];
 
     let wrapperClasses = interaction ? [
       'nav-button-wrapper',
@@ -439,7 +443,7 @@ export default class NavigationButton extends React.Component {
     }
 
     if (this.props.is3d) {
-      wrapperClasses = wrapperClasses.concat("nav-btn-hotspot render-in-3d");
+      wrapperClasses = wrapperClasses.concat('nav-btn-hotspot render-in-3d');
     }
 
     if (this.state.isMouseOver) {
@@ -462,16 +466,14 @@ export default class NavigationButton extends React.Component {
     const isInnerButtonTabbable = !this.context.extras.isEditor
       && !this.props.isHiddenBehindOverlay;
 
-    let title = '';
     if (this.props.title) {
       const titleText = document.createElement('div');
       titleText.innerHTML = this.props.title;
-      title = titleText.textContent;
     }
 
     let label = this.props.label ? this.props.label : {
-      labelPosition: "inherit",
-      showLabel: "inherit"
+      labelPosition: 'inherit',
+      showLabel: 'inherit'
     };
 
     let labelPos = getLabelPos(this.context.behavior.label, label);
@@ -488,9 +490,9 @@ export default class NavigationButton extends React.Component {
 
 
       // Change default size if static scene
-      if (width == 256 && height == 128) {
+      if (width === 256 && height === 128) {
         width = 25;
-        height =25;
+        height = 25;
         this.setHotspotValues(width, height);
       }
     }
@@ -509,14 +511,14 @@ export default class NavigationButton extends React.Component {
           this.props.showAsHotspot ?
             <HotspotNavButton
               reference={this.navButton}
-              style={{height:'100%', width:'100%'}}
+              style={{ height:'100%', width:'100%' }}
               ariaLabel={getLabelText(label)}
-              tabIndexValue={isInnerButtonTabbable ? undefined : '-1'}
+              tabIndexValue={isInnerButtonTabbable ? undefined : -1}
               onClickEvent={this.onClick.bind(this)}
               onDoubleClickEvent={this.onDoubleClick.bind(this)}
               onMouseDownEvent={this.onMouseDown.bind(this)}
-              onFocusEvent={() => this.setState({innerButtonFocused: true})}
-              onBlurEvent={() => this.setState({innerButtonFocused: false})}
+              onFocusEvent={() => this.setState({ innerButtonFocused: true })}
+              onBlurEvent={() => this.setState({ innerButtonFocused: false })}
               resizeOnDrag={this.resizeOnDrag}
               setHotspotValues={this.setHotspotValues.bind(this)}
               getHotspotValues={this.getHotspotValues.bind(this)}
@@ -533,8 +535,8 @@ export default class NavigationButton extends React.Component {
               onClick={this.onClick.bind(this)}
               onDoubleClick={this.onDoubleClick.bind(this)}
               onMouseDown={this.onMouseDown.bind(this)}
-              onFocus={() => this.setState({innerButtonFocused: true})}
-              onBlur={() => this.setState({innerButtonFocused: false})}/>
+              onFocus={() => this.setState({ innerButtonFocused: true })}
+              onBlur={() => this.setState({ innerButtonFocused: false })}/>
         }
         {this.props.children}
         {
@@ -546,8 +548,8 @@ export default class NavigationButton extends React.Component {
             onMount={this.props.onMount}
             forwardRef={this.expandButton}
             onFocus={this.handleExpandButtonFocus.bind(this)}
-            onBlur={() => this.setState({expandButtonFocused: false})}
-            topPosition={this.props.topPosition*this.props.wrapperHeight/100}
+            onBlur={() => this.setState({ expandButtonFocused: false })}
+            topPosition={this.props.topPosition * this.props.wrapperHeight / 100}
             wrapperHeight={this.props.wrapperHeight}
             leftPosition={this.props.leftPosition}
             navButtonHeight={this.navButton.current ? this.navButton.current.offsetHeight : null}

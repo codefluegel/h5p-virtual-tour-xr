@@ -10,12 +10,12 @@ export default class AudioButton extends React.Component {
     if (!this.props.disabled) {
       this.props.onClick();
     }
-  }
+  };
 
   /**
    * React - after render
    */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (prevProps.nextFocus !== this.props.nextFocus && this.props.type === this.props.nextFocus) {
       this.element.focus();
     }
@@ -28,7 +28,7 @@ export default class AudioButton extends React.Component {
     return (
       <div className="btn-wrap">
         <button
-          ref={ el => this.element = el }
+          ref={ (el) => this.element = el }
           className={ 'hud-btn ' + this.props.type }
           onClick={ this.handleClick }
           aria-label={ this.props.label }

@@ -1,9 +1,9 @@
 // @ts-check
 
 import React from 'react';
-import {H5PContext} from '../../context/H5PContext';
-import ThreeSixtyScene from "./SceneTypes/ThreeSixtyScene";
-import StaticScene from "./SceneTypes/StaticScene";
+import { H5PContext } from '../../context/H5PContext';
+import ThreeSixtyScene from './SceneTypes/ThreeSixtyScene';
+import StaticScene from './SceneTypes/StaticScene';
 
 export const SceneTypes = {
   THREE_SIXTY_SCENE: '360',

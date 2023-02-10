@@ -1,16 +1,16 @@
 // @ts-check
 
-import React from "react";
+import React from 'react';
 
-import { H5PContext } from "../../../context/H5PContext";
+import { H5PContext } from '../../../context/H5PContext';
 import {
   createAudioPlayer,
   isInteractionAudio,
   isPlaylistAudio,
   isSceneAudio,
   fadeAudioInAndOut,
-} from "../../../utils/audio-utils";
-import Button from "./Button/Button";
+} from '../../../utils/audio-utils';
+import Button from './Button/Button';
 
 /**
  * @typedef {{
@@ -36,7 +36,7 @@ export default class AudioButton extends React.Component {
     super(props);
 
     /** @type {Props} */
-    this.props = this.props;
+    this.props = props;
 
     // Separate players for the different scenes
     this.players = {};
@@ -45,7 +45,7 @@ export default class AudioButton extends React.Component {
   // Keep track if scene audio has been turned on or not
   state = {
     audioOn: false
-  }
+  };
 
   /**
    * Determine player ID
@@ -58,26 +58,28 @@ export default class AudioButton extends React.Component {
       this.props.sceneAudioTrack?.length &&
       !this.props.playlistId
     ) {
-      return "scene-" + this.props.sceneId;
+      return 'scene-' + this.props.sceneId;
     }
 
     if (
       this.props.playlistId !== undefined &&
       this.props.sceneAudioTrack?.length
     ) {
-      return "playlist-" + this.props.playlistId;
+      return 'playlist-' + this.props.playlistId;
     }
 
     if (this.context.behavior.audio?.length) {
-      return "global";
+      return 'global';
     }
 
     if (
       this.context.behavior.playlist &&
-      this.context.behavior.audioType === "playlist"
+      this.context.behavior.audioType === 'playlist'
     ) {
-      return "playlist-" + this.context.behavior.playlist;
+      return 'playlist-' + this.context.behavior.playlist;
     }
+
+    return '';
   };
 
   /**
@@ -87,7 +89,7 @@ export default class AudioButton extends React.Component {
    * @return {Array}
    */
   getTrack = (id) => {
-    return id === "global"
+    return id === 'global'
       ? this.context.behavior.audio
       : this.props.sceneAudioTrack;
   };
@@ -96,7 +98,7 @@ export default class AudioButton extends React.Component {
    * Get the audio player for the current track.
    *
    * @param {string} id
-   * @return {HTMLAudioElement} or 'null' if track isn't playable.
+   * @return {HTMLAudioElement|null} or 'null' if track isn't playable.
    */
   getPlayer = (id) => {
     if (!id) {
@@ -158,7 +160,7 @@ export default class AudioButton extends React.Component {
     // Set correct state for if scene audio is on or off
     this.setState({
       audioOn: !this.state.audioOn
-    })
+    });
 
     // Determine player ID
     const id = this.getPlayerId();
@@ -170,12 +172,13 @@ export default class AudioButton extends React.Component {
 
         // Pause and reset the player
         fadeAudioInAndOut(player, null, false);
-      } else {
+      }
+      else {
         // Find out if there is an interaction playing
-        const lastPlayer = isInteractionAudio(this.props.isPlaying) 
-          ? this.props.interactionAudioPlayers[this.props.isPlaying] 
+        const lastPlayer = isInteractionAudio(this.props.isPlaying)
+          ? this.props.interactionAudioPlayers[this.props.isPlaying]
           : null;
-          
+
         // Pause if lastplayer, then start the playback!
         fadeAudioInAndOut(lastPlayer, player, true);
       }
@@ -208,10 +211,10 @@ export default class AudioButton extends React.Component {
       // The Audio Player has changed
 
       // If not scene audio is playing then change state for audioOn
-      if (!(isSceneAudio(this.props.isPlaying) || isPlaylistAudio(this.props.isPlaying))) {	
+      if (!(isSceneAudio(this.props.isPlaying) || isPlaylistAudio(this.props.isPlaying))) {
         this.setState({
           audioOn: false
-        })
+        });
       }
 
       if (
@@ -231,7 +234,7 @@ export default class AudioButton extends React.Component {
       }
     }
 
-    if (isSceneAudio(this.props.isPlaying) || isPlaylistAudio(this.props.isPlaying) || (this.props.sceneId !== prevProps.sceneId && this.state.audioOn == true)) {
+    if (isSceneAudio(this.props.isPlaying) || isPlaylistAudio(this.props.isPlaying) || (this.props.sceneId !== prevProps.sceneId && this.state.audioOn === true)) {
       // We are playing something or we changed scene and scene audio is on
 
       const currentPlayerId = this.getPlayerId();
@@ -246,14 +249,14 @@ export default class AudioButton extends React.Component {
     }
 
     if (isSceneAudio(this.props.isPlaying) || isPlaylistAudio(this.props.isPlaying)) {
-      const isNewScene = this.props.sceneId !== prevProps.sceneId; 
+      const isNewScene = this.props.sceneId !== prevProps.sceneId;
       if (this.props.restartAudioOnSceneStart && isNewScene) {
         const currentPlayerId = this.getPlayerId();
         const player = this.getPlayer(currentPlayerId);
-        
-        if (isPlaylistAudio(currentPlayerId)) { 
-          // Pause 
-          player.pause();
+
+        if (player && isPlaylistAudio(currentPlayerId)) {
+          // Pause
+          player?.pause();
 
           // Get the first track
           const trackList = this.getTrack(currentPlayerId);
@@ -264,11 +267,11 @@ export default class AudioButton extends React.Component {
           player.audioTrack = 0;
           player.src = newTrackPath;
           player.load();
-          
+
           // Play
           player.play();
-        } 
-        else {
+        }
+        else if (player) {
           player.currentTime = 0;
         }
       }
@@ -287,7 +290,8 @@ export default class AudioButton extends React.Component {
       if (lastPlayer && this.props.sceneWasPlaying === currentPlayerId) {
         // Play the scene audio or global audio if it matches the current scene
         fadeAudioInAndOut(null, lastPlayer, false);
-      } else if (currentPlayerId) {
+      }
+      else if (currentPlayerId) {
         // Else the user moved directly to new scene when playing interaction audio
         const currentPlayer = this.getPlayer(currentPlayerId);
 
@@ -308,7 +312,7 @@ export default class AudioButton extends React.Component {
       return null;
     }
 
-    const type = "audio-track" + (this.props.isPlaying === id ? " active" : "");
+    const type = 'audio-track' + (this.props.isPlaying === id ? ' active' : '');
     return (
       <Button
         type={type}

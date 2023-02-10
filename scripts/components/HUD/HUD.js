@@ -4,7 +4,7 @@ import './HUD.scss';
 import { H5PContext } from '../../context/H5PContext';
 import AudioButton from './Buttons/AudioButton';
 import Button from './Buttons/Button/Button';
-import {SceneTypes} from "../Scene/Scene";
+import { SceneTypes } from '../Scene/Scene';
 
 export default class HUD extends React.Component {
   constructor(props) {
@@ -31,12 +31,12 @@ export default class HUD extends React.Component {
       interactionAudioPlayers: this.props.interactionAudioPlayers,
     };
 
-    if (scene?.audio?.length > 0 && (!scene.audioType || scene.audioType === "audio")) {
+    if (scene?.audio?.length > 0 && (!scene.audioType || scene.audioType === 'audio')) {
       props.sceneAudioTrack = scene.audio;
       props.sceneId = scene.sceneId;
     }
 
-    if (scene?.audioType === "playlist" && scene?.playlist) {
+    if (scene?.audioType === 'playlist' && scene?.playlist) {
       const playlist = this.checkIfPlaylist(scene, this.context.params.playlists);
       if (playlist != null) {
         props.sceneAudioTrack = playlist.audioTracks;
@@ -45,8 +45,8 @@ export default class HUD extends React.Component {
       }
     }
 
-    const noSceneAudio = (scene?.audioType === "audio") && !scene?.audio;
-    const noScenePlaylist = (scene?.audioType === "playlist") && !scene?.playlist;
+    const noSceneAudio = (scene?.audioType === 'audio') && !scene?.audio;
+    const noScenePlaylist = (scene?.audioType === 'playlist') && !scene?.playlist;
     if (scene && (noSceneAudio || noScenePlaylist) && this.context.behavior?.playlist) {
       const playlist = this.checkIfPlaylist(this.context.behavior, this.context.params.playlists);
       if (playlist != null) {
@@ -57,13 +57,13 @@ export default class HUD extends React.Component {
     }
 
     return props;
-  }
+  };
 
   checkIfPlaylist(parent, playlists) {
-    const parentHasPlaylist = (parent != null) && (parent.playlist != null) && (parent.audioType === "playlist");
+    const parentHasPlaylist = (parent != null) && (parent.playlist != null) && (parent.audioType === 'playlist');
     if (parentHasPlaylist && (playlists != null)) {
-      const playlistExists = playlists.find(playlist => {
-        return playlist.playlistId === parent.playlist
+      const playlistExists = playlists.find((playlist) => {
+        return playlist.playlistId === parent.playlist;
       });
       return playlistExists;
     }
@@ -72,7 +72,7 @@ export default class HUD extends React.Component {
 
   handleSceneDescription = () => {
     this.props.onSceneDescription(this.props.scene.scenedescription);
-  }
+  };
 
   /**
    * React - create DOM elements

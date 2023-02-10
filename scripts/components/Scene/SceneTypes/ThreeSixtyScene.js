@@ -2,13 +2,13 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import NavigationButton, {getIconFromInteraction, getLabelFromInteraction} from "../../Interactions/NavigationButton";
-import {H5PContext} from '../../../context/H5PContext';
-import ContextMenu from "../../Shared/ContextMenu";
+import NavigationButton, { getIconFromInteraction, getLabelFromInteraction } from '../../Interactions/NavigationButton';
+import { H5PContext } from '../../../context/H5PContext';
+import ContextMenu from '../../Shared/ContextMenu';
 // @ts-expect-error
 import loading from '../../../assets/loading.svg';
 import './ThreeSixtyScene.scss';
-import OpenContent from "../../Interactions/OpenContent";
+import OpenContent from '../../Interactions/OpenContent';
 import { renderIn3d } from '../../../utils/utils';
 
 export const sceneRenderingQualityMapping = {
@@ -48,7 +48,7 @@ export default class ThreeSixtyScene extends React.Component {
   constructor(props) {
     super(props);
 
-    this.props = this.props;
+    this.props = props;
 
     this.sceneRef = React.createRef();
     this.renderedInteractions = 0;
@@ -73,7 +73,7 @@ export default class ThreeSixtyScene extends React.Component {
    */
   initializePointerLock(element) {
     // @ts-expect-error mozRequestPointerLock is not standardized
-    element.requestPointerLock = element.requestPointerLock|| element.mozRequestPointerLock;
+    element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock;
     if (!element.requestPointerLock) {
       return;
     }
@@ -109,7 +109,7 @@ export default class ThreeSixtyScene extends React.Component {
    *
    * @param {H5PEvent} event
    */
-   handleSceneMoveStart = (event) => {
+  handleSceneMoveStart = (event) => {
     if (!this.context.extras.isEditor || event.data.isCamera) {
       return;
     }
@@ -138,7 +138,7 @@ export default class ThreeSixtyScene extends React.Component {
         this.initializePointerLock(element);
       }
     }
-  }
+  };
 
   /**
    * @private
@@ -153,7 +153,7 @@ export default class ThreeSixtyScene extends React.Component {
     switch (currentTitle) {
       case 'Untitled Text':
         return action.params.text;
-      case "Untitled Image":
+      case 'Untitled Image':
         return action.params.alt;
       default:
         return currentTitle;
@@ -170,7 +170,7 @@ export default class ThreeSixtyScene extends React.Component {
       this.cancelPointerLock();
     }
     this.context.trigger('movestop', e.data);
-  }
+  };
 
   /**
    * @private
@@ -196,7 +196,7 @@ export default class ThreeSixtyScene extends React.Component {
     if (!this.props.threeSixty) {
       // ThreeSixty has not been used, yet. Create a new instance
       threeSixty = new H5P.NDLAThreeSixty(this.imageElement, {
-        ratio: 16/9,
+        ratio: 16 / 9,
         cameraStartPosition: cameraPosition,
         segments: sceneRenderingQualityMapping[this.context.sceneRenderingQuality],
         isPanorama: this.props.isPanorama
@@ -224,9 +224,10 @@ export default class ThreeSixtyScene extends React.Component {
     });
 
     threeSixty.startRendering();
-    if(this.props.isPanorama){
+    if (this.props.isPanorama) {
       threeSixty.updateCylinder();
-    } else {
+    }
+    else {
       threeSixty.update();
     }
 
@@ -235,7 +236,7 @@ export default class ThreeSixtyScene extends React.Component {
 
     // Add buttons to scene
     this.addInteractionHotspots(threeSixty, this.props.sceneParams.interactions);
-  }
+  };
 
   /**
    * Focus
@@ -258,7 +259,7 @@ export default class ThreeSixtyScene extends React.Component {
     }
 
     this.setState({
-      imagePath: this.props.imageSrc !== undefined?this.props.imageSrc.path:'',
+      imagePath: this.props.imageSrc !== undefined ? this.props.imageSrc.path : '',
       isRendered: false
     });
 
@@ -292,7 +293,7 @@ export default class ThreeSixtyScene extends React.Component {
         isLoaded: true // Indicates that this.imageElement can now be used
       });
     }
-  }
+  };
 
   /**
    * @private
@@ -313,7 +314,8 @@ export default class ThreeSixtyScene extends React.Component {
     for (const interaction of list) {
       if (interaction.is3d) {
         components3d.push(interaction.component);
-      } else {
+      }
+      else {
         components2d.push(interaction.component);
       }
     }
@@ -358,7 +360,7 @@ export default class ThreeSixtyScene extends React.Component {
     let title;
     const isGoToSceneInteraction = interaction.action.library.split(' ')[0] === 'H5P.GoToScene';
     if (isGoToSceneInteraction) {
-      const gotoScene = this.context.params.scenes.find(scene => {
+      const gotoScene = this.context.params.scenes.find((scene) => {
         return scene.sceneId === interaction.action.params.nextSceneId;
       });
       title = gotoScene.scenename; // Use scenename as title.
@@ -375,11 +377,11 @@ export default class ThreeSixtyScene extends React.Component {
         ThreeSixtyScene.getPositionFromString(interaction.interactionpos),
         this.context.extras.isEditor
       );
-    }
+    };
 
     const onUnmount = (/** @type {HTMLElement} */ element) => {
       this.props.threeSixty.remove(this.props.threeSixty.find(element));
-    }
+    };
 
     const onUpdate = (/** @type {HTMLElement} */ element) => {
       const threeElement = this.props.threeSixty.find(element);
@@ -388,9 +390,9 @@ export default class ThreeSixtyScene extends React.Component {
         threeElement,
         ThreeSixtyScene.getPositionFromString(interaction.interactionpos)
       );
-    }
+    };
 
-    const key = interaction.id || `interaction-${this.props.sceneId}${index}`
+    const key = interaction.id || `interaction-${this.props.sceneId}${index}`;
 
     const is3d = renderIn3d(interaction);
 
@@ -463,21 +465,21 @@ export default class ThreeSixtyScene extends React.Component {
           interactionIndex = {index}
           is3d={is3d}
         >
-        {
-          this.context.extras.isEditor &&
+          {
+            this.context.extras.isEditor &&
           <ContextMenu
             isGoToScene={isGoToSceneInteraction}
             interactionIndex={index}
           />
-        }
-      </NavigationButton>
+          }
+        </NavigationButton>
     );
 
     return {
       component,
       is3d,
     };
-  }
+  };
 
   /**
    * @private
@@ -489,7 +491,7 @@ export default class ThreeSixtyScene extends React.Component {
    * @return {CameraPosition}
    */
   static getPositionFromString(position) {
-    const [yaw, pitch] = position.split(',').map(strValue => Number.parseFloat(strValue));
+    const [yaw, pitch] = position.split(',').map((strValue) => Number.parseFloat(strValue));
 
     return {
       yaw,
@@ -506,7 +508,7 @@ export default class ThreeSixtyScene extends React.Component {
    */
   handleInteractionFocus = (interaction) => {
     this.props.onSetCameraPos(interaction.interactionpos);
-  }
+  };
 
   componentDidMount() {
     // Only load scene if image exists
@@ -614,10 +616,10 @@ export default class ThreeSixtyScene extends React.Component {
           const machineName = library.machineName;
           if (machineName === 'H5P.GoToScene') {
             const nextSceneId = interaction.action.params.nextSceneId;
-            const nextSceneIcon = this.props.sceneIcons.find(scene => {
+            const nextSceneIcon = this.props.sceneIcons.find((scene) => {
               return scene.id === nextSceneId;
             });
-            const oldNextSceneIcon = prevProps.sceneIcons.find(scene => {
+            const oldNextSceneIcon = prevProps.sceneIcons.find((scene) => {
               return scene.id === nextSceneId;
             });
 
