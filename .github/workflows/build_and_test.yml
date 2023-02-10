@@ -7,11 +7,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           path: h5p-three-image
       - name: Use Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: "16.X"
       - run: |
@@ -20,7 +20,7 @@ jobs:
           npm run build
 
       - name: Use Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: "14"
       - run: |
@@ -35,7 +35,7 @@ jobs:
 
           cp -r ../h5p-three-image .
       - name: Use Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: "16.x"
       - run: |
@@ -45,7 +45,7 @@ jobs:
           h5p pack -r h5p-three-image h5p-three-image.h5p
           h5p validate h5p-three-image.h5p
       - name: Archive code coverage results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: h5p-three-image.h5p
           path: dist/h5p-three-image.h5p
