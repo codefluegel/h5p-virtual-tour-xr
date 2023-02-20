@@ -106,6 +106,7 @@ export default class PasswordContent extends React.Component {
           >
             <div className={'h5p-wrapper-inner'}>
               <input
+                autoFocus
                 type="text"
                 autoComplete="off"
                 ref={this.inputRef.ref}
