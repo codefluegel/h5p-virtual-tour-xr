@@ -15,7 +15,7 @@
                     "label": "360 obrázek"
                   },
                   {
-                    "label": "Panoramic image"
+                    "label": "Panoramatický snímek"
                   },
                   {
                     "label": "Statický obrázek"
@@ -39,12 +39,12 @@
                 "description": "Text, který může popsat scénu pro koncového uživatele"
               },
               {
-                "label": "Scene description (for screen readers)",
-                "description": "A text that can describe the scene for the end-user. It will not be visible but read by screen readers, so formatting will be ignored."
+                "label": "Popis scény (pro čtečky obrazovky)",
+                "description": "Text, který může popsat scénu pro koncového uživatele. Nebude viditelná, ale bude čtena čtečkami obrazovky, takže formátování bude ignorováno."
               },
               {
-                "label": "Display \"Scene Description\" initially",
-                "description": "Display the scene description when the scene starts for the first time"
+                "label": "Nejprve zobrazte \"Popis scény\"",
+                "description": "Zobrazte popis scény při prvním spuštění scény"
               },
               {
                 "label": "Počáteční pozice kamery",
@@ -98,46 +98,46 @@
                           ]
                         },
                         {
-                          "label": "Show as hotspot",
-                          "description": "Allows for adding interaction areas to the background image that can be custom size."
+                          "label": "Zobrazit jako aktivní body",
+                          "description": "Umožňuje přidat k obrázku na pozadí oblasti interakce, které mohou mít vlastní velikost."
                         },
                         {
-                          "label": "Show hotspot when mouse is hovering",
-                          "description": "Will allow hotspot to be visible when mouse is hovering the area."
+                          "label": "Zobrazit aktivní bod, když se myš pohybuje",
+                          "description": "Umožní, aby byl aktivní bod viditelný, když se myš pohybuje v oblasti."
                         },
                         {
-                          "label": "Set the hotspot be tabbable",
-                          "description": "Will allow hotspot to be tabbable. Can be used for accessibilty."
+                          "label": "Nastavte aktivní bod tak, aby byl dostupný pomocí TAB",
+                          "description": "Umožní, aby byl aktivní bod dostupný pomocí TAB. Lze použít pro bezbariérovost."
                         },
                         {
-                          "label": "Show as open content in the scene",
-                          "description": "Allows the content to be shown in an open dialog box directly in the scene."
+                          "label": "Zobrazit jako otevřený obsah ve scéně",
+                          "description": "Umožňuje zobrazení obsahu v otevřeném dialogovém okně přímo ve scéně."
                         },
                         {
                           "default": "256,128",
-                          "label": "Values for storing the height and width for hotspot"
+                          "label": "Hodnoty pro uložení výšky a šířky aktivního bodu"
                         },
                         {
-                          "label": "Code for the interaction",
-                          "description": "If not empty, the user has to input the code in order to open this content."
+                          "label": "Kód pro interakci",
+                          "description": "Pokud není prázdný, uživatel musí zadat kód, aby mohl tento obsah otevřít. Více správných kódů oddělte pomocí /."
                         },
                         {
-                          "label": "A hint for the interaction code",
-                          "description": "An optional hint for the code, can be left empty if wanted"
+                          "label": "Nápověda pro kód interakce",
+                          "description": "Volitelná nápověda ke kódu, pokud chcete, může být ponechána prázdná"
                         }
                       ]
                     },
                     {},
                     {},
                     {
-                      "label": "Button style",
-                      "description": "Decide how the icon should look.",
+                      "label": "Styl tlačítka",
+                      "description": "Rozhodnout, jak má ikona vypadat.",
                       "options": [
                         {
-                          "label": "Text icon"
+                          "label": "Text ikony"
                         },
                         {
-                          "label": "Info icon"
+                          "label": "Informační ikona"
                         }
                       ]
                     }
@@ -157,14 +157,14 @@
                 ]
               },
               {
-                "label": "Audio type",
-                "description": "Decide what audio type this scene will use, either use an audio track or choose an existing audio playlist.",
+                "label": "Typ zvuku",
+                "description": "Rozhodněte, jaký typ zvuku bude tato scéna používat, buď použijte zvukovou stopu, nebo vyberte existující seznam zvukových stop.",
                 "options": [
                   {
-                    "label": "Audio Track"
+                    "label": "Zvuková stopa"
                   },
                   {
-                    "label": "Playlist"
+                    "label": "Seznam skladeb"
                   }
                 ]
               },
@@ -173,11 +173,11 @@
                 "description": "Přidat zvukovou stopu, která je specifická pro tuto scénu."
               },
               {
-                "label": "Playlist",
-                "description": "Here you can pick an existing playlist as audio."
+                "label": "Seznam skladeb",
+                "description": "Zde můžete vybrat existující seznam skladeb jako zvuk."
               },
               {
-                "label": "Restart audio when scene is reopened"
+                "label": "Po opětovném otevření scény restartujte zvuk"
               }
             ]
           }
@@ -187,30 +187,29 @@
           "label": "Zvuková stopa"
         },
         {
-          "label": "Playlists",
+          "label": "Seznam skladeb",
           "field": {
             "fields": [
               {
-                "label": "Playlist Title",
-                "description": "Used to identify the playlist"
+                "label": "Nadpis seznamu skladeb",
+                "description": "Používá se k identifikaci seznamu skladeb"
               },
               {
-                "label": "Audio Tracks",
-                "description": "Add audio tracks to the playlist."
-              },
-              {}
+                "label": "Zvukové stopy",
+                "description": "Přidejte zvukové stopy do seznamu stop."
+              }
             ]
           }
         }
       ]
     },
     {
-      "label": "Playlists",
-      "description": "These options will let you add playlists for the scenes.",
+      "label": "Seznam skladeb",
+      "description": "Tyto možnosti vám umožní přidat seznamy stop pro scény.",
       "fields": [
         {
-          "label": "Added playlists",
-          "description": "Make playlists that's available for all scenes by default."
+          "label": "Přidány seznamy skladeb",
+          "description": "Vytvořte seznamy stop, které jsou ve výchozím nastavení dostupné pro všechny scény."
         }
       ]
     },
@@ -219,14 +218,14 @@
       "description": "Tyto možnosti vám umožní řídit, jak se budou scény chovat.",
       "fields": [
         {
-          "label": "Audio type",
-          "description": "Decide what audio type this scene will use, either use an audio track or choose an existing audio playlist.",
+          "label": "Typ zvuku",
+          "description": "Rozhodněte, jaký typ zvuku bude tato scéna používat, buď použijte zvukovou stopu, nebo vyberte existující seznam zvukových stop.",
           "options": [
             {
-              "label": "Global Audio"
+              "label": "Globální zvuk"
             },
             {
-              "label": "Playlist"
+              "label": "Seznam skladeb"
             }
           ]
         },
@@ -235,16 +234,16 @@
           "description": "Přidejte zvukovou stopu, která je ve výchozím nastavení dostupná pro všechny scény."
         },
         {
-          "label": "Playlist",
-          "description": "Here you can pick an existing playlist as audio."
+          "label": "Seznam skladeb",
+          "description": "Zde můžete vybrat existující seznam skladeb jako zvuk."
         },
         {
-          "label": "Display \"Scores\" button",
-          "description": "Display button for showing the scores from assignments."
+          "label": "Zobrazit tlačítko \"Skóre\"",
+          "description": "Tlačítko pro zobrazení skóre z úkolů."
         },
         {
-          "label": "Display \"Home\" button",
-          "description": "Display button for going to start scene."
+          "label": "Zobrazit tlačítko \"Domů\"",
+          "description": "Tlačítko pro spuštění scény."
         },
         {
           "label": "Kvalita vykreslování scén",
@@ -334,108 +333,108 @@
           "default": "Bez obsahu"
         },
         {
-          "label": "Label for context menu button for go to scene",
-          "default": "Go to scene"
+          "label": "Označení tlačítka kontextové nabídky pro přechod na scénu",
+          "default": "Přejít na scénu"
         },
         {
-          "label": "Label for context menu button for edit",
-          "default": "Edit"
+          "label": "Popisek pro tlačítko kontextové nabídky pro úpravy",
+          "default": "Upravit"
         },
         {
-          "label": "Label for context menu button for delete",
-          "default": "Delete"
+          "label": "Popisek pro tlačítko kontextové nabídky pro smazání",
+          "default": "Zrušit"
         },
         {
-          "label": "Translation for \"Score\"",
-          "default": "Score"
+          "label": "Překlad pro \"skóre\"",
+          "default": "Skóre"
         },
         {
-          "label": "Translation for \"Assignment\"",
-          "default": "Assignment"
+          "label": "Překlad pro \"Úkol\"",
+          "default": "Úkol"
         },
         {
-          "label": "Translation for \"Total\"",
-          "default": "Total"
+          "label": "Překlad pro \"Celkem\"",
+          "default": "Celkem"
         },
         {
-          "label": "Translation for \"Total Score\"",
-          "default": "Total Score"
+          "label": "Překlad pro \"Celkové skóre\"",
+          "default": "Celkové skóre"
         },
         {
-          "label": "Label for button to show score summary",
-          "default": "Show Score Summary"
+          "label": "Označení tlačítka pro zobrazení souhrnu skóre",
+          "default": "Zobrazit souhrn skóre"
         },
         {
-          "label": "Translation for 'Scene'",
-          "default": "Scene"
+          "label": "Překlad pro \"Scéna\"",
+          "default": "Scéna"
         },
         {
-          "label": "Untitled",
-          "default": "Untitled"
+          "label": "Nepojmenované",
+          "default": "Nepojmenované"
         },
         {
-          "label": "Go to start scene",
-          "default": "Go to start scene"
+          "label": "Přejít na úvodní scénu",
+          "default": "Přejít na úvodní scénu"
         },
         {
-          "label": "You are at the start scene",
-          "default": "You are at the start scene"
+          "label": "Jste na úvodní scéně",
+          "default": "Jste na úvodní scéně"
         },
         {
-          "label": "Unlocked",
-          "default": "Unlocked"
+          "label": "Odemčeno",
+          "default": "Odemčeno"
         },
         {
-          "label": "Locked",
-          "default": "Locked"
+          "label": "Zamčeno",
+          "default": "Zamčeno"
         },
         {
-          "label": "Search the room until you find the code",
-          "default": "Search the room until you find the code"
+          "label": "Prohledejte místnost, dokud nenajdete kód",
+          "default": "Prohledejte místnost, dokud nenajdete kód"
         },
         {
-          "label": "The code was wrong, try again.",
-          "default": "The code was wrong, try again."
+          "label": "Kód byl chybný, zkuste to znovu.",
+          "default": "Kód byl chybný, zkuste to znovu."
         },
         {
-          "label": "The content has been unlocked!",
-          "default": "The content has been unlocked!"
+          "label": "Obsah byl odemčen!",
+          "default": "Obsah byl odemčen!"
         },
         {
-          "label": "Code",
-          "default": "Code"
+          "label": "Kód",
+          "default": "Kód"
         },
         {
-          "label": "Show code",
-          "default": "Show code"
+          "label": "Zobrazit kód",
+          "default": "Zobrazit kód"
         },
         {
-          "label": "Hide code",
-          "default": "Hide code"
+          "label": "Skrýt kód",
+          "default": "Skrýt kód"
         },
         {
-          "label": "Unlocked interaction action (Continue)",
-          "default": "Continue"
+          "label": "Akce odemčené interakce (Pokračovat)",
+          "default": "Pokračovat"
         },
         {
-          "label": "Locked interaction action (Unlock)",
-          "default": "Unlock"
+          "label": "Akce uzamčené interakce (Odemknout)",
+          "default": "Odemknout"
         },
         {
-          "label": "Drag horizontally to scale (for screen readers)",
-          "default": "Drag horizontally to scale"
+          "label": "Přetažením vodorovně změníte měřítko (pro čtečky obrazovky)",
+          "default": "Přetažením vodorovně upravte měřítko"
         },
         {
-          "label": "Drag vertically to scale (for screen readers)",
-          "default": "Drag vertically to scale"
+          "label": "Přetažením svisle změníte měřítko (pro čtečky obrazovky)",
+          "default": "Přetažením svisle změníte měřítko"
         },
         {
-          "label": "Hint",
-          "default": "Hint"
+          "label": "Tip",
+          "default": "Tip"
         },
         {
-          "label": "Locked content",
-          "default": "Locked content"
+          "label": "Uzamčený obsah",
+          "default": "Uzamčený obsah"
         }
       ]
     }
