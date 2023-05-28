@@ -42,18 +42,18 @@ jobs:
           cd dist
           ls
           npm install -g h5p
-          h5p pack -r h5p-three-image h5p-three-image.h5p
-          h5p validate h5p-three-image.h5p
+          h5p pack -r h5p-ndla-three-image h5p-ndla-three-image.h5p
+          h5p validate h5p-ndla-three-image.h5p
       - name: Archive code coverage results
         uses: actions/upload-artifact@v3
         with:
-          name: h5p-three-image.h5p
-          path: dist/h5p-three-image.h5p
+          name: h5p-ndla-three-image.h5p
+          path: dist/h5p-ndla-three-image.h5p
       - name: Load library.json
         id: set_library
         run: |
           ls
-          JSON=$(cat ./h5p-three-image/library.json)
+          JSON=$(cat ./h5p-ndla-three-image/library.json)
           JSON="${JSON//'%'/%25}"
           JSON="${JSON//$'\n'/%0A}"
           JSON="${JSON//$'\r'/%0D}"
@@ -73,4 +73,4 @@ jobs:
             }}
           prerelease: false
           files: |
-            dist/h5p-three-image.h5p
+            dist/h5p-ndla-three-image.h5p
