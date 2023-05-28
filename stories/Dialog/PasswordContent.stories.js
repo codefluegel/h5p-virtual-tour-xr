@@ -1,4 +1,4 @@
-// @ts-check
+
 import React from "react";
 import { defaultAppContext } from "../../.storybook/config/contexts";
 import PasswordContent from "../../scripts/components/Dialog/PasswordContent";

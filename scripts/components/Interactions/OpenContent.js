@@ -1,5 +1,3 @@
-// @ts-check
-
 import React, { useCallback, useEffect, useRef } from 'react';
 import './OpenContent.scss';
 import { H5PContext } from '../../context/H5PContext';

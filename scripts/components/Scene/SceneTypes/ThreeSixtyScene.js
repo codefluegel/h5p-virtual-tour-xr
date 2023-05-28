@@ -1,11 +1,8 @@
-// @ts-check
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import NavigationButton, { getIconFromInteraction, getLabelFromInteraction } from '../../Interactions/NavigationButton';
 import { H5PContext } from '../../../context/H5PContext';
 import ContextMenu from '../../Shared/ContextMenu';
-// @ts-expect-error
 import loading from '../../../assets/loading.svg';
 import './ThreeSixtyScene.scss';
 import OpenContent from '../../Interactions/OpenContent';
@@ -72,7 +69,6 @@ export default class ThreeSixtyScene extends React.Component {
    * @param {HTMLElement} element
    */
   initializePointerLock(element) {
-    // @ts-expect-error mozRequestPointerLock is not standardized
     element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock;
     if (!element.requestPointerLock) {
       return;
@@ -571,7 +567,6 @@ export default class ThreeSixtyScene extends React.Component {
     }
     else {
       document.exitPointerLock = document.exitPointerLock
-        // @ts-expect-error
         || document.mozExitPointerLock;
       if (document.exitPointerLock) {
         if (this.state.pointerLockElement) {
@@ -609,7 +604,6 @@ export default class ThreeSixtyScene extends React.Component {
       }
       // Check if the scene that interactions point to has changed icon type
       // This is only relevant when changing the icon using the H5P editor
-      // @ts-ignore
       else if (window.H5PEditor && this.props.sceneParams.interactions) {
         shouldUpdateInteractionHotspots = this.props.sceneParams.interactions.some((interaction) => {
           const library = H5P.libraryFromString(interaction.action.library);
