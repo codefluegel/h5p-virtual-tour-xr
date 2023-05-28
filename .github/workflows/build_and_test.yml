@@ -9,13 +9,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          path: h5p-three-image
+          path: h5p-ndla-three-image
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "16.X"
       - run: |
-          cd h5p-three-image
+          cd h5p-ndla-three-image
           npm ci
           npm run build
 
@@ -27,13 +27,13 @@ jobs:
           mkdir -p dist
           cd dist
 
-          while read -r repo; do git clone ${repo}; done < ../h5p-three-image/build_info/repos
+          while read -r repo; do git clone ${repo}; done < ../h5p-ndla-three-image/build_info/repos
 
           if [ -d "h5p-editor-audio-recorder" ]; then pushd h5p-editor-audio-recorder && npm ci && npm run build; popd; fi
 
           if [ -d "h5p-editor-ndla-virtual-tour" ]; then pushd h5p-editor-ndla-virtual-tour && npm ci && npm run build; popd; fi
 
-          cp -r ../h5p-three-image .
+          cp -r ../h5p-ndla-three-image .
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
