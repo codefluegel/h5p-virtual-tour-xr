@@ -15,7 +15,7 @@
                     "label": "360 irudia"
                   },
                   {
-                    "label": "Panoramic image"
+                    "label": "Irudi panoramikoa"
                   },
                   {
                     "label": "Irudi estatikoa"
@@ -39,7 +39,7 @@
                 "description": "Erabiltzaileari eszena deskribatzen dion testua"
               },
               {
-                "label": "Scene description (for screen readers)",
+                "label": "Eszenaren deskribapena (pantaila-irakurleentzat)",
                 "description": "A text that can describe the scene for the end-user. It will not be visible but read by screen readers, so formatting will be ignored."
               },
               {
@@ -98,46 +98,46 @@
                           ]
                         },
                         {
-                          "label": "Show as hotspot",
-                          "description": "Allows for adding interaction areas to the background image that can be custom size."
+                          "label": "Erakutsi puntu bero gisa",
+                          "description": "Atzeko irudiari interakzio-eremuak gehitzeko aukera ematen du. Haien tamaina pertsonalizatu daiteke."
                         },
                         {
-                          "label": "Show hotspot when mouse is hovering",
-                          "description": "Will allow hotspot to be visible when mouse is hovering the area."
+                          "label": "Erakutsi puntu beroa sagua gainetik pasatzean",
+                          "description": "Puntu beroa ikusgai egongo da sagua eremuaren gainetik pasatzean."
                         },
                         {
-                          "label": "Set the hotspot be tabbable",
-                          "description": "Will allow hotspot to be tabbable. Can be used for accessibilty."
+                          "label": "Ezarri puntu beroa tabulagarria izan dadin",
+                          "description": "Puntu beroa tabulatzeko aukera emango du. Irisgarritasunerako erabil daiteke."
                         },
                         {
-                          "label": "Show as open content in the scene",
-                          "description": "Allows the content to be shown in an open dialog box directly in the scene."
+                          "label": "Erakutsi eszenan eduki ireki gisa",
+                          "description": "Edukia irekita dagoen elkarrizketa-koadroan zuzenean eszenan erakusteko aukera ematen du."
                         },
                         {
                           "default": "256,128",
-                          "label": "Values for storing the height and width for hotspot"
+                          "label": "Puntu beroaren altuera eta zabalera gordetzeko balioak"
                         },
                         {
-                          "label": "Code for the interaction",
+                          "label": "Elkarrekintzarako kodea",
                           "description": "If not empty, the user has to input the code in order to open this content."
                         },
                         {
-                          "label": "A hint for the interaction code",
-                          "description": "An optional hint for the code, can be left empty if wanted"
+                          "label": "Interakzio-kodearen aholkua",
+                          "description": "Koderako aukerako aholku bat, nahi izanez gero hutsik utz daiteke"
                         }
                       ]
                     },
                     {},
                     {},
                     {
-                      "label": "Button style",
-                      "description": "Decide how the icon should look.",
+                      "label": "Botoiaren estiloa",
+                      "description": "Erabaki ikonoa nola ikusi behar den.",
                       "options": [
                         {
-                          "label": "Text icon"
+                          "label": "Testuaren ikonoa"
                         },
                         {
-                          "label": "Info icon"
+                          "label": "Informazioaren ikonoa"
                         }
                       ]
                     }
@@ -161,10 +161,10 @@
                 "description": "Decide what audio type this scene will use, either use an audio track or choose an existing audio playlist.",
                 "options": [
                   {
-                    "label": "Audio Track"
+                    "label": "Audio pista"
                   },
                   {
-                    "label": "Playlist"
+                    "label": "Erreprodukzio zerrenda"
                   }
                 ]
               },
@@ -174,10 +174,10 @@
               },
               {
                 "label": "Playlist",
-                "description": "Here you can pick an existing playlist as audio."
+                "description": "Hemen lehendik dagoen erreprodukzio-zerrenda bat hauta dezakezu audio gisa."
               },
               {
-                "label": "Restart audio when scene is reopened"
+                "label": "Berrabiarazi audioa eszena berriro irekitzen denean"
               }
             ]
           }
@@ -197,8 +197,7 @@
               {
                 "label": "Audio Tracks",
                 "description": "Add audio tracks to the playlist."
-              },
-              {}
+              }
             ]
           }
         }
@@ -434,8 +433,8 @@
           "default": "Hint"
         },
         {
-          "label": "Locked content",
-          "default": "Locked content"
+          "label": "Blokeatutako edukia",
+          "default": "Blokeatutako edukia"
         }
       ]
     }
