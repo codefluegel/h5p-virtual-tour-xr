@@ -1,17 +1,25 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-var config = {
+const mode = process.argv.includes('--mode=production') ?
+  'production' :
+  'development';
+const libraryName = process.env.npm_package_name;
+
+module.exports = {
+  mode: mode,
   entry: {
     dist: './scripts/app.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'h5p-three-image.js'
+    filename: `${libraryName}.js`,
+    clean: true
   },
+  target: ['browserslist'],
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'h5p-three-image.css'
+      filename: `${libraryName}.css`
     })
   ],
   module: {
@@ -47,13 +55,9 @@ var config = {
         type: 'asset/resource'
       }
     ]
-  }
-};
-
-module.exports = (env, argv) => {
-  if (argv.mode === 'development') {
-    config.devtool = 'inline-source-map';
-  }
-
-  return config;
+  },
+  stats: {
+    colors: true
+  },
+  ...(mode !== 'production' && { devtool: 'eval-cheap-module-source-map' })
 };

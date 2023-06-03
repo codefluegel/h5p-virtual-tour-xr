@@ -1,5 +1,3 @@
-// @ts-check
-
 import React from 'react';
 import './NavigationButton.scss';
 import { H5PContext } from '../../context/H5PContext';

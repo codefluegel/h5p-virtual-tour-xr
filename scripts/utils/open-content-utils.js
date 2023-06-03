@@ -1,5 +1,3 @@
-// @ts-check
-
 /**
  * @param {number} clientX
  * @param {number} clientY
