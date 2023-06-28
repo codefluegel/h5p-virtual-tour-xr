@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import NavigationButton, { getIconFromInteraction, getLabelFromInteraction } from '../../Interactions/NavigationButton';
 import { H5PContext } from '../../../context/H5PContext';
 import ContextMenu from '../../Shared/ContextMenu';
-import loading from '../../../assets/loading.svg';
 import './ThreeSixtyScene.scss';
 import OpenContent from '../../Interactions/OpenContent';
 import { renderIn3d } from '../../../utils/utils';
@@ -646,7 +645,7 @@ export default class ThreeSixtyScene extends React.Component {
           <div className='loading-overlay'>
             <div className='loading-wrapper'>
               <div className='loading-image-wrapper'>
-                <img src={loading} alt='loading' />
+                <div className='loading-image'></div>
               </div>
               <div className='loader' dangerouslySetInnerHTML={{ __html: this.context.l10n.backgroundLoading }}></div>
             </div>
