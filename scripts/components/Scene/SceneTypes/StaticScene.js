@@ -1,5 +1,3 @@
-// @ts-check
-
 import React from 'react';
 import './StaticScene.scss';
 import NavigationButton, { getIconFromInteraction, getLabelFromInteraction, Icons } from '../../Interactions/NavigationButton';

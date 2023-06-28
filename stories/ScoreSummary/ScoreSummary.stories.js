@@ -1,4 +1,4 @@
-// @ts-check
+
 import React from "react";
 import { defaultAppContext } from "../../.storybook/config/contexts";
 import ScoreSummary from "../../scripts/components/Dialog/ScoreSummary";

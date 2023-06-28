@@ -1,13 +1,7 @@
 {
-  "globals": {
-    "H5P": true,
-    "H5PIntegration": true,
-    "H5PEditor": true
-  },
   "env": {
-    "es6": true,
+    "es2020": true,
     "browser": true,
-    "mocha": true,
     "node": true
   },
   "extends": [
@@ -28,8 +22,6 @@
     "react"
   ],
   "rules": {
-    "valid-jsdoc": "off",
-    "no-restricted-globals": [2, "event"],
     "react/prop-types": 0
   }
 }

@@ -1,4 +1,3 @@
-import 'core-js/stable';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Main from './components/Main';
@@ -8,8 +7,6 @@ import he from 'he';
 import striptags from 'striptags';
 
 // Load library
-H5P = H5P || {};
-
 H5P.NDLAThreeImage = (function () {
 
   function Wrapper(params, contentId, extras) {
