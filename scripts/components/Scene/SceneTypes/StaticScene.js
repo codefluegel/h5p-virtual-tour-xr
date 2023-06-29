@@ -282,14 +282,19 @@ export default class StaticScene extends React.Component {
 
     this.focusScene();
 
-    this.context.on('resize', () => {
+    const setStatisSceneSize = () => {
       staticSceneWidth = imageElement.clientWidth;
       staticSceneHeight = imageElement.clientHeight;
 
       this.setState({
         isVerticalImage: ratio < this.context.getRatio(),
       });
+    };
+
+    this.context.on('resize', () => {
+      setStatisSceneSize();
     });
+    setStatisSceneSize();
   }
 
   /**
