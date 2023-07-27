@@ -108,7 +108,7 @@ export default class ThreeSixtyScene extends React.Component {
     /** @type {HTMLElement} */
     const target = event.data.target;
 
-    if (target) {
+    if (target && !this.context.extras.isEditor) {
       /*
        * Prevent scene dragging if click on label or regular button.
        * Will throw off panorama display otherwise
