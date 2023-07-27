@@ -16,3 +16,4 @@ webpack.config.js
 build_info
 storybook-static
 assets
+LICENSE.md
