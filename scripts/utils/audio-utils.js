@@ -96,7 +96,7 @@ export const createAudioPlayer = (
  * @return {boolean}
  */
 export const isInteractionAudio = (id) => {
-  return id && id.substr(0, 12) === 'interaction-';
+  return id?.indexOf('interaction-') === 0;
 };
 
 /**
@@ -106,7 +106,7 @@ export const isInteractionAudio = (id) => {
  * @return {boolean}
  */
 export const isVideoAudio = (id) => {
-  return id && id.substr(0, 6) === 'video-';
+  return id?.indexOf('video-') === 0;
 };
 
 /**
@@ -116,7 +116,7 @@ export const isVideoAudio = (id) => {
  * @return {boolean}
  */
 export const isPlaylistAudio = (id) => {
-  return id && (id === 'global' || id.substr(0, 9) === 'playlist-');
+  return id === 'global' || id?.indexOf('playlist-') === 0;
 };
 
 /**
@@ -126,7 +126,7 @@ export const isPlaylistAudio = (id) => {
  * @return {boolean}
  */
 export const isSceneAudio = (id) => {
-  return id && (id === 'global' || id.substr(0, 6) === 'scene-');
+  return id?.indexOf('scene-') === 0;
 };
 
 export const playerIsFading = (player) => player.volume > 0 && player.volume < 1;
