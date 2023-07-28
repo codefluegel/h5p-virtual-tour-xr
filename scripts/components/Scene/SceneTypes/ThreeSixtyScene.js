@@ -105,30 +105,12 @@ export default class ThreeSixtyScene extends React.Component {
    * @param {H5PEvent} event
    */
   handleSceneMoveStart = (event) => {
-    /** @type {HTMLElement} */
-    const target = event.data.target;
-
-    if (target && !this.context.extras.isEditor) {
-      /*
-       * Prevent scene dragging if click on label or regular button.
-       * Will throw off panorama display otherwise
-       */
-      const isNavLabel = !!target.closest('.nav-label');
-      const isRegularNavButton =
-        !!target.closest('.nav-button') &&
-        !target.closest('.nav-button').classList.contains('nav-button-hotspot');
-
-      // Don't move when dragging context menu or context menu children
-      if (isNavLabel || isRegularNavButton) {
-        event.defaultPrevented = true;
-        return false;
-      }
-    }
-
     if (!this.context.extras.isEditor || event.data.isCamera) {
       return;
     }
 
+    /** @type {HTMLElement} */
+    const target = event.data.target;
     if (target) {
       const isOrIsInContextMenu = !!target.closest('.context-menu');
 
