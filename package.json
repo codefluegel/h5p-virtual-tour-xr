@@ -1,6 +1,10 @@
 {
   "name": "h5p-ndla-three-image",
+<<<<<<< HEAD
   "version": "0.4.105",
+=======
+  "version": "0.5.0",
+>>>>>>> b680721 (Move hotspot settings in semantics)
   "description": "Create 360 image content",
   "main": "index.js",
   "scripts": {

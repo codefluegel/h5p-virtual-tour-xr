@@ -458,7 +458,7 @@ export default class Main extends React.Component {
     const machineName = library.machineName;
 
     //Check if it has password and is unlocked
-    if (interaction.label && interaction.label.interactionPassword && !interaction.unlocked) {
+    if (interaction.passwordSettings?.interactionPassword && !interaction.unlocked) {
       this.setState({
         showingInteraction: true,
         currentInteraction: interactionIndex,
@@ -597,7 +597,7 @@ export default class Main extends React.Component {
    */
   handlePassword(inputPassword) {
     const interaction = this.getInteractionFromCurrentScene(this.state.currentInteraction);
-    const passwords = interaction.label.interactionPassword.toLowerCase().split('/');
+    const passwords = interaction.passwordSettings.interactionPassword.toLowerCase().split('/');
     const isCorrectPassword = passwords.includes(inputPassword.toLowerCase());
     interaction.unlocked = interaction.unlocked || isCorrectPassword;
 
@@ -753,7 +753,7 @@ export default class Main extends React.Component {
               currentInteractionIndex={this.state.currentInteraction}
               currentInteraction={currentInteraction}
               isInteractionUnlocked={currentInteraction.unlocked}
-              hint={currentInteraction.label.interactionPasswordHint}
+              hint={currentInteraction.passwordSettings.interactionPasswordHint}
               updateEscapeScoreCard={this.updateEscapeScoreCard.bind(this)}
             />
           </Dialog>

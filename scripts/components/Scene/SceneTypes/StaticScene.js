@@ -443,7 +443,7 @@ export default class StaticScene extends React.Component {
               const key = interaction.id || `interaction-${this.props.sceneId}${index}`;
 
               return (
-                interaction.label.showAsOpenSceneContent ?
+                interaction.showAsOpenSceneContent ?
                   <OpenContent
                     key={key}
                     staticScene={true}
@@ -491,11 +491,11 @@ export default class StaticScene extends React.Component {
                     // That is not correct when moving to a new scene without resizing
                     wrapperHeight={this.overLayRef.current ? this.overLayRef.current.clientHeight : 0}
                     staticScene={true}
-                    showAsHotspot={interaction.label.showAsHotspot}
+                    showAsHotspot={interaction.showAsHotspot}
                     sceneId = {this.props.sceneId}
                     interactionIndex = {index}
-                    isHotspotTabbable={interaction.label.isHotspotTabbable}
-                    showHotspotOnHover={interaction.label.showHotspotOnHover}
+                    isHotspotTabbable={interaction.hotspotSettings?.isHotspotTabbable}
+                    showHotspotOnHover={interaction.hotspotSettings?.showHotspotOnHover}
                   >
                     {
                       this.context.extras.isEditor &&

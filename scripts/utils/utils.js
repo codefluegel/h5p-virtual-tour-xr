@@ -7,7 +7,7 @@ import he from 'he';
  * @return {boolean}
  */
 export function renderIn3d(interaction) {
-  return interaction.label && interaction.label.showAsHotspot;
+  return  interaction.showAsHotspot; // TODO: Does this make sense?
 }
 
 /**

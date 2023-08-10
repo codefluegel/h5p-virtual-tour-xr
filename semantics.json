@@ -124,7 +124,7 @@
                   {
                     "name": "label",
                     "type": "group",
-                    "label": "Label Settings",
+                    "label": "Label settings",
                     "importance": "low",
                     "fields": [
                       {
@@ -176,70 +176,15 @@
                           }
                         ],
                         "default": "inherit"
-                      },
-                      {
-                        "name": "showAsHotspot",
-                        "type": "boolean",
-                        "label": "Show as hotspot",
-                        "description": "Allows for adding interaction areas to the background image that can be custom size.",
-                        "optional": true
-                      },
-                      {
-                        "name": "showHotspotOnHover",
-                        "type": "boolean",
-                        "label": "Show hotspot when mouse is hovering",
-                        "description": "Will allow hotspot to be visible when mouse is hovering the area.",
-                        "optional": true,
-                        "widget": "showWhen",
-                        "showWhen": {
-                          "rules": [
-                            {
-                              "field": "showAsHotspot",
-                              "equals": true
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "name": "isHotspotTabbable",
-                        "type": "boolean",
-                        "label": "Set the hotspot be tabbable",
-                        "description": "Will allow hotspot to be tabbable. Can be used for accessibilty.",
-                        "optional": true,
-                        "widget": "showWhen",
-                        "showWhen": {
-                          "rules": [
-                            {
-                              "field": "showAsHotspot",
-                              "equals": true
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "name": "showAsOpenSceneContent",
-                        "type": "boolean",
-                        "label": "Show as open content in the scene",
-                        "description": "Allows the content to be shown in an open dialog box directly in the scene.",
-                        "optional": true,
-                        "widget": "showWhen",
-                        "showWhen": {
-                          "rules": [
-                            {
-                              "field": "showAsHotspot",
-                              "equals": false
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "name": "hotSpotSizeValues",
-                        "type": "text",
-                        "default": "256,128",
-                        "label": "Values for storing the height and width for hotspot",
-                        "optional": true,
-                        "widget": "none"
-                      },
+                      }
+                    ]
+                  },
+                  {
+                    "name": "passwordSettings",
+                    "type": "group",
+                    "label": "Password settings",
+                    "importance": "low",
+                    "fields": [
                       {
                         "name": "interactionPassword",
                         "type": "text",
@@ -261,6 +206,68 @@
                         ]
                       }
                     ]
+                  },
+                  {
+                    "name": "showAsHotspot",
+                    "type": "boolean",
+                    "label": "Show as hotspot",
+                    "description": "Allows for adding interaction areas to the background image that can be custom size.",
+                    "optional": true
+                  },
+                  {
+                    "type": "group",
+                    "name": "hotspotSettings",
+                    "label": "Hotspot settings",
+                    "importance": "low",
+                    "widget": "showWhen",
+                    "showWhen": {
+                      "rules": [
+                        {
+                          "field": "showAsHotspot",
+                          "equals": true
+                        }
+                      ]
+                    },
+                    "fields": [
+                      {
+                        "name": "showHotspotOnHover",
+                        "type": "boolean",
+                        "label": "Show hotspot when mouse is hovering",
+                        "description": "Will allow hotspot to be visible when mouse is hovering the area.",
+                        "optional": true
+                      },
+                      {
+                        "name": "isHotspotTabbable",
+                        "type": "boolean",
+                        "label": "Set the hotspot be tabbable",
+                        "description": "Will allow hotspot to be tabbable. Can be used for accessibilty.",
+                        "optional": true
+                      },
+                      {
+                        "name": "hotSpotSizeValues",
+                        "type": "text",
+                        "default": "256,128",
+                        "label": "Values for storing the height and width for hotspot",
+                        "optional": true,
+                        "widget": "none"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "showAsOpenSceneContent",
+                    "type": "boolean",
+                    "label": "Show as open content in the scene",
+                    "description": "Allows the content to be shown in an open dialog box directly in the scene.",
+                    "optional": true,
+                    "widget": "showWhen",
+                    "showWhen": {
+                      "rules": [
+                        {
+                          "field": "showAsHotspot",
+                          "equals": false
+                        }
+                      ]
+                    }
                   },
                   {
                     "name": "action",

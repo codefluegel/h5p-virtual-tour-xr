@@ -43,10 +43,12 @@ const isInfoInteraction = (machineName) => {
  * @returns {string}
  */
 export const getIconFromInteraction = (interaction, scenes) => {
+  interaction.hotspotSettings = interaction.hotspotSettings ?? {};
+
   const library = interaction.action.library;
   const machineName = H5P.libraryFromString(library).machineName;
   let icon = '';
-  if (interaction.label && interaction.label.interactionPassword && !interaction.unlocked) {
+  if (interaction.passwordSettings?.interactionPassword && !interaction.unlocked) {
     icon = Icons.LOCK;
   }
   else if (machineName === 'H5P.GoToScene') {
@@ -398,14 +400,15 @@ export default class NavigationButton extends React.Component {
       (/** @type {SceneParams} */ scene) => scene.sceneId === this.props.sceneId,
     );
     const interaction = scene.interactions[this.props.interactionIndex];
-    interaction.label.hotSpotSizeValues = widthX + ',' + heightY;
+    interaction.hotspotSettings.hotSpotSizeValues = widthX + ',' + heightY;
   }
 
   getHotspotValues() {
     const interaction = this.getCurrentInteraction();
 
-    return interaction.label.hotSpotSizeValues ?
-      interaction.label.hotSpotSizeValues.split(',') : [256, 128];
+    return interaction.hotspotSettings.hotSpotSizeValues ?
+      interaction.hotspotSettings.hotSpotSizeValues.split(',') :
+      [256, 128];
   }
 
   /**
@@ -494,13 +497,17 @@ export default class NavigationButton extends React.Component {
       width = parseFloat(this.getHotspotValues()[0].toString());
       height = parseFloat(this.getHotspotValues()[1].toString());
 
-
       // Change default size if static scene
       if (width === 256 && height === 128) {
         width = 25;
         height = 25;
         this.setHotspotValues(width, height);
       }
+    }
+
+    const foo = getLabelText(label);
+    if (foo === 'TV') {
+      console.log(this.props.showAsHotspot, this.navButton);
     }
 
     return (

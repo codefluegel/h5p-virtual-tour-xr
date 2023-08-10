@@ -387,7 +387,7 @@ export default class ThreeSixtyScene extends React.Component {
     const is3d = renderIn3d(interaction);
 
     const component = (
-      interaction.label?.showAsOpenSceneContent ?
+      interaction.showAsOpenSceneContent ?
         <OpenContent
           key={key}
           mouseDownHandler={null}
@@ -448,9 +448,9 @@ export default class ThreeSixtyScene extends React.Component {
           onBlur={this.props.onBlurInteraction}
           isFocused={this.props.focusedInteraction === index}
           rendered={this.state.isUpdated}
-          showAsHotspot={interaction.label.showAsHotspot}
-          showHotspotOnHover={interaction.label.showHotspotOnHover}
-          isHotspotTabbable={interaction.label.isHotspotTabbable}
+          showAsHotspot={interaction.showAsHotspot}
+          showHotspotOnHover={interaction.hotspotSettings?.showHotspotOnHover}
+          isHotspotTabbable={interaction.hotspotSettings?.isHotspotTabbable}
           sceneId = {this.props.sceneId}
           interactionIndex = {index}
           is3d={is3d}

@@ -5,8 +5,13 @@
   "license": "MIT",
   "author": "Joubel AS",
   "majorVersion": 0,
+<<<<<<< HEAD
   "minorVersion": 4,
   "patchVersion": 106,
+=======
+  "minorVersion": 5,
+  "patchVersion": 0,
+>>>>>>> b680721 (Move hotspot settings in semantics)
   "runnable": 1,
   "fullscreen": 1,
   "embedTypes": [
@@ -37,7 +42,7 @@
     {
       "machineName": "H5PEditor.NDLAThreeImage",
       "majorVersion": 0,
-      "minorVersion": 4
+      "minorVersion": 5
     },
     {
       "machineName": "H5P.GoToScene",

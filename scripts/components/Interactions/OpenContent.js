@@ -159,8 +159,8 @@ export default class OpenContent extends React.Component {
     });
     const interaction = scene.interactions[this.props.interactionIndex];
 
-    return interaction.label.hotSpotSizeValues
-      ? interaction.label.hotSpotSizeValues.split(',')
+    return interaction.hotspotSettings?.hotSpotSizeValues
+      ? interaction.hotspotSettings?.hotSpotSizeValues.split(',')
       : [256, 128];
   }
 
@@ -173,7 +173,7 @@ export default class OpenContent extends React.Component {
       (/** @type {SceneParams} */ scene) => scene.sceneId === this.props.sceneId
     );
     const interaction = scene.interactions[this.props.interactionIndex];
-    interaction.label.hotSpotSizeValues = widthX + ',' + heightY;
+    interaction.hotspotSettings.hotSpotSizeValues = widthX + ',' + heightY;
   }
   toggleDrag = () => {
     const dragBool = !this.state.canDrag;
