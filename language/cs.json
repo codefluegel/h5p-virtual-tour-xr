@@ -197,7 +197,8 @@
               {
                 "label": "Zvukové stopy",
                 "description": "Přidejte zvukové stopy do seznamu stop."
-              }
+              },
+              {}
             ]
           }
         }
@@ -357,10 +358,6 @@
           "default": "Celkem"
         },
         {
-          "label": "Překlad pro \"Celkové skóre\"",
-          "default": "Celkové skóre"
-        },
-        {
           "label": "Označení tlačítka pro zobrazení souhrnu skóre",
           "default": "Zobrazit souhrn skóre"
         },
@@ -403,14 +400,6 @@
         {
           "label": "Kód",
           "default": "Kód"
-        },
-        {
-          "label": "Zobrazit kód",
-          "default": "Zobrazit kód"
-        },
-        {
-          "label": "Skrýt kód",
-          "default": "Skrýt kód"
         },
         {
           "label": "Akce odemčené interakce (Pokračovat)",

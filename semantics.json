@@ -707,13 +707,6 @@
         "default": "Total"
       },
       {
-        "name": "totalScore",
-        "type": "text",
-        "label": "Translation for \"Total Score\"",
-        "importance": "low",
-        "default": "Total Score"
-      },
-      {
         "name": "scoreSummary",
         "type": "text",
         "label": "Label for button to show score summary",
@@ -789,20 +782,6 @@
         "label": "Code",
         "importance": "low",
         "default": "Code"
-      },
-      {
-        "name": "showCode",
-        "type": "text",
-        "label": "Show code",
-        "importance": "low",
-        "default": "Show code"
-      },
-      {
-        "name": "hideCode",
-        "type": "text",
-        "label": "Hide code",
-        "importance": "low",
-        "default": "Hide code"
       },
       {
         "name": "unlockedStateAction",

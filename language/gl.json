@@ -35,8 +35,8 @@
                 "label": "Fondo da Escena"
               },
               {
-                "description": "Texto que pode describir a escena ao usuario",
-                "label": "Descrición da escena"
+                "label": "Descrición da escena",
+                "description": "Texto que pode describir a escena ao usuario"
               },
               {
                 "label": "Descrición da escena (para lectores de pantalla)",
@@ -59,6 +59,7 @@
                       "description": "Se o deixamos en branco, non se amosará ningunha etiqueta e intentarase amosar o campo do título para os lectores de pantalla"
                     },
                     {
+                      "label": "Configuración de Etiquetas",
                       "fields": [
                         {
                           "label": "Posición da etiqueta",
@@ -124,8 +125,7 @@
                           "label": "Unha pista para o código de interacción",
                           "description": "Unha pista opcional para o código, pódese deixar baleira se se quere"
                         }
-                      ],
-                      "label": "Configuración de Etiquetas"
+                      ]
                     },
                     {},
                     {},
@@ -197,7 +197,8 @@
               {
                 "label": "Pistas de son",
                 "description": "Engade pistas de son á lista de reprodución."
-              }
+              },
+              {}
             ]
           }
         }
@@ -357,10 +358,6 @@
           "default": "Total"
         },
         {
-          "label": "Tradución para \"Puntuación Total\"",
-          "default": "Puntuación Total"
-        },
-        {
           "label": "Etiqueta do botón para amosar o resumo da puntuación",
           "default": "Amosar resumo da puntuación"
         },
@@ -403,14 +400,6 @@
         {
           "label": "Código",
           "default": "Código"
-        },
-        {
-          "label": "Amosar código",
-          "default": "Amosar código"
-        },
-        {
-          "label": "Agochar código",
-          "default": "Agochar código"
         },
         {
           "label": "Acción de interacción desbloqueada (Continuar)",

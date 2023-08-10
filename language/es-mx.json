@@ -197,7 +197,8 @@
               {
                 "label": "Pistas de Audio",
                 "description": "Añadir pistas de audio a la lista de reproducción."
-              }
+              },
+              {}
             ]
           }
         }
@@ -357,10 +358,6 @@
           "default": "Total"
         },
         {
-          "label": "Traducción para \"Puntaje Total\"",
-          "default": "Puntaje Total"
-        },
-        {
           "label": "Etiqueta para botón para mostrar resumen de puntaje",
           "default": "Mostrar Resumen de Puntaje"
         },
@@ -403,14 +400,6 @@
         {
           "label": "Código",
           "default": "Código"
-        },
-        {
-          "label": "Mostrar código",
-          "default": "Mostrar código"
-        },
-        {
-          "label": "Ocultar código",
-          "default": "Ocultar código"
         },
         {
           "label": "Acción de interacción desbloqueada (Continuar)",

@@ -197,7 +197,8 @@
               {
                 "label": "Audio Tracks",
                 "description": "Add audio tracks to the playlist."
-              }
+              },
+              {}
             ]
           }
         }
@@ -357,10 +358,6 @@
           "default": "Total"
         },
         {
-          "label": "Translation for \"Total Score\"",
-          "default": "Total Score"
-        },
-        {
           "label": "Label for button to show score summary",
           "default": "Show Score Summary"
         },
@@ -403,14 +400,6 @@
         {
           "label": "Code",
           "default": "Code"
-        },
-        {
-          "label": "Show code",
-          "default": "Show code"
-        },
-        {
-          "label": "Hide code",
-          "default": "Hide code"
         },
         {
           "label": "Unlocked interaction action (Continue)",

@@ -197,7 +197,8 @@
               {
                 "label": "Lydspor",
                 "description": "Legg ett eller flere lydspor til i spillelisten."
-              }
+              },
+              {}
             ]
           }
         }
@@ -357,10 +358,6 @@
           "default": "Total"
         },
         {
-          "label": "Translation for \"Total Score\"",
-          "default": "Total Score"
-        },
-        {
           "label": "Label for button to show score summary",
           "default": "Show Score Summary"
         },
@@ -403,14 +400,6 @@
         {
           "label": "Kode",
           "default": "Kode"
-        },
-        {
-          "label": "Vis kode",
-          "default": "Vis kode"
-        },
-        {
-          "label": "Skjul kode",
-          "default": "Skjul kode"
         },
         {
           "label": "Handling når innholdet er ulåst (Fortsett)",
