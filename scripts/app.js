@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import Main from './components/Main';
 import { H5PContext } from './context/H5PContext';
 import { sceneRenderingQualityMapping } from './components/Scene/SceneTypes/ThreeSixtyScene';
@@ -93,7 +93,8 @@ H5P.NDLAThreeImage = (function () {
 
       this.trigger('changedScene', sceneId);
 
-      ReactDOM.render(
+      this.root = this.root ?? createRoot(wrapper);
+      this.root.render(
         <H5PContext.Provider value={this}>
           <Main
             forceStartScreen={this.forceStartScreen}
@@ -103,8 +104,7 @@ H5P.NDLAThreeImage = (function () {
             addThreeSixty={ (tS) => this.threeSixty = tS }
             onSetCameraPos={this.setCameraPosition.bind(this)}
           />
-        </H5PContext.Provider>,
-        wrapper
+        </H5PContext.Provider>
       );
 
       window.requestAnimationFrame(() => {
@@ -121,7 +121,8 @@ H5P.NDLAThreeImage = (function () {
         this.currentScene = this.forceStartScreen;
       }
 
-      ReactDOM.render(
+      this.root = this.root ?? createRoot(wrapper);
+      this.root.render(
         <H5PContext.Provider value={this}>
           <Main
             forceStartScreen={this.forceStartScreen}
@@ -132,8 +133,7 @@ H5P.NDLAThreeImage = (function () {
             onSetCameraPos={this.setCameraPosition.bind(this)}
             isVeryFirstRender={ true }
           />
-        </H5PContext.Provider>,
-        wrapper
+        </H5PContext.Provider>
       );
     };
 
@@ -149,7 +149,8 @@ H5P.NDLAThreeImage = (function () {
         return;
       }
 
-      ReactDOM.render(
+      this.root = this.root ?? createRoot(wrapper);
+      this.root.render(
         <H5PContext.Provider value={this}>
           <Main
             forceStartScreen={this.forceStartScreen}
@@ -159,8 +160,7 @@ H5P.NDLAThreeImage = (function () {
             addThreeSixty={ (tS) => this.threeSixty = tS }
             onSetCameraPos={this.setCameraPosition.bind(this)}
           />
-        </H5PContext.Provider>,
-        wrapper
+        </H5PContext.Provider>
       );
     };
 

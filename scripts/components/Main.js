@@ -1,4 +1,5 @@
 import React from 'react';
+import { createRoot } from 'react-dom/client';
 import Scene, { SceneTypes } from './Scene/Scene';
 import Dialog from './Dialog/Dialog';
 import Screenreader from './Screenreader/Screenreader';
@@ -537,8 +538,16 @@ export default class Main extends React.Component {
 
   addThreeSixty = (threeSixty) => {
     this.props.addThreeSixty(threeSixty);
+
+    const [rendererElement2d, rendererElement3d] = threeSixty.getRenderers();
+
+    this.root2d = this.root2d ?? createRoot(rendererElement2d);
+    this.root3d = this.root3d ?? createRoot(rendererElement3d.firstChild);
+
     this.setState({
-      threeSixty: threeSixty
+      threeSixty: threeSixty,
+      root2d: this.root2d,
+      root3d: this.root3d,
     });
   };
 
@@ -772,6 +781,8 @@ export default class Main extends React.Component {
               <Scene
                 key={sceneParams.sceneId}
                 threeSixty={this.state.threeSixty}
+                root2d={this.state.root2d}
+                root3d={this.state.root3d}
                 updateThreeSixty={this.state.updateThreeSixty}
                 isActive={sceneParams.sceneId === this.props.currentScene}
                 isHiddenBehindOverlay={ isHiddenBehindOverlay }
