@@ -680,7 +680,7 @@ export default class Main extends React.Component {
 
   render() {
     const sceneParams = this.context.params.scenes;
-    if (!sceneParams) {
+    if (!sceneParams?.length) {
       return <NoScene label={this.context.l10n.noContent} />;
     }
 
