@@ -3,8 +3,7 @@ import { createRoot } from 'react-dom/client';
 import Main from './components/Main';
 import { H5PContext } from './context/H5PContext';
 import { sceneRenderingQualityMapping } from './components/Scene/SceneTypes/ThreeSixtyScene';
-import he from 'he';
-import striptags from 'striptags';
+import { purifyHTML } from './utils/utils';
 
 // Load library
 H5P.NDLAThreeImage = (function () {
@@ -76,13 +75,16 @@ H5P.NDLAThreeImage = (function () {
     // Sanitize scene description aria that was entered as HTML
     this.params.scenes = this.params.scenes.map((sceneParams) => {
       if (sceneParams.sceneDescriptionARIA) {
-        sceneParams.sceneDescriptionARIA = striptags(
-          he.decode(sceneParams.sceneDescriptionARIA)
-        );
+        sceneParams.sceneDescriptionARIA = purifyHTML(sceneParams.sceneDescriptionARIA);
       }
 
       return sceneParams;
     });
+
+    // Sanitize localization
+    for (const key in this.l10n) {
+      this.l10n[key] = purifyHTML(this.l10n[key]);
+    }
 
     this.contentId = contentId;
     this.extras = extras;

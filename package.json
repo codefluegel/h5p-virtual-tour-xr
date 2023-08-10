@@ -55,8 +55,7 @@
     "he": "^1.2.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "striptags": "^3.2.0"
+    "react-dom": "^18.2.0"
   },
   "browserslist": "> 0.5%, last 2 versions, Firefox ESR, not dead"
 }

@@ -1,3 +1,5 @@
+import he from 'he';
+
 /**
  * Determine whether or not the interaction should be rendered in 3d
  *
@@ -19,3 +21,21 @@ export function renderIn3d(interaction) {
  * @returns {number}
  */
 export const clamp = (min, value, max) => Math.min(max, Math.max(min, value));
+
+/**
+ * HTML decode and strip HTML.
+ * @param {string|object} html html.
+ * @returns {string} html value.
+ */
+export const purifyHTML = (html) => {
+  if (typeof html !== 'string') {
+    return '';
+  }
+
+  let text = he.decode(html);
+  const div = document.createElement('div');
+  div.innerHTML = text;
+  text = div.textContent || div.innerText || '';
+
+  return text;
+};
