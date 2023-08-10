@@ -505,11 +505,6 @@ export default class NavigationButton extends React.Component {
       }
     }
 
-    const foo = getLabelText(label);
-    if (foo === 'TV') {
-      console.log(this.props.showAsHotspot, this.navButton);
-    }
-
     return (
       <div
         ref={this.navButtonWrapper}

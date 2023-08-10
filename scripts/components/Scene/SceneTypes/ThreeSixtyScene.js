@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import NavigationButton, { getIconFromInteraction, getLabelFromInteraction } from '../../Interactions/NavigationButton';
 import { H5PContext } from '../../../context/H5PContext';
 import ContextMenu from '../../Shared/ContextMenu';
@@ -316,17 +317,21 @@ export default class ThreeSixtyScene extends React.Component {
 
     this.renderedInteractions = list.length;
 
-    // The renderers need to be provided by the parent
-    this.props.root2d?.render(
+    /** @type {[HTMLElement, HTMLElement]} */
+    const [rendererElement2d, rendererElement3d] = threeSixty.getRenderers();
+
+    ReactDOM.render(
       <H5PContext.Provider value={this.context}>
         { components2d }
-      </H5PContext.Provider>
+      </H5PContext.Provider>,
+      rendererElement2d,
     );
 
-    this.props.root3d?.render(
+    ReactDOM.render(
       <H5PContext.Provider value={this.context}>
         { components3d }
-      </H5PContext.Provider>
+      </H5PContext.Provider>,
+      /** @type {HTMLElement} */ (rendererElement3d.firstChild),
     );
   }
 
@@ -580,7 +585,6 @@ export default class ThreeSixtyScene extends React.Component {
     if (this.props.threeSixty && this.props.isActive) {
       // Need to respond to audio in order to update the icon of the interaction
       const audioHasChanged = (prevProps.audioIsPlaying !== this.props.audioIsPlaying);
-      const root3dHasChanged = (prevProps.root3d !== this.props.root3d);
       const hasChangedFocus = prevProps.focusedInteraction
         !== this.props.focusedInteraction;
 
@@ -589,7 +593,6 @@ export default class ThreeSixtyScene extends React.Component {
           !== this.props.sceneParams.interactions.length);
 
       let shouldUpdateInteractionHotspots = hasChangedInteractions
-          || root3dHasChanged
           || audioHasChanged
           || hasChangedFocus
           || isHiddenBehindOverlayHasChanged

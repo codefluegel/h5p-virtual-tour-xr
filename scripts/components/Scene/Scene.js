@@ -102,8 +102,6 @@ export default class Scene extends React.Component {
     return (
       <ThreeSixtyScene
         threeSixty={this.props.threeSixty}
-        root2d={this.props.root2d}
-        root3d={this.props.root3d}
         updateThreeSixty={this.props.updateThreeSixty}
         isActive={this.props.isActive}
         isHiddenBehindOverlay={ this.props.isHiddenBehindOverlay }
