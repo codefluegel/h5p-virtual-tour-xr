@@ -296,20 +296,18 @@
                           ]
                         }
                       ],
-                      "widget": "imageRadioGroup"
+                      "widget": "radioGroup"
                     },
                     "alignment": "horizontal",
                     "fontFamily": "360-Image",
                     "options": [
                       {
                         "value": "text-icon",
-                        "label": "Text icon",
-                        "fontIcon": "e91f"
+                        "label": "Text icon"
                       },
                       {
                         "value": "info-icon",
-                        "label": "Info icon",
-                        "fontIcon": "e91a"
+                        "label": "Info icon"
                       }
                     ],
                     "default": "text-icon"

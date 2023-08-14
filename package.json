@@ -1,6 +1,6 @@
 {
   "name": "h5p-ndla-three-image",
-  "version": "0.4.104",
+  "version": "0.4.105",
   "description": "Create 360 image content",
   "main": "index.js",
   "scripts": {
