@@ -349,7 +349,7 @@ export default class ThreeSixtyScene extends React.Component {
    */
   createInteraction = (interaction, index) => {
     const className = ['three-sixty'];
-    if (this.props.audioIsPlaying === 'interaction-' + this.props.sceneId + '-' + index) {
+    if (this.props.audioIsPlaying === `interaction-${this.props.sceneId}-${index}`) {
       className.push('active');
     }
     let title;

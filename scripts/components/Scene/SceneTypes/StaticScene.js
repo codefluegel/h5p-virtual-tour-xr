@@ -251,10 +251,7 @@ export default class StaticScene extends React.Component {
     }
 
     const interaction = this.getDraggingInteraction();
-    interaction.interactionpos = [
-      this.state.x + '%',
-      this.state.y + '%',
-    ].join(',');
+    interaction.interactionpos = `${this.state.x}%,${this.state.y}%`;
 
     this.setState({
       x: null,
@@ -398,7 +395,7 @@ export default class StaticScene extends React.Component {
               }
 
               const buttonClasses = [];
-              if (this.props.audioIsPlaying === 'interaction-' + this.props.sceneId + '-' + index) {
+              if (this.props.audioIsPlaying === `interaction-${this.props.sceneId}-${index}`) {
                 buttonClasses.push('active');
               }
 

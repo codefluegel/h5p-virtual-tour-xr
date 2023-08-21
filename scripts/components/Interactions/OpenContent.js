@@ -174,7 +174,7 @@ export default class OpenContent extends React.Component {
       (/** @type {SceneParams} */ scene) => scene.sceneId === this.props.sceneId
     );
     const interaction = scene.interactions[this.props.interactionIndex];
-    interaction.hotspotSettings.hotSpotSizeValues = widthX + ',' + heightY;
+    interaction.hotspotSettings.hotSpotSizeValues = `${widthX},${heightY}`;
   }
   toggleDrag = () => {
     const dragBool = !this.state.canDrag;
@@ -268,11 +268,11 @@ export default class OpenContent extends React.Component {
   getStyle() {
     const style = {};
     if (this.props.topPosition !== undefined) {
-      style.top = this.props.topPosition + '%';
+      style.top = `${this.props.topPosition}%`;
     }
 
     if (this.props.leftPosition !== undefined) {
-      style.left = this.props.leftPosition + '%';
+      style.left = `${this.props.leftPosition}%`;
     }
     return style;
   }
@@ -435,8 +435,8 @@ export default class OpenContent extends React.Component {
           ref={this.openContent}
           aria-label={this.props.ariaLabel}
           style={{
-            width: this.state.sizeWidth + 'px',
-            height: this.state.sizeHeight + 'px',
+            width: `${this.state.sizeWidth}px`,
+            height: `${this.state.sizeHeight}px`,
           }}
           onDoubleClick={this.onDoubleClick.bind(this)}
           onMouseDown={this.onMouseDown.bind(this)}

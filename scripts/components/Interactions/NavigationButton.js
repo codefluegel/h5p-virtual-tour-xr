@@ -278,15 +278,15 @@ export default class NavigationButton extends React.Component {
   getStyle(width, height) {
     const style = {};
     if (this.props.topPosition !== undefined) {
-      style.top = this.props.topPosition + '%';
+      style.top = `${this.props.topPosition}%`;
     }
     if (this.props.leftPosition !== undefined) {
-      style.left = this.props.leftPosition + '%';
+      style.left = `${this.props.leftPosition}%`;
     }
     if (this.props.staticScene) {
       // set width and height for static scene
-      style.width = width + '%';
-      style.height = height + '%';
+      style.width = `${width}%`;
+      style.height = `${height}%`;
     }
     else {
       // set width and height for 360 scene
@@ -400,7 +400,7 @@ export default class NavigationButton extends React.Component {
       (/** @type {SceneParams} */ scene) => scene.sceneId === this.props.sceneId,
     );
     const interaction = scene.interactions[this.props.interactionIndex];
-    interaction.hotspotSettings.hotSpotSizeValues = widthX + ',' + heightY;
+    interaction.hotspotSettings.hotSpotSizeValues = `${widthX},${heightY}`;
   }
 
   getHotspotValues() {
@@ -408,7 +408,7 @@ export default class NavigationButton extends React.Component {
 
     return interaction.hotspotSettings.hotSpotSizeValues ?
       interaction.hotspotSettings.hotSpotSizeValues.split(',') :
-      [NavigationButton.DEFAULT_WIDTH_3D, 128];
+      [NavigationButton.DEFAULT_WIDTH_3D, NavigationButton.DEFAULT_HEIGHT_3D];
   }
 
   /**

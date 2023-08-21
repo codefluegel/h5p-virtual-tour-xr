@@ -54,7 +54,7 @@ export default class Dialog extends React.Component {
   handleResize = () => {
     if (this.el) {
       this.el.style.width = '';
-      this.el.style.height = this.el.getBoundingClientRect().height + 'px';
+      this.el.style.height = `${this.el.getBoundingClientRect().height}px`;
     }
   };
 
