@@ -88,13 +88,11 @@ export default class StaticScene extends React.Component {
       return;
     }
 
-    const minFontSize = 14;
-    const fontIncrementThreshold = 55;
     const widthDiff = defaultSize - wrapperSize.width;
-    let newFontSize = defaultFontSize - (widthDiff / fontIncrementThreshold);
-    if (newFontSize < minFontSize) {
-      newFontSize = minFontSize;
-    }
+    const newFontSize = Math.max(
+      StaticScene.FONT_SIZE_MIN_PX,
+      defaultFontSize - (widthDiff / StaticScene.FONT_INCREMENT_THRESHOLD)
+    );
 
     this.sceneWrapperRef.current.style.fontSize = `${newFontSize}px`;
     this.forceUpdate();
@@ -526,3 +524,9 @@ export default class StaticScene extends React.Component {
 }
 
 StaticScene.contextType = H5PContext;
+
+/** @constant {number} FONT_SIZE_MIN Minimum font size within scene in pixels.*/
+StaticScene.FONT_SIZE_MIN_PX = 14;
+
+/** @constant {number} FONT_INCREMENT_THRESHOLD Factor used to increase font size based on scene width. */
+StaticScene.FONT_INCREMENT_THRESHOLD = 55;

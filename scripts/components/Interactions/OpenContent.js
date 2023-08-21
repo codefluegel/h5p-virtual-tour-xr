@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import './OpenContent.scss';
 import { H5PContext } from '../../context/H5PContext';
 import { scaleOpenContentElement } from '../../utils/open-content-utils';
+import { DEFAULT_WIDTH_3D, DEFAULT_HEIGHT_3D } from './NavigationButton';
 
 /**
  * @typedef {{
@@ -161,7 +162,7 @@ export default class OpenContent extends React.Component {
 
     return interaction.hotspotSettings?.hotSpotSizeValues
       ? interaction.hotspotSettings?.hotSpotSizeValues.split(',')
-      : [256, 128];
+      : [DEFAULT_WIDTH_3D, DEFAULT_HEIGHT_3D];
   }
 
   /**

@@ -126,11 +126,9 @@ export default class HotspotNavButton extends React.Component {
       this.state.startMidPoint
     );
 
-    const minimumSize = 20;
-    const maximumSize = 2000;
-
-    const newSizeIsValid = newSize > minimumSize && newSize < maximumSize;
-    if (newSizeIsValid) {
+    if (
+      newSize > HotspotNavButton.SIZE_MIN && newSize < HotspotNavButton.SIZE_MAX
+    ) {
       /*These values are used for inline styling in the div in the render loop,
         updating the div dimensions when the mousemove event fires*/
       if (this.props.staticScene) {
@@ -245,3 +243,9 @@ export default class HotspotNavButton extends React.Component {
   }
 }
 HotspotNavButton.contextType = H5PContext;
+
+/** @constant {number} SIZE_MIN Minimum size of 3D hotspot */
+HotspotNavButton.SIZE_MIN = 20;
+
+/** @constant {number} SIZE_MAX Maximum size of 3D hotspot */
+HotspotNavButton.SIZE_MAX = 2000;
