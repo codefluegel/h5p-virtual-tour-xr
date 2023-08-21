@@ -7,6 +7,8 @@ import './ScoreSummary.scss';
 export default class ScoreSummary extends React.Component {
   constructor(props) {
     super(props);
+
+    this.scoreBarDOM = React.createRef();
   }
 
   /**
@@ -30,8 +32,7 @@ export default class ScoreSummary extends React.Component {
     const totalScores = this.getTotalScores(this.props.scores.sceneScoreCards);
     const scoreBar = new H5P.JoubelScoreBar(totalScores.max, 'label', 'helpText', 'scoreExplanationButtonLabel');
     scoreBar.setScore(totalScores.score);
-    const wrapper = H5P.jQuery('#total-scores');
-    scoreBar.appendTo(wrapper);
+    scoreBar.appendTo(this.scoreBarDOM.current);
   }
 
   render() {
@@ -50,7 +51,7 @@ export default class ScoreSummary extends React.Component {
           </thead>
           {items}
           <tfoot>
-            <tr><td className="h5p-td h5p-summary-task-title">Total:</td><td id="total-scores" className="h5p-td h5p-summary-score-bar"></td></tr>
+            <tr><td className="h5p-td h5p-summary-task-title">Total:</td><td ref={this.scoreBarDOM} className="h5p-td h5p-summary-score-bar"></td></tr>
           </tfoot>
         </table>
       </div>);

@@ -8,6 +8,8 @@ export default class Dialog extends React.Component {
     super(props);
 
     this.handleKeyDown = this.handleKeyDown.bind(this);
+
+    this.dialogLabelId = `h5p-dialog-label-${H5P.createUUID()}`;
   }
 
   componentDidMount() {
@@ -83,12 +85,12 @@ export default class Dialog extends React.Component {
       <div
         className='h5p-text-overlay'
         role='dialog'
-        aria-labelledby={ 'h5p-dialog-label' }
+        aria-labelledby={ this.dialogLabelId }
         aria-modal={ 'true' }
         ref={ this.overlayRef }
         onKeyDown={ this.handleKeyDown }
       >
-        <div id='h5p-dialog-label' className="h5p-dialog-label">
+        <div id={this.dialogLabelId} className="h5p-dialog-label">
           { this.props.title }
         </div>
         <div className={dialogClasses.join(' ')} ref={ this.handleDialogRef }>

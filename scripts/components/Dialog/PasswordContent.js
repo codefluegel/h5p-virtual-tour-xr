@@ -21,6 +21,8 @@ export default class PasswordContent extends React.Component {
       shakeClass: '',
       inputPassword: '',
     };
+
+    this.codeFieldLabelId = `field-code-${H5P.createUUID()}-${this.props.currentInteractionIndex}`;
   }
   handleOnChange = (event) => {
     this.setState({
@@ -102,7 +104,7 @@ export default class PasswordContent extends React.Component {
         <form className={'h5p-wrapper'} onSubmit={this.handleSubmit}>
           <label
             className={'h5p-wrapper'}
-            htmlFor={'field-code-' + this.props.currentInteractionIndex}
+            htmlFor={this.codeFieldLabelId}
           >
             <div className={'h5p-wrapper-inner'}>
               <input
@@ -111,7 +113,7 @@ export default class PasswordContent extends React.Component {
                 autoComplete="off"
                 ref={this.inputRef.ref}
                 className="h5p-field-input"
-                id={'field-code-' + this.props.currentInteractionIndex}
+                id={this.codeFieldLabelId}
                 placeholder={this.context.l10n.code}
                 value={this.state.inputPassword}
                 onChange={this.handleOnChange}
