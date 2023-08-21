@@ -1,8 +1,8 @@
-function fadeAudioOut(player, resetCurrentTime, fadeInAudio) {
+const fadeAudioOut = (player, resetCurrentTime, fadeInAudio) => {
   if (player.volume > 0) {
-    var newVolume = Number(player.volume - 0.1).toFixed(1);
+    const newVolume = Number(player.volume - 0.1).toFixed(1);
     player.volume = newVolume;
-    setTimeout(function () {
+    setTimeout(() => {
       fadeAudioOut(player, resetCurrentTime, fadeInAudio);
     }, 25);
   }
@@ -19,26 +19,30 @@ function fadeAudioOut(player, resetCurrentTime, fadeInAudio) {
       fadeInAudio();
     }
   }
-}
+};
 
-function fadeAudioIn(player, int) {
+const fadeAudioIn = (player, int) => {
   if (player.volume === 1 && int === 0) {
     player.volume = 0;
   }
-  var newint = 1;
-  if (player.volume < 1) {
-    if (player.volume === 0 && int === 0) {
-      player.play();
-    }
-    var newVolume = Number(player.volume + 0.1).toFixed(1);
-    player.volume = newVolume;
-    if (player.volume !== 1) {
-      setTimeout(function () {
-        fadeAudioIn(player, newint);
-      }, 25);
-    }
+
+  if (player.volume >= 1) {
+    return;
   }
-}
+
+  if (player.volume === 0 && int === 0) {
+    player.play();
+  }
+
+  const newVolume = Number(player.volume + 0.1).toFixed(1);
+  player.volume = newVolume;
+
+  if (player.volume !== 1) {
+    setTimeout(() => {
+      fadeAudioIn(player, 1);
+    }, 25);
+  }
+};
 
 /**
  * Help create the audio player and find the approperiate source.
@@ -147,7 +151,7 @@ export const fadeAudioInAndOut = (oldPlayer, newPlayer, resetCurrentTime) => {
       fadeAudioOut(
         oldPlayer,
         resetCurrentTime,
-        function () {
+        () => {
           fadeAudioIn(newPlayer, 0);
         }
       );

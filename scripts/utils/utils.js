@@ -6,9 +6,9 @@ import he from 'he';
  * @param {Interaction} interaction
  * @return {boolean}
  */
-export function renderIn3d(interaction) {
+export const renderIn3d = (interaction) => {
   return  interaction.showAsHotspot; // TODO: Does this make sense?
-}
+};
 
 /**
  * Returns the `value` if it's greater than the minimum and lower than the maximum.

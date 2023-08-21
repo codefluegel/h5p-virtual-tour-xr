@@ -5,10 +5,10 @@ import { H5PContext } from './context/H5PContext';
 import { sceneRenderingQualityMapping } from './components/Scene/SceneTypes/ThreeSixtyScene';
 import { purifyHTML } from './utils/utils';
 
-// Load library
-H5P.NDLAThreeImage = (function () {
+export default class Wrapper extends H5P.EventDispatcher {
+  constructor(params, contentId, extras) {
+    super();
 
-  function Wrapper(params, contentId, extras) {
     extras = extras || {};
 
     this.forceStartScreen = (extras.forceStartScreen !== undefined
@@ -18,13 +18,9 @@ H5P.NDLAThreeImage = (function () {
     this.forceStartCamera = extras.forceStartCamera !== undefined
       ? extras.forceStartCamera : null;
 
-    // Initialize event inheritance
-    H5P.EventDispatcher.call(self);
-
     params.threeImage.scenes = Wrapper.addUniqueIdsToInteractions(params.threeImage.scenes);
     params.threeImage.scenes = Wrapper.addMissingLabelSettings(params.threeImage.scenes);
 
-    let wrapper;
     this.behavior = {
       label: {
         showLabel: false,
@@ -33,6 +29,7 @@ H5P.NDLAThreeImage = (function () {
       },
       ...params.behaviour
     };
+
     this.l10n = {
       // Text defaults
       title: 'Virtual Tour',
@@ -90,33 +87,96 @@ H5P.NDLAThreeImage = (function () {
     this.extras = extras;
     this.sceneRenderingQuality = this.behavior.sceneRenderingQuality || 'high';
 
-    const setCurrentSceneId = (sceneId) => {
-      this.currentScene = sceneId;
-
-      this.trigger('changedScene', sceneId);
-
-      ReactDOM.render(
-        <H5PContext.Provider value={this}>
-          <Main
-            forceStartScreen={this.forceStartScreen}
-            forceStartCamera={this.forceStartCamera}
-            currentScene={this.currentScene}
-            setCurrentSceneId={setCurrentSceneId}
-            addThreeSixty={ (tS) => this.threeSixty = tS }
-            onSetCameraPos={this.setCameraPosition.bind(this)}
-          />
-        </H5PContext.Provider>,
-        wrapper
+    this.on('resize', () => {
+      const isFullscreen = (
+        this.wrapper.parentElement.classList.contains('h5p-fullscreen') ||
+        this.wrapper.parentElement.classList.contains('h5p-semi-fullscreen')
       );
+      const rect = this.getRect();
+      // Fullscreen should use all of the space
+      const ratio = (isFullscreen ? (rect.height / rect.width) : (9 / 16));
 
-      window.requestAnimationFrame(() => {
-        this.trigger('resize');
-      });
-    };
+      this.wrapper.style.height = isFullscreen ?
+        '100%' :
+        `${rect.width * ratio}px`;
 
+      // Apply separate styles for mobile
+      if (rect.width <= 480) {
+        this.wrapper.classList.add('h5p-phone-size');
+      }
+      else {
+        this.wrapper.classList.remove('h5p-phone-size');
+      }
+      if (rect.width < 768) {
+        this.wrapper.classList.add('h5p-medium-tablet-size');
+      }
+      else {
+        this.wrapper.classList.remove('h5p-medium-tablet-size');
+      }
+
+      // Resize scene
+      if (this.currentScene === null || !this.threeSixty) {
+        return;
+      }
+
+      const updatedRect = this.wrapper.getBoundingClientRect();
+      this.threeSixty.resize(updatedRect.width / updatedRect.height);
+    });
+  }
+
+  setCurrentSceneId(sceneId) {
+    this.currentScene = sceneId;
+
+    this.trigger('changedScene', sceneId);
+
+    ReactDOM.render(
+      <H5PContext.Provider value={this}>
+        <Main
+          forceStartScreen={this.forceStartScreen}
+          forceStartCamera={this.forceStartCamera}
+          currentScene={this.currentScene}
+          setCurrentSceneId={this.setCurrentSceneId.bind(this)}
+          addThreeSixty={(tS) => this.threeSixty = tS}
+          onSetCameraPos={this.setCameraPosition.bind(this)} />
+      </H5PContext.Provider>,
+      this.wrapper
+    );
+
+    window.requestAnimationFrame(() => {
+      this.trigger('resize');
+    });
+  }
+
+  reDraw(forceStartScreen = this.currentScene) {
+    const sceneRenderingQuality = this.behavior.sceneRenderingQuality;
+    if (sceneRenderingQuality !== this.sceneRenderingQuality
+      && this.threeSixty) {
+      this.setSceneRenderingQuality(sceneRenderingQuality);
+    }
+
+    if (forceStartScreen !== this.currentScene) {
+      this.setCurrentSceneId(forceStartScreen);
+      return;
+    }
+
+    ReactDOM.render(
+      <H5PContext.Provider value={this}>
+        <Main
+          forceStartScreen={this.forceStartScreen}
+          forceStartCamera={this.forceStartCamera}
+          currentScene={this.currentScene}
+          setCurrentSceneId={this.setCurrentSceneId.bind(this)}
+          addThreeSixty={(tS) => this.threeSixty = tS}
+          onSetCameraPos={this.setCameraPosition.bind(this)} />
+      </H5PContext.Provider>,
+      this.wrapper
+    );
+  }
+
+  attach($container) {
     const createElements = () => {
-      wrapper = document.createElement('div');
-      wrapper.classList.add('h5p-three-sixty-wrapper');
+      this.wrapper = document.createElement('div');
+      this.wrapper.classList.add('h5p-three-sixty-wrapper');
 
       this.currentScene = this.params.startSceneId;
       if (this.forceStartScreen) {
@@ -129,165 +189,102 @@ H5P.NDLAThreeImage = (function () {
             forceStartScreen={this.forceStartScreen}
             forceStartCamera={this.forceStartCamera}
             currentScene={this.currentScene}
-            setCurrentSceneId={setCurrentSceneId}
-            addThreeSixty={ (tS) => this.threeSixty = tS }
+            setCurrentSceneId={this.setCurrentSceneId.bind(this)}
+            addThreeSixty={(tS) => this.threeSixty = tS}
             onSetCameraPos={this.setCameraPosition.bind(this)}
-            isVeryFirstRender={ true }
-          />
+            isVeryFirstRender={true} />
         </H5PContext.Provider>,
-        wrapper
+        this.wrapper
       );
     };
 
-    this.reDraw = (forceStartScreen = this.currentScene) => {
-      const sceneRenderingQuality = this.behavior.sceneRenderingQuality;
-      if (sceneRenderingQuality !== this.sceneRenderingQuality
-        && this.threeSixty) {
-        this.setSceneRenderingQuality(sceneRenderingQuality);
-      }
+    /*
+      * Temporary (fingers crossed) hotfix for Firefox on Edlib.
+      * When overflow is set to `hidden` on Edlib (Why? H5P resizes the iframe
+      * that the document lives in), then Firefox will not detect hotspots
+      * as hovered/being clickable. Even with the `overflow` setting removed,
+      * Firefox does require hotspots to be quite centered. When close to the
+      * visible border of the scene, Firefox does not consider the hotspots
+      * to be hovered/clicked.
+      */
+    document.body.style.overflow = '';
 
-      if (forceStartScreen !== this.currentScene) {
-        setCurrentSceneId(forceStartScreen);
-        return;
-      }
+    if (!this.wrapper) {
+      createElements();
+    }
 
-      ReactDOM.render(
-        <H5PContext.Provider value={this}>
-          <Main
-            forceStartScreen={this.forceStartScreen}
-            forceStartCamera={this.forceStartCamera}
-            currentScene={this.currentScene}
-            setCurrentSceneId={setCurrentSceneId}
-            addThreeSixty={ (tS) => this.threeSixty = tS }
-            onSetCameraPos={this.setCameraPosition.bind(this)}
-          />
-        </H5PContext.Provider>,
-        wrapper
-      );
+    // Append elements to DOM
+    $container[0].appendChild(this.wrapper);
+    $container[0].classList.add('h5p-three-image');
+  }
+
+  getRect() {
+    return this.wrapper.getBoundingClientRect();
+  }
+
+  getRatio() {
+    const rect = this.wrapper.getBoundingClientRect();
+    return (rect.width / rect.height);
+  }
+
+  setCameraPosition(cameraPosition, focus) {
+    if (this.currentScene === null || !this.threeSixty) {
+      return;
+    }
+
+    const [yaw, pitch] = cameraPosition.split(',');
+    this.threeSixty.setCameraPosition(parseFloat(yaw), parseFloat(pitch));
+    if (focus) {
+      this.threeSixty.focus();
+    }
+  }
+
+  getCamera() {
+    if (this.currentScene === null || !this.threeSixty) {
+      return;
+    }
+
+    return {
+      camera: this.threeSixty.getCurrentPosition(),
+      fov: this.threeSixty.getCurrentFov(),
     };
+  }
 
-    this.attach = ($container) => {
-      /*
-       * Temporary (fingers crossed) hotfix for Firefox on Edlib.
-       * When overflow is set to `hidden` on Edlib (Why? H5P resizes the iframe
-       * that the document lives in), then Firefox will not detect hotspots
-       * as hovered/being clickable. Even with the `overflow` setting removed,
-       * Firefox does require hotspots to be quite centered. When close to the
-       * visible border of the scene, Firefox does not consider the hotspots
-       * to be hovered/clicked.
-       */
-      document.body.style.overflow = '';
-
-      if (!wrapper) {
-        createElements();
-      }
-
-      // Append elements to DOM
-      $container[0].appendChild(wrapper);
-      $container[0].classList.add('h5p-three-image');
-    };
-
-    this.getRect = () => {
-      return wrapper.getBoundingClientRect();
-    };
-
-    this.on('resize', () => {
-      const isFullscreen = wrapper.parentElement.classList.contains('h5p-fullscreen') || wrapper.parentElement.classList.contains('h5p-semi-fullscreen');
-      const rect = this.getRect();
-      // Fullscreen should use all of the space
-      const ratio = (isFullscreen ? (rect.height / rect.width) : (9 / 16));
-
-      wrapper.style.height = (isFullscreen ? '100%' : ((rect.width * ratio) + 'px'));
-
-      // Apply separate styles for mobile
-      if (rect.width <= 480)  {
-        wrapper.classList.add('h5p-phone-size');
-      }
-      else {
-        wrapper.classList.remove('h5p-phone-size');
-      }
-      if (rect.width < 768)  {
-        wrapper.classList.add('h5p-medium-tablet-size');
-      }
-      else {
-        wrapper.classList.remove('h5p-medium-tablet-size');
-      }
-
-      // Resize scene
-      if (this.currentScene === null || !this.threeSixty) {
-        return;
-      }
-
-      const updatedRect = wrapper.getBoundingClientRect();
-      this.threeSixty.resize(updatedRect.width / updatedRect.height);
-    });
-
-    this.getRatio = () => {
-      const rect = wrapper.getBoundingClientRect();
-      return (rect.width / rect.height);
-    };
-
-    this.setCameraPosition = (cameraPosition, focus) => {
-      if (this.currentScene === null || !this.threeSixty) {
-        return;
-      }
-
-      const [yaw, pitch] = cameraPosition.split(',');
-      this.threeSixty.setCameraPosition(parseFloat(yaw), parseFloat(pitch));
-      if (focus) {
-        this.threeSixty.focus();
-      }
-    };
-
-    this.getCamera = () => {
-      if (this.currentScene === null || !this.threeSixty) {
-        return;
-      }
-
-      return {
-        camera: this.threeSixty.getCurrentPosition(),
-        fov: this.threeSixty.getCurrentFov(),
-      };
-    };
-
-    this.setSceneRenderingQuality = (quality) => {
-      const segments = sceneRenderingQualityMapping[quality];
-      this.threeSixty.setSegmentNumber(segments);
-      this.sceneRenderingQuality = quality;
-    };
-
-
+  setSceneRenderingQuality(quality) {
+    const segments = sceneRenderingQualityMapping[quality];
+    this.threeSixty.setSegmentNumber(segments);
+    this.sceneRenderingQuality = quality;
   }
 
   /**
-  * Add unique ids to interactions.
-  * The ids are used as key for mapping React components.
-  * TODO: Create the ids in editor-time and store them in semantics
-  *
-  * @param {Array<SceneParams>} scenes
-  * @returns {Array<SceneParams>}
-  */
-  Wrapper.addUniqueIdsToInteractions = (scenes) =>
-    scenes?.map((scene) => scene.interactions
+    * Add unique ids to interactions.
+    * The ids are used as key for mapping React components.
+    * TODO: Create the ids in editor-time and store them in semantics
+    *
+    * @param {Array<SceneParams>} scenes
+    * @returns {Array<SceneParams>}
+    */
+  static addUniqueIdsToInteractions(scenes) {
+    return scenes?.map((scene) => scene.interactions
       ? ({
         ...scene,
         interactions: scene.interactions?.map(
-          (interaction) => ({ ...interaction, id: H5P.createUUID() }),
+          (interaction) => ({ ...interaction, id: H5P.createUUID() })
         ),
       })
       : scene
     );
-
+  }
   /**
-   * Older interactions are missing label settings.
-   * This adds an empty `label` to avoid adding null checks everywhere.
-   * TODO: Add this to upgrades.json
-   *
-   * @param {Array<SceneParams>} scenes
-   * @returns {Array<SceneParams>}
-   */
-  Wrapper.addMissingLabelSettings = (scenes) =>
-    scenes?.map((scene) => scene.interactions
+     * Older interactions are missing label settings.
+     * This adds an empty `label` to avoid adding null checks everywhere.
+     * TODO: Add this to upgrades.json
+     *
+     * @param {Array<SceneParams>} scenes
+     * @returns {Array<SceneParams>}
+     */
+  static addMissingLabelSettings(scenes) {
+    return scenes?.map((scene) => scene.interactions
       ? ({
         ...scene,
         interactions: scene.interactions?.map(
@@ -296,6 +293,5 @@ H5P.NDLAThreeImage = (function () {
       })
       : scene
     );
-
-  return Wrapper;
-})();
+  }
+}

@@ -1,4 +1,4 @@
-/** 
+/**
  * Helper class with various methods for checking if a DOM element overflows
  * another.
  * */
@@ -10,7 +10,7 @@ export class OverflowHelper {
    * @param  {number} topPosition
    * @param  {number} leftPosition
    * @param  {number} containerHeight
-   * @param  {number} containerWidth 
+   * @param  {number} containerWidth
    */
   constructor(elHeight, topPosition, leftPosition, containerHeight) {
     this.height = elHeight;
@@ -50,7 +50,7 @@ export class OverflowHelper {
  * @param  {number} wrapperHeight
  * @returns {object} {expandirection, alignment}
  */
-export function willOverflow(position, height, topPosition, leftPosition, wrapperHeight) {
+export const willOverflow = (position, height, topPosition, leftPosition, wrapperHeight) => {
   const overflowHelper = new OverflowHelper(height, topPosition, leftPosition, wrapperHeight);
   let expandDirection = null;
   let alignment = null;
@@ -75,4 +75,4 @@ export function willOverflow(position, height, topPosition, leftPosition, wrappe
   }
 
   return { expandDirection: expandDirection, alignment: alignment };
-}
+};
