@@ -4,48 +4,10 @@ import { H5PContext } from '../../context/H5PContext';
 import { scaleOpenContentElement } from '../../utils/open-content-utils';
 import { DEFAULT_WIDTH_3D, DEFAULT_HEIGHT_3D } from './NavigationButton';
 
-/**
- * @typedef {{
- *  sceneId: number;
- *  interactionIndex: number;
- *  topPosition: number;
- *  leftPosition: number;
- *  staticScene: boolean;
- *  ariaLabel: string;
- *  doubleClickHandler: () => void;
- *  mouseDownHandler: (event: MouseEvent) => void;
- *  onFocus?: () => void;
- *  onMount?: (openContentWrapper: HTMLElement) => void;
- *  onUnmount?: (openContentWrapper: HTMLElement) => void;
- *  onUpdate?: (openContentWrapper: HTMLElement) => void;
- *  isFocused: boolean;
- *  onBlur: () => void;
- *  is3DScene: boolean;
- * }} Props
- */
-
-/**
- * @typedef {{
- * anchorDrag: boolean;
- * canDrag: boolean;
- * camPosYaw: number;
- * camPosPitch: number;
- * startMousePos: number;
- * startMidPoint: number;
- * sizeWidth: number;
- * sizeHeight: number;
- * isFocused: boolean;
- * isMouseOver: boolean;
- * elementRect: DOMRect | null;
- * }} State
- */
-
-/**
- * @extends {React.Component<Props, State>}
- */
 export default class OpenContent extends React.Component {
   /**
-   * @param {Props} props
+   * @class
+   * @param {object} props Rect props.
    */
   constructor(props) {
     super(props);
@@ -53,7 +15,6 @@ export default class OpenContent extends React.Component {
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
 
-    /** @type {State} */
     this.state = {
       anchorDrag: false,
       canDrag: false,
@@ -68,19 +29,21 @@ export default class OpenContent extends React.Component {
       elementRect: null,
     };
 
-    /** @type {React.RefObject<HTMLDivElement>} */
     this.openContent = React.createRef();
 
-    /** @type {React.RefObject<HTMLDivElement>} */
     this.openContentWrapper = React.createRef();
   }
 
+  /**
+   * Add focus listener.
+   */
   addFocusListener() {
-    if (this.openContentWrapper?.current) {
-      this.openContentWrapper.current.addEventListener('focus', this.onFocus);
-    }
+    this.openContentWrapper?.current.addEventListener('focus', this.onFocus);
   }
 
+  /**
+   * Handle focus.
+   */
   onFocus() {
     // Already focused
     if (this.state.isFocused) {
@@ -93,14 +56,14 @@ export default class OpenContent extends React.Component {
   }
 
   /**
-   * @param {FocusEvent} event
+   * Handle blur.
+   * @param {FocusEvent} event Event.
    */
   onBlur(event) {
     const openContentWrapper =
       this.openContentWrapper && this.openContentWrapper.current;
 
-    /** @type {Element} */
-    const target = (/** @type {Element} */ event.relatedTarget);
+    const target = (event.relatedTarget);
 
     if (openContentWrapper?.contains(target)) {
       // Clicked target is child of button wrapper and not the expandButton, don't blur
@@ -108,14 +71,16 @@ export default class OpenContent extends React.Component {
       return;
     }
 
-    this.setState({
-      isFocused: false,
-    });
+    this.setState({ isFocused: false });
+
     if (this.props.onBlur) {
       this.props.onBlur();
     }
   }
 
+  /**
+   * React life-cycle function: Component did mount.
+   */
   componentDidMount() {
     const [sizeWidth, sizeHeight] = this.getHotspotValues();
     this.setState({
@@ -130,23 +95,30 @@ export default class OpenContent extends React.Component {
 
     this.addFocusListener();
     if (this.state.isFocused) {
-      setTimeout(() => {
+      window.setTimeout(() => {
         this.setFocus();
       }, 0);
     }
   }
 
+  /**
+   * React life-cycle function: Component is about to unmount.
+   */
   componentWillUnmount() {
     if (this.props.onUnmount) {
       const el = this.openContentWrapper.current;
       // We want this to run after the component is removed
-      setTimeout(() => {
+
+      window.setTimeout(() => {
         // Let parent know this element should be remove from the THREE world.
         this.props.onUnmount(el);
       }, 0);
     }
   }
 
+  /**
+   * React life-cycle function: Component did update.
+   */
   componentDidUpdate() {
     if (this.props.onUpdate) {
       // Let parent know this element is updated. (Position might have changed.)
@@ -154,6 +126,10 @@ export default class OpenContent extends React.Component {
     }
   }
 
+  /**
+   * Get hotspot values.
+   * @returns {number[]} Width and Height.
+   */
   getHotspotValues() {
     const scene = this.context.params.scenes.find((scene) => {
       return scene.sceneId === this.props.sceneId;
@@ -166,24 +142,30 @@ export default class OpenContent extends React.Component {
   }
 
   /**
-   * @param {number} widthX
-   * @param {number} heightY
+   * Set hotspot values.
+   * @param {number} widthX Width to set.
+   * @param {number} heightY Height to set.
    */
   setHotspotValues(widthX, heightY) {
     const scene = this.context.params.scenes.find(
-      (/** @type {SceneParams} */ scene) => scene.sceneId === this.props.sceneId
+      (scene) => scene.sceneId === this.props.sceneId
     );
     const interaction = scene.interactions[this.props.interactionIndex];
     interaction.hotspotSettings.hotSpotSizeValues = `${widthX},${heightY}`;
   }
-  toggleDrag = () => {
+
+  /**
+   * Toggle dragging state.
+   */
+  toggleDrag() {
     const dragBool = !this.state.canDrag;
-    this.setState({
-      canDrag: dragBool,
-    });
+    this.setState({ canDrag: dragBool });
+
     if (!this.props.staticScene) {
-      //If we cant drag anymore, we start the rendering of the threesixty scene,
-      // we also set the camera position that is stored wen we start the hotspot scaling
+      /*
+       * If we cant drag anymore, we start rendering of threesixty scene, we
+       * also set camera position that is stored when we start hotspot scaling
+       */
       if (!this.state.canDrag) {
         this.context.threeSixty.startRendering();
         this.context.threeSixty.setCameraPosition(
@@ -192,38 +174,44 @@ export default class OpenContent extends React.Component {
         );
       }
       else {
-        //We store the current position, because we are technically still dragging the background around here
+        // Store current position, because technically still dragging background
         this.setState({
           camPosYaw: this.context.threeSixty.getCurrentPosition().yaw,
           camPosPitch: this.context.threeSixty.getCurrentPosition().pitch,
         });
-        //We stop rendering the threesixty scene so it doesnt look like we are moving around
+
+        // Stop rendering threesixty scene so it doesn't look like moving around
         this.context.threeSixty.stopRendering();
       }
     }
-  };
+  }
 
   /**
-   * @param {PointerEvent} e
-   * @param {boolean} horizontalDrag
+   * Handle anchor mouse down.
+   * @param {PointerEvent} event Event.
+   * @param {boolean} isHorizontalDrag True for horizontal movement.
    */
-  onAnchorDragMouseDown = (e, horizontalDrag) => {
-    /*Based on the direction, we store the X or Y start position of the mouse,
-     and finds the center of the div, startMidPoint, which is needed for scaling from*/
+  onAnchorDragMouseDown(event, isHorizontalDrag) {
+    /*
+     * Based on direction, store x or y start position of mouse, find center of
+     * div, startMidPoint, which is needed for scaling from
+     */
     this.setState({
       anchorDrag: true,
-      startMousePos: horizontalDrag ? e.clientX : e.clientY,
-      startMidPoint: horizontalDrag
+      startMousePos: isHorizontalDrag ?
+        event.clientX :
+        event.clientY,
+      startMidPoint: isHorizontalDrag
         ? this.state.sizeWidth / 2
         : this.state.sizeHeight / 2,
       elementRect: this.openContent.current?.getBoundingClientRect() ?? null,
     });
-  };
+  }
 
   /**
-   *
-   * @param {React.MouseEvent} event
-   * @param {boolean} isHorizontalDrag
+   * Handle mouse movement.
+   * @param {PointerEvent} event Mouse event.
+   * @param {boolean} isHorizontalDrag True for vertical dragging.
    */
   onMouseMove = (event, isHorizontalDrag) => {
     const { clientX, clientY } = event;
@@ -237,36 +225,39 @@ export default class OpenContent extends React.Component {
       this.state.startMidPoint
     );
 
-    const minimumSize = 64;
-    const maximumSize = 512;
-
-    const newSizeIsValid = newSize > minimumSize && newSize < maximumSize;
-    if (newSizeIsValid) {
-      /*These values are used for inline styling in the div in the render loop,
-        updating the div dimensions when the mousemove event fires*/
-      isHorizontalDrag
-        ? this.setState({
-          sizeWidth: newSize,
-        })
-        : this.setState({
-          sizeHeight: newSize,
-        });
+    if (
+      newSize > OpenContent.SIZE_MIN && newSize < OpenContent.SIZE_MAX
+    ) {
+      /*
+       * These values are used for inline styling in div in render loop,
+       * updating div dimensions when mousemove event fires
+       */
+      isHorizontalDrag ?
+        this.setState({ sizeWidth: newSize }) :
+        this.setState({ sizeHeight: newSize });
     }
   };
 
-  onAnchorDragMouseUp = () => {
-    let newSizeWidth = this.state.sizeWidth;
-    let newSizeHeight = this.state.sizeHeight;
+  /**
+   * Handle anchor drag mouse up.
+   */
+  onAnchorDragMouseUp() {
+    const newSizeWidth = this.state.sizeWidth;
+    const newSizeHeight = this.state.sizeHeight;
 
-    this.setState({
-      anchorDrag: false,
-    });
-    //Used for writing the data into to editor, for them to persist into the viewer
+    this.setState({ anchorDrag: false });
+
+    // Used for writing data into editor, for them to persist into the view
     this.setHotspotValues(newSizeWidth, newSizeHeight);
-  };
+  }
 
+  /**
+   * Get style.
+   * @returns {object} Style values for top/left position.
+   */
   getStyle() {
     const style = {};
+
     if (this.props.topPosition !== undefined) {
       style.top = `${this.props.topPosition}%`;
     }
@@ -274,16 +265,27 @@ export default class OpenContent extends React.Component {
     if (this.props.leftPosition !== undefined) {
       style.left = `${this.props.leftPosition}%`;
     }
+
     return style;
   }
 
+  /**
+   * Get content from interaction.
+   * @returns {string} Content from interaction.
+   */
   getContentFromInteraction() {
     const scene = this.context.params.scenes.find((scene) => {
       return scene.sceneId === this.props.sceneId;
     });
+
     const interaction = scene.interactions[this.props.interactionIndex];
     const library = interaction.action.library;
     const machineName = H5P.libraryFromString(library).machineName;
+
+    /*
+     * TODO: Check what this is for feels very weird.
+     * Shouldn't this attach the H5P instance DOM?
+     */
     if (machineName === 'H5P.AdvancedText') {
       return interaction.action.params.text;
     }
@@ -300,44 +302,53 @@ export default class OpenContent extends React.Component {
     }
   }
 
+  /**
+   * Handle double click.
+   */
   onDoubleClick() {
     if (this.props.doubleClickHandler) {
       this.props.doubleClickHandler();
     }
-    this.setState({
-      isFocused: false,
-    });
+
+    this.setState({ isFocused: false });
   }
 
-  onMouseDown(e) {
-    const hasMouseDownHandler =
-      this.context.extras.isEditor && this.props.mouseDownHandler;
-    if (hasMouseDownHandler) {
-      this.props.mouseDownHandler(e);
+  /**
+   * Handle mouse down.
+   * @param {PointerEvent} event Event.
+   */
+  onMouseDown(event) {
+    if (this.context.extras.isEditor && this.props.mouseDownHandler) {
+      this.props.mouseDownHandler(event);
     }
   }
+
+  /**
+   * Set focus.
+   */
   setFocus() {
     const isFocusable =
       this.context.extras.isEditor &&
       this.openContentWrapper &&
       this.openContentWrapper.current;
+
     if (isFocusable) {
-      this.openContentWrapper.current.focus({
-        preventScroll: true,
-      });
+      this.openContentWrapper.current.focus({ preventScroll: true });
     }
   }
 
-  handleFocus = (e) => {
+  /**
+   * Handle focus.
+   * @param {FocusEvent} event Event.
+   */
+  handleFocus = (event) => {
     if (this.context.extras.isEditor) {
       if (
         this.openContentWrapper &&
         this.openContentWrapper.current &&
-        this.openContentWrapper === e.target
+        this.openContentWrapper === event.target
       ) {
-        this.openContentWrapper.current.focus({
-          preventScroll: true,
-        });
+        this.openContentWrapper.current.focus({ preventScroll: true });
       }
       return;
     }
@@ -352,8 +363,12 @@ export default class OpenContent extends React.Component {
     }
   };
 
+  /**
+   * React render function.
+   * @returns {object} JSX element.
+   */
   render() {
-    let wrapperClasses = ['open-content-wrapper'];
+    const wrapperClasses = ['open-content-wrapper'];
 
     if (this.state.isMouseOver) {
       wrapperClasses.push('hover');
@@ -372,12 +387,13 @@ export default class OpenContent extends React.Component {
     const DragButton = (innerProps) => {
       const hotspotBtnRef = useRef(null);
 
-      const mouseMoveHandler = (e) => {
-        this.onMouseMove(e, innerProps.horizontalDrag);
+      const mouseMoveHandler = (event) => {
+        this.onMouseMove(event, !innerProps.horizontalDrag);
       };
-      //Here we add a mouseup listener on the document so the user can release the mouse on anything on the document
-      const handleMouseDown = useCallback((e) => {
-        this.onAnchorDragMouseDown(e, innerProps.horizontalDrag);
+
+      // Add mouseup listener on document so user can release mouse everywhere
+      const handleMouseDown = useCallback((event) => {
+        this.onAnchorDragMouseDown(event, !innerProps.horizontalDrag);
         this.toggleDrag();
         document.addEventListener('mousemove', mouseMoveHandler);
 
@@ -463,4 +479,11 @@ export default class OpenContent extends React.Component {
     );
   }
 }
+
 OpenContent.contextType = H5PContext;
+
+/** @constant {number} SIZE_MIN Minimum size for content. */
+OpenContent.SIZE_MIN = 64;
+
+/** @constant {number} SIZE_MAX Maximum size for content. */
+OpenContent.SIZE_MAX = 512;

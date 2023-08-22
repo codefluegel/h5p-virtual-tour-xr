@@ -100,6 +100,9 @@ H5PUpgrades['H5P.NDLAThreeImage'] = (function () {
                 delete interaction.label.isHotspotTabbable;
                 delete interaction.label.hotSpotSizeValues;
               }
+              else {
+                interaction.label = {}; // Fixes old issue where this upgrade was forgotten
+              }
 
               return interaction;
             });

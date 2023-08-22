@@ -2,23 +2,19 @@ import he from 'he';
 
 /**
  * Determine whether or not the interaction should be rendered in 3d
- *
- * @param {Interaction} interaction
- * @return {boolean}
+ * @param {object} interaction Interaction.
+ * @returns {boolean} True, if should be rendered in 3D.
  */
 export const renderIn3d = (interaction) => {
-  return  interaction.showAsHotspot; // TODO: Does this make sense?
+  return interaction.showAsHotspot; // TODO: Does this make sense? Should the function be renamed?
 };
 
 /**
- * Returns the `value` if it's greater than the minimum and lower than the maximum.
- * If it's lower than the minimum, then the minimum is returned,
- * else if the value is greater than the maximum, then the maximum is returned.
- *
- * @param {number} min
- * @param {number} value
- * @param {number} max
- * @returns {number}
+ * Enforce value to be not smaller than minumum and not larger than maximum.
+ * @param {number} min Minumum.
+ * @param {number} value Value to be put in boundaries.
+ * @param {number} max Maximum.
+ * @returns {number} Value within boundaries.
  */
 export const clamp = (min, value, max) => Math.min(max, Math.max(min, value));
 

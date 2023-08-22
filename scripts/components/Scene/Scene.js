@@ -10,40 +10,10 @@ export const SceneTypes = {
   PREVIOUS_SCENE: -1,
 };
 
-/**
- * @typedef {{
- *   isActive: boolean;
- *   isHiddenBehindOverlay: boolean;
- *   nextFocus: string;
- *   takeFocus: boolean;
- *   sceneIcons: { id: number; iconType: string; }[];
- *   imageSrc: string;
- *   navigateToScene: () => void;
- *   showInteraction: () => void;
- *   sceneHistory: Array<any>;
- *   audioIsPlaying: boolean;
- *   sceneId: number;
- *   onBlurInteraction: () => void;
- *   onFocusedInteraction: () => void;
- *   focusedInteraction: number;
- *   sceneWaitingForLoad: number;
- *   doneLoadingNextScene: boolean;
- *   updateScoreCard: () => void;
- *   sceneParams: SceneParams;
- *   threeSixty: any;
- *   updateThreeSixty: boolean;
- *   addThreeSixty: (threeSixty: any) => void;
- *   forceStartCamera: boolean;
- *   toggleCenterScene: boolean;
- *   onSetCameraPos: (cameraPosition: CameraPosition) => void;
- *   isEditingInteraction: boolean;
- *   startBtnClicked: (event: MouseEvent) => void;
- * }} Props
- */
-
 export default class Scene extends React.Component {
   /**
-   * @param {Props} props
+   * @class
+   * @param {object} props React properties.
    */
   constructor(props) {
     super(props);
@@ -51,7 +21,6 @@ export default class Scene extends React.Component {
 
   /**
    * React component did update.
-   *
    * @param {object} prevProps Props before update.
    */
   componentDidUpdate(prevProps) {
@@ -75,6 +44,10 @@ export default class Scene extends React.Component {
     }
   }
 
+  /**
+   * React render function.
+   * @returns {object} JSX element.
+   */
   render() {
     if (this.props.sceneParams.sceneType === SceneTypes.STATIC_SCENE) {
       return (
@@ -130,4 +103,5 @@ export default class Scene extends React.Component {
     );
   }
 }
+
 Scene.contextType = H5PContext;

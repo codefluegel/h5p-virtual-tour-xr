@@ -5,6 +5,10 @@ import { H5PContext } from '../../context/H5PContext';
 import './ScoreSummary.scss';
 
 export default class ScoreSummary extends React.Component {
+  /**
+   * @class
+   * @param {object} props React props.
+   */
   constructor(props) {
     super(props);
 
@@ -13,7 +17,6 @@ export default class ScoreSummary extends React.Component {
 
   /**
    * Get total scores of all scenes.
-   *
    * @param {object} sceneScoreCards Score cards.
    * @returns {object} Overall score and total score of all scenes.
    */
@@ -28,6 +31,9 @@ export default class ScoreSummary extends React.Component {
       }, { score: 0, max:0 });
   }
 
+  /**
+   * React life-cycle handler: component did mount.
+   */
   componentDidMount() {
     const totalScores = this.getTotalScores(this.props.scores.sceneScoreCards);
     const scoreBar = new H5P.JoubelScoreBar(totalScores.max, 'label', 'helpText', 'scoreExplanationButtonLabel');
@@ -35,11 +41,17 @@ export default class ScoreSummary extends React.Component {
     scoreBar.appendTo(this.scoreBarDOM.current);
   }
 
+  /**
+   * React render function.
+   * @returns {object} JSX element.
+   */
   render() {
     const items = [];
     for (const [sceneId, sceneScores] of Object.entries(this.props.scores.sceneScoreCards)) {
       items.push(<SceneScores key={sceneId} sceneId={sceneId} sceneScores={sceneScores}></SceneScores>);
     }
+
+    // TODO: Why was this not build as a component?
     const children = (
       <div className="h5p-summary-table-pages">
         <table className="h5p-score-table">

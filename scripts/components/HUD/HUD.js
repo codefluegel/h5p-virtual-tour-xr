@@ -7,18 +7,21 @@ import Button from './Buttons/Button/Button';
 import { SceneTypes } from '../Scene/Scene';
 
 export default class HUD extends React.Component {
+  /**
+   * @class
+   * @param {object} props React props.
+   */
   constructor(props) {
     super(props);
     this.buttons = {};
   }
 
   /**
-   * Help pick the audio track for the given scene.
-   *
-   * @param {Object} scene
-   * @return {Object}
+   * Get scene audio track.
+   * @param {object} scene Scene to get track for.
+   * @returns {object} Audio track props.
    */
-  getSceneAudioTrack = (scene) => {
+  getSceneAudioTrack(scene) {
     const props = {
       isPlaying: this.props.audioIsPlaying,
       onIsPlaying: this.props.onAudioIsPlaying,
@@ -31,13 +34,18 @@ export default class HUD extends React.Component {
       interactionAudioPlayers: this.props.interactionAudioPlayers,
     };
 
-    if (scene?.audio?.length > 0 && (!scene.audioType || scene.audioType === 'audio')) {
+    if (
+      scene?.audio?.length > 0 &&
+      (!scene.audioType || scene.audioType === 'audio')
+    ) {
       props.sceneAudioTrack = scene.audio;
       props.sceneId = scene.sceneId;
     }
 
     if (scene?.audioType === 'playlist' && scene?.playlist) {
-      const playlist = this.checkIfPlaylist(scene, this.context.params.playlists);
+      const playlist = this.checkIfPlaylist(
+        scene, this.context.params.playlists
+      );
       if (playlist != null) {
         props.sceneAudioTrack = playlist.audioTracks;
         props.playlistId = playlist.playlistId;
@@ -47,8 +55,14 @@ export default class HUD extends React.Component {
 
     const noSceneAudio = (scene?.audioType === 'audio') && !scene?.audio;
     const noScenePlaylist = (scene?.audioType === 'playlist') && !scene?.playlist;
-    if (scene && (noSceneAudio || noScenePlaylist) && this.context.behavior?.playlist) {
-      const playlist = this.checkIfPlaylist(this.context.behavior, this.context.params.playlists);
+
+    if (
+      scene && (noSceneAudio || noScenePlaylist) &&
+      this.context.behavior?.playlist
+    ) {
+      const playlist = this.checkIfPlaylist(
+        this.context.behavior, this.context.params.playlists
+      );
       if (playlist != null) {
         props.sceneAudioTrack = playlist.audioTracks;
         props.playlistId = playlist.playlistId;
@@ -57,33 +71,49 @@ export default class HUD extends React.Component {
     }
 
     return props;
-  };
+  }
 
+  /**
+   * Determine whether parent contains playlist. // TODO: Rename function to recflect purpose
+   * @param {object} parent Parent.
+   * @param {object} playlists Playlists.
+   * @returns {object|null} Playlist.
+   */
   checkIfPlaylist(parent, playlists) {
-    const parentHasPlaylist = (parent != null) && (parent.playlist != null) && (parent.audioType === 'playlist');
+    const parentHasPlaylist = (parent !== null) &&
+      (parent.playlist !== null) && (parent.audioType === 'playlist');
+
     if (parentHasPlaylist && (playlists != null)) {
-      const playlistExists = playlists.find((playlist) => {
+      return playlists.find((playlist) => {
         return playlist.playlistId === parent.playlist;
       });
-      return playlistExists;
     }
+
     return null;
   }
 
-  handleSceneDescription = () => {
+  /**
+   * Show scene description.
+   */
+  showSceneDescription() {
     this.props.onSceneDescription(this.props.scene.scenedescription);
-  };
+  }
 
   /**
-   * React - create DOM elements
+   * React render function.
+   * @returns {object} JSX element.
    */
   render() {
     const showScoresButton = this.props.showScoresButton;
     const showHomeButton = this.props.showHomeButton;
-    const isThreeSixty = this.props.scene.sceneType === SceneTypes.THREE_SIXTY_SCENE;
+    const isThreeSixty =
+      this.props.scene.sceneType === SceneTypes.THREE_SIXTY_SCENE;
 
     return (
-      <div className="hud" aria-hidden={ this.props.isHiddenBehindOverlay ? true : undefined }>
+      <div className="hud" aria-hidden={ this.props.isHiddenBehindOverlay ?
+        true :
+        undefined
+      }>
         <div className="hud-top-right">
         </div>
         <div className="hud-bottom-left">
@@ -94,7 +124,7 @@ export default class HUD extends React.Component {
               label={ this.context.l10n.sceneDescription }
               isHiddenBehindOverlay={ this.props.isHiddenBehindOverlay }
               nextFocus={ this.props.nextFocus }
-              onClick={ this.handleSceneDescription }
+              onClick={ this.showSceneDescription.bind(this) }
             />
           }
           {
@@ -110,7 +140,10 @@ export default class HUD extends React.Component {
             showHomeButton &&
             <Button
               type={ 'go-to-start' }
-              label={this.props.isStartScene ? this.context.l10n.userIsAtStartScene : this.context.l10n.goToStartScene}
+              label={this.props.isStartScene ?
+                this.context.l10n.userIsAtStartScene :
+                this.context.l10n.goToStartScene
+              }
               isHiddenBehindOverlay={ this.props.isHiddenBehindOverlay }
               nextFocus={ this.props.nextFocus }
               onClick={ this.props.onGoToStartScene }

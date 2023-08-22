@@ -53,7 +53,8 @@ export default class PasswordContent extends React.Component {
     this.setState({
       shakeClass: 'h5p-password-icon--shake',
     });
-    setTimeout(() => {
+
+    window.setTimeout(() => {
       this.setState({
         shakeClass: '',
       });

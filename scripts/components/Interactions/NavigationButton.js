@@ -30,17 +30,19 @@ const infoInteractions = [
 ];
 
 /**
- * @param {string} machineName
- * @returns {boolean}
+ * Determine whether an H5P library is considered an info interaction.
+ * @param {string} machineName H5P library machine name.
+ * @returns {boolean} True, if is info interaction.
  */
 const isInfoInteraction = (machineName) => {
   return infoInteractions.includes(machineName);
 };
 
 /**
- * @param {Interaction} interaction
- * @param {Array<SceneParams>} scenes
- * @returns {string}
+ * Get icon from interaction.
+ * @param {object} interaction Interaction.
+ * @param {object[]} scenes Scene parameters.
+ * @returns {string} Icon lookup key.
  */
 export const getIconFromInteraction = (interaction, scenes) => {
   interaction.hotspotSettings = interaction.hotspotSettings ?? {};
@@ -48,7 +50,9 @@ export const getIconFromInteraction = (interaction, scenes) => {
   const library = interaction.action.library;
   const machineName = H5P.libraryFromString(library).machineName;
   let icon = '';
-  if (interaction.passwordSettings?.interactionPassword && !interaction.unlocked) {
+  if (
+    interaction.passwordSettings?.interactionPassword && !interaction.unlocked
+  ) {
     icon = Icons.LOCK;
   }
   else if (machineName === 'H5P.GoToScene') {
@@ -84,68 +88,23 @@ export const getIconFromInteraction = (interaction, scenes) => {
   else {
     icon = Icons.QUESTION;
   }
+
   return icon;
 };
 
 /**
- * @param {Interaction} interaction
- * @returns {InteractionLabel}
+ * Get label from interaction.
+ * @param {object} interaction Interaction.
+ * @returns {object} Interaction label including label text.
  */
 export const getLabelFromInteraction = (interaction) => {
   return { ...interaction.label, labelText: interaction.labelText };
 };
 
-
-/**
- * @typedef {{
- *  sceneId?: number;
- *  interactionIndex?: number;
- *  isFocused?: boolean;
- *  buttonClasses: Array<string>;
- *  icon: string;
- *  showAsHotspot?: boolean;
- *  isHiddenBehindOverlay: boolean;
- *  title: string;
- *  label?: InteractionLabel;
- *  staticScene?: boolean;
- *  leftPosition?: number;
- *  topPosition?: number;
- *  type?: string;
- *  forceClickHandler?: boolean;
- *  nextFocus?: string;
- *  showHotspotOnHover?: boolean;
- *  isHotspotTabbable?: boolean;
- *  wrapperHeight?: number;
- *  rendered?: boolean;
- *  is3d?: boolean;
- *  children?: React.ReactNode;
- *  clickHandler: () => void;
- *  doubleClickHandler?: () => void;
- *  mouseDownHandler?: (event: MouseEvent) => void;
- *  onFocus?: () => void;
- *  onBlur?: () => void;
- *  onFocusedInteraction?: () => void;
- *  onMount?: (wrapper: HTMLElement) => void;
- *  onUnmount?: (wrapper: HTMLElement) => void;
- *  onUpdate?: (wrapper: HTMLElement) => void;
- * }} Props
- */
-
-/**
- * @typedef {{
- *  isFocused: boolean;
- *  expandButtonFocused: boolean;
- *  innerButtonFocused: boolean;
- *  isMouseOver: boolean;
- * }} State
- */
-
-/**
- * @extends {React.Component<Props, State>}
- */
 export default class NavigationButton extends React.Component {
   /**
-   * @param {Props} props
+   * @class
+   * @param {object} props React props.
    */
   constructor(props) {
     super(props);
@@ -157,7 +116,6 @@ export default class NavigationButton extends React.Component {
     this.onFocus = this.onFocus.bind(this);
     this.resizeOnDrag = this.resizeOnDrag.bind(this);
 
-    /** @type {State} */
     this.state = {
       isFocused: this.props.isFocused,
       expandButtonFocused: false,
@@ -166,29 +124,37 @@ export default class NavigationButton extends React.Component {
     };
   }
 
-  resizeOnDrag = (width, height) => {
+  /**
+   * Resize on drag.
+   * @param {number} width Width.
+   * @param {number} height Height.
+   */
+  resizeOnDrag(width, height) {
     this.setHotspotValues(width, height);
 
     if (this.context.extras.isEditor) {
       this.forceUpdate();
     }
-  };
+  }
 
+  /**
+   * Add focus listener.
+   */
   addFocusListener() {
     if (this.navButtonWrapper) {
       this.navButtonWrapper.current.addEventListener('focus', this.onFocus);
     }
   }
 
+  /**
+   * Handle receiving focus.
+   */
   onFocus() {
-    // Already focused
     if (this.state.isFocused) {
-      return;
+      return; // Already focused
     }
 
-    this.setState({
-      isFocused: true,
-    });
+    this.setState({ isFocused: true });
 
     if (this.props.onFocusedInteraction) {
       this.props.onFocusedInteraction();
@@ -196,14 +162,17 @@ export default class NavigationButton extends React.Component {
   }
 
   /**
-   * @param {FocusEvent} event
+   * Handle losing focus.
+   * @param {FocusEvent} event Event.
    */
   onBlur(event) {
-    const navButtonWrapper = this.navButtonWrapper
-      && this.navButtonWrapper.current;
+    const navButtonWrapper = this.navButtonWrapper?.current;
 
-    if (navButtonWrapper && navButtonWrapper.contains(event.relatedTarget) && (!this.expandButton || event.relatedTarget !== this.expandButton.current)) {
-      // Clicked target is child of button wrapper and not the expandButton, don't blur
+    if (
+      navButtonWrapper?.contains(event.relatedTarget) &&
+      (!this.expandButton || event.relatedTarget !== this.expandButton.current)
+    ) {
+      // Target is child of button wrapper and not expandButton, don't blur
       this.setFocus();
       return;
     }
@@ -211,11 +180,15 @@ export default class NavigationButton extends React.Component {
     this.setState({
       isFocused: false,
     });
+
     if (this.props.onBlur) {
       this.props.onBlur();
     }
   }
 
+  /**
+   * React life-cycle handler: Component did mount.
+   */
   componentDidMount() {
     if (this.props.onMount) {
       // Let parent know this element should be added to the THREE world.
@@ -224,26 +197,33 @@ export default class NavigationButton extends React.Component {
 
     this.addFocusListener();
     if (this.state.isFocused) {
-      setTimeout(() => {
+      window.setTimeout(() => {
         this.setFocus();
       }, 0);
     }
   }
 
   /**
-   * @param {Props} prevProps
+   * React life-cycle handler: Component did update.
+   * @param {object} prevProps React props before update.
    */
   componentDidUpdate(prevProps) {
-    if (this.props.type && this.props.type === this.props.nextFocus && prevProps.nextFocus !== this.props.nextFocus) {
-      this.skipFocus = true; // Prevent moving camera on next focus (makes for a better UX when using the mouse)
+    if (
+      this.props.type && this.props.type === this.props.nextFocus &&
+      prevProps.nextFocus !== this.props.nextFocus
+    ) {
+      // Prevent moving camera on next focus (better UX when using mouse)
+      this.skipFocus = true;
       this.setFocus();
     }
 
-    if (this.props.isFocused && !prevProps.isFocused && this.context.threeSixty) {
-      setTimeout(() => { // Note: Don't think the timeout is needed after rendering was fixed
+    if (
+      this.props.isFocused && !prevProps.isFocused && this.context.threeSixty
+    ) {
+      window.setTimeout(() => {
         this.context.threeSixty.preventCameraMovement = true;
         this.setFocus(true);
-      }, 0);
+      }, 0); // Note: Don't think timeout is needed after rendering was fixed
     }
 
     if (this.props.onUpdate) {
@@ -253,36 +233,46 @@ export default class NavigationButton extends React.Component {
 
     if (prevProps.isFocused !== this.props.isFocused) {
       if (!this.props.isFocused) {
-        this.setState({
-          isFocused: false,
-        });
+        this.setState({ isFocused: false });
       }
     }
   }
 
+  /**
+   * React life-cycle function: Component is about to be unmounted.
+   */
   componentWillUnmount() {
     if (this.navButtonWrapper) {
       this.navButtonWrapper.current.removeEventListener('focus', this.onFocus);
     }
 
     if (this.props.onUnmount) {
-      const el = this.navButtonWrapper.current;
+      const element = this.navButtonWrapper.current;
       // We want this to run after the component is removed
-      setTimeout(() => {
+      window.setTimeout(() => {
         // Let parent know this element should be remove from the THREE world.
-        this.props.onUnmount(el);
+        this.props.onUnmount(element);
       }, 0);
     }
   }
 
+  /**
+   * Get style.
+   * @param {number} width Width.
+   * @param {number} height Height.
+   * @returns {object} Style including top, left, width, height appropriate for scene type.
+   */
   getStyle(width, height) {
     const style = {};
+
     if (this.props.topPosition !== undefined) {
       style.top = `${this.props.topPosition}%`;
     }
+
     if (this.props.leftPosition !== undefined) {
       style.left = `${this.props.leftPosition}%`;
     }
+
     if (this.props.staticScene) {
       // set width and height for static scene
       style.width = `${width}%`;
@@ -293,45 +283,47 @@ export default class NavigationButton extends React.Component {
       style.width = width;
       style.height = height;
     }
+
     return style;
   }
 
+  /**
+   * Handle click.
+   */
   onClick() {
-    const hasClickHandler = this.props.forceClickHandler
-      || !this.context.extras.isEditor;
-
-    if (hasClickHandler) {
+    if (this.props.forceClickHandler || !this.context.extras.isEditor) {
       this.props.clickHandler();
 
       // Reset button focus state when changing scenes or opening content
-      this.setState({
-        innerButtonFocused: false
-      });
+      this.setState({ innerButtonFocused: false });
     }
 
     this.setFocus(true);
   }
 
+  /**
+   * Handle double click.
+   */
   onDoubleClick() {
     if (this.props.doubleClickHandler) {
       this.props.doubleClickHandler();
     }
-    this.setState({
-      isFocused: false,
-    });
+
+    this.setState({ isFocused: false });
   }
 
-  onMouseDown(e) {
-    const hasMouseDownHandler = this.context.extras.isEditor
-      && this.props.mouseDownHandler;
-    if (hasMouseDownHandler) {
-      this.props.mouseDownHandler(e);
+  /**
+   * Handle mouse down.
+   * @param {PointerEvent} event Event.
+   */
+  onMouseDown(event) {
+    if (this.context.extras.isEditor && this.props.mouseDownHandler) {
+      this.props.mouseDownHandler(event);
     }
   }
 
   /**
    * Set focus to relevant button element.
-   *
    * @param {boolean} preventCameraMovement If true, don't move camera on focus.
    */
   setFocus(preventCameraMovement = false) {
@@ -352,17 +344,18 @@ export default class NavigationButton extends React.Component {
   }
 
   /**
-   * @param {React.FocusEvent<HTMLElement>} event
+   * @param {FocusEvent} event Event.
    */
   handleFocus = (event) => {
     if (this.context.extras.isEditor) {
       if (this.navButtonWrapper?.current === event.target) {
         this.setFocus();
       }
+
       return;
     }
 
-    if (!this.context.extras.isEditor  && this.props.onFocus) {
+    if (!this.context.extras.isEditor && this.props.onFocus) {
       if (this.skipFocus) {
         this.skipFocus = false;
       }
@@ -373,36 +366,33 @@ export default class NavigationButton extends React.Component {
   };
 
   /**
-   * Handle changing scenes
+   * Handle expand button focus.
    */
-  handleGoToScene = () => {
-    // Make sure focus is dropped when changing scenes (Edge)
-    this.setState({
-      isFocused: false,
-    });
-  };
+  handleExpandButtonFocus() {
+    this.setState({ expandButtonFocused: true });
 
-  handleExpandButtonFocus = () => {
-    this.setState({
-      expandButtonFocused: true
-    });
     if (this.props.onFocusedInteraction) {
       this.props.onFocus();
     }
-  };
+  }
 
   /**
-   * @param {number} widthX
-   * @param {number} heightY
+   * Set hotspot size.
+   * @param {number} widthX Width.
+   * @param {number} heightY Height.
    */
   setHotspotValues(widthX, heightY) {
     const scene = this.context.params.scenes.find(
-      (/** @type {SceneParams} */ scene) => scene.sceneId === this.props.sceneId,
+      (scene) => scene.sceneId === this.props.sceneId,
     );
     const interaction = scene.interactions[this.props.interactionIndex];
     interaction.hotspotSettings.hotSpotSizeValues = `${widthX},${heightY}`;
   }
 
+  /**
+   * Get hotspot size.
+   * @returns {number[]} Width, height.
+   */
   getHotspotValues() {
     const interaction = this.getCurrentInteraction();
 
@@ -412,20 +402,23 @@ export default class NavigationButton extends React.Component {
   }
 
   /**
-   * @private
-   *
-   * Returns the current Interaction,
-   * based on current scene id and current interaction id.
-   *
-   * @returns {Interaction}
+   * Get current Interaction based on current scene id and current interaction id.
+   * @returns {object} Interaction.
    */
   getCurrentInteraction() {
-    const scene = this.context.params.scenes.find((/** @type {SceneParams} */ scene) => {
+    const scene = this.context.params.scenes.find((scene) => {
       return scene.sceneId === this.props.sceneId;
     });
-    return scene?.interactions ? scene.interactions[this.props.interactionIndex] : null;
+
+    return scene?.interactions ?
+      scene.interactions[this.props.interactionIndex] :
+      null;
   }
 
+  /**
+   * React render function.
+   * @returns {object} JSX element.
+   */
   render() {
     const interaction = this.getCurrentInteraction();
     const [libraryName] = interaction ?
@@ -437,7 +430,6 @@ export default class NavigationButton extends React.Component {
       'nav-button-wrapper',
       `nav-button-wrapper--${libraryName.toLowerCase()}`,
     ] : ['nav-button-wrapper'];
-
 
     if (this.props.buttonClasses) {
       wrapperClasses = wrapperClasses.concat(this.props.buttonClasses);

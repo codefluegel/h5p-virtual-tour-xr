@@ -2,12 +2,11 @@ export default class FocusTrap {
 
   /**
    * Simple focus trap.
-   *
    * @class
-   * @param {object} [params={}] Parameters.
+   * @param {object} [params] Parameters.
    * @param {HTMLElement} params.trapElement Element to be made a trap.
    * @param {HTMLElement} [params.initialFocus] Element to get initial focus.
-   * @param {boolean} [params.takeFocus=true] If false, don't focus itself.
+   * @param {boolean} [params.takeFocus] If false, don't focus itself.
    */
   constructor(params = {}) {
     params.takeFocus = params.takeFocus ?? true;
@@ -19,8 +18,7 @@ export default class FocusTrap {
 
   /**
    * Attach focus trap.
-   *
-   * @param {object} [params={}] Parameters.
+   * @param {object} [params] Parameters.
    * @param {HTMLElement} params.trapElement Element to be made a trap.
    * @param {HTMLElement} [params.initialFocus] Element to get initial focus.
    */
@@ -107,7 +105,6 @@ export default class FocusTrap {
 
   /**
    * Check whether HTML element is child of trap.
-   *
    * @param {HTMLElement} element Element to check.
    * @returns {boolean} True, if element is child.
    */
@@ -171,7 +168,6 @@ export default class FocusTrap {
 
   /**
    * Handle keyboard event.
-   *
    * @param {KeyboardEvent} event Keyboard event.
    */
   handleKeydownEvent(event) {

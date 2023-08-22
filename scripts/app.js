@@ -6,20 +6,21 @@ import { sceneRenderingQualityMapping } from './components/Scene/SceneTypes/Thre
 import { purifyHTML } from './utils/utils';
 
 export default class Wrapper extends H5P.EventDispatcher {
-  constructor(params, contentId, extras) {
+  /**
+   * @class
+   * @param {object} params Parameters passed by the editor.
+   * @param {number} contentId Content's id.
+   * @param {object} [extras] Saved state, metadata, etc.
+   */
+  constructor(params, contentId, extras = {}) {
     super();
 
-    extras = extras || {};
+    this.enforcedStartSceneId = extras.forceStartScreen >= 0 || null;
+    this.forceStartCamera = extras.forceStartCamera ?? null;
 
-    this.forceStartScreen = (extras.forceStartScreen !== undefined
-      && extras.forceStartScreen >= 0)
-      ? extras.forceStartScreen : null;
-
-    this.forceStartCamera = extras.forceStartCamera !== undefined
-      ? extras.forceStartCamera : null;
+    // TODO: Parameter sanitization
 
     params.threeImage.scenes = Wrapper.addUniqueIdsToInteractions(params.threeImage.scenes);
-    params.threeImage.scenes = Wrapper.addMissingLabelSettings(params.threeImage.scenes);
 
     this.behavior = {
       label: {
@@ -88,15 +89,11 @@ export default class Wrapper extends H5P.EventDispatcher {
     this.sceneRenderingQuality = this.behavior.sceneRenderingQuality || 'high';
 
     this.on('resize', () => {
-      const isFullscreen = (
-        this.wrapper.parentElement.classList.contains('h5p-fullscreen') ||
-        this.wrapper.parentElement.classList.contains('h5p-semi-fullscreen')
-      );
       const rect = this.getRect();
       // Fullscreen should use all of the space
-      const ratio = (isFullscreen ? (rect.height / rect.width) : (9 / 16));
+      const ratio = (H5P.isFullscreen ? (rect.height / rect.width) : (9 / 16));
 
-      this.wrapper.style.height = isFullscreen ?
+      this.wrapper.style.height = H5P.isFullscreen ?
         '100%' :
         `${rect.width * ratio}px`;
 
@@ -115,7 +112,7 @@ export default class Wrapper extends H5P.EventDispatcher {
       }
 
       // Resize scene
-      if (this.currentScene === null || !this.threeSixty) {
+      if (this.currentSceneId === null || !this.threeSixty) {
         return;
       }
 
@@ -124,17 +121,21 @@ export default class Wrapper extends H5P.EventDispatcher {
     });
   }
 
+  /**
+   * Set current scene id.
+   * @param {number} sceneId Scene id.
+   */
   setCurrentSceneId(sceneId) {
-    this.currentScene = sceneId;
+    this.currentSceneId = sceneId;
 
     this.trigger('changedScene', sceneId);
 
     ReactDOM.render(
       <H5PContext.Provider value={this}>
         <Main
-          forceStartScreen={this.forceStartScreen}
+          forceStartScreen={this.enforcedStartSceneId}
           forceStartCamera={this.forceStartCamera}
-          currentScene={this.currentScene}
+          currentScene={this.currentSceneId}
           setCurrentSceneId={this.setCurrentSceneId.bind(this)}
           addThreeSixty={(tS) => this.threeSixty = tS}
           onSetCameraPos={this.setCameraPosition.bind(this)} />
@@ -147,24 +148,31 @@ export default class Wrapper extends H5P.EventDispatcher {
     });
   }
 
-  reDraw(forceStartScreen = this.currentScene) {
+  /**
+   * Redraw scene.
+   * @param {number} [enforcedStartSceneId] If set, enforce drawing respective scene.
+   */
+  reDraw(enforcedStartSceneId = this.currentSceneId) {
     const sceneRenderingQuality = this.behavior.sceneRenderingQuality;
-    if (sceneRenderingQuality !== this.sceneRenderingQuality
-      && this.threeSixty) {
+
+    if (
+      sceneRenderingQuality !== this.sceneRenderingQuality && this.threeSixty
+    ) {
       this.setSceneRenderingQuality(sceneRenderingQuality);
     }
 
-    if (forceStartScreen !== this.currentScene) {
-      this.setCurrentSceneId(forceStartScreen);
+    if (enforcedStartSceneId !== this.currentSceneId) {
+      // TODO: That will also re-render the DOM. Could this be made simpler?
+      this.setCurrentSceneId(enforcedStartSceneId);
       return;
     }
 
     ReactDOM.render(
       <H5PContext.Provider value={this}>
         <Main
-          forceStartScreen={this.forceStartScreen}
+          forceStartScreen={this.enforcedStartSceneId}
           forceStartCamera={this.forceStartCamera}
-          currentScene={this.currentScene}
+          currentScene={this.currentSceneId}
           setCurrentSceneId={this.setCurrentSceneId.bind(this)}
           addThreeSixty={(tS) => this.threeSixty = tS}
           onSetCameraPos={this.setCameraPosition.bind(this)} />
@@ -173,22 +181,27 @@ export default class Wrapper extends H5P.EventDispatcher {
     );
   }
 
+  /**
+   * Attach library to wrapper.
+   * @param {H5P.jQuery} $container Content's container.
+   */
   attach($container) {
     const createElements = () => {
       this.wrapper = document.createElement('div');
       this.wrapper.classList.add('h5p-three-sixty-wrapper');
 
-      this.currentScene = this.params.startSceneId;
-      if (this.forceStartScreen) {
-        this.currentScene = this.forceStartScreen;
+      this.currentSceneId = this.params.startSceneId;
+      if (this.enforcedStartSceneId) {
+        this.currentSceneId = this.enforcedStartSceneId;
       }
 
+      // TODO: The scene is rendered in re-draw ans setCurrentScene, too. Could this be made simpler?
       ReactDOM.render(
         <H5PContext.Provider value={this}>
           <Main
-            forceStartScreen={this.forceStartScreen}
+            forceStartScreen={this.enforcedStartSceneId}
             forceStartCamera={this.forceStartCamera}
-            currentScene={this.currentScene}
+            currentScene={this.currentSceneId}
             setCurrentSceneId={this.setCurrentSceneId.bind(this)}
             addThreeSixty={(tS) => this.threeSixty = tS}
             onSetCameraPos={this.setCameraPosition.bind(this)}
@@ -218,30 +231,48 @@ export default class Wrapper extends H5P.EventDispatcher {
     $container[0].classList.add('h5p-three-image');
   }
 
+  /**
+   * Get informaton about size/position of wrapper relative to viewport.
+   * @returns {DOMRect} Informaton about size/position of wrapper.
+   */
   getRect() {
     return this.wrapper.getBoundingClientRect();
   }
 
+  /**
+   * Get current size ratio of wrapper.
+   * @returns {number} Current size ratio of wrapper.
+   */
   getRatio() {
     const rect = this.wrapper.getBoundingClientRect();
     return (rect.width / rect.height);
   }
 
+  /**
+   * Set camera position.
+   * @param {string} cameraPosition Camera position as `yaw,pitch` where yaw/pitch are floats.
+   * @param {boolean} focus If true, set focus to scene after setting position.
+   */
   setCameraPosition(cameraPosition, focus) {
-    if (this.currentScene === null || !this.threeSixty) {
-      return;
+    if (this.currentSceneId === null || !this.threeSixty) {
+      return; // No scene available to set camera position for.
     }
 
     const [yaw, pitch] = cameraPosition.split(',');
     this.threeSixty.setCameraPosition(parseFloat(yaw), parseFloat(pitch));
+
     if (focus) {
       this.threeSixty.focus();
     }
   }
 
+  /**
+   * Get camera position and field of view.
+   * @returns {object|undefined} Camera position and field of view.
+   */
   getCamera() {
-    if (this.currentScene === null || !this.threeSixty) {
-      return;
+    if (this.currentSceneId === null || !this.threeSixty) {
+      return; // No scene available to get information for.
     }
 
     return {
@@ -250,6 +281,10 @@ export default class Wrapper extends H5P.EventDispatcher {
     };
   }
 
+  /**
+   * Set rendering quality of scene.
+   * @param {string} quality Quality as defined in semantics [high|medium|low].
+   */
   setSceneRenderingQuality(quality) {
     const segments = sceneRenderingQualityMapping[quality];
     this.threeSixty.setSegmentNumber(segments);
@@ -257,41 +292,19 @@ export default class Wrapper extends H5P.EventDispatcher {
   }
 
   /**
-    * Add unique ids to interactions.
-    * The ids are used as key for mapping React components.
-    * TODO: Create the ids in editor-time and store them in semantics
-    *
-    * @param {Array<SceneParams>} scenes
-    * @returns {Array<SceneParams>}
-    */
-  static addUniqueIdsToInteractions(scenes) {
-    return scenes?.map((scene) => scene.interactions
-      ? ({
-        ...scene,
-        interactions: scene.interactions?.map(
+   * Add unique ids to interactions as key for mapping React components.
+   * @param {object[]} sceneParams Scene parameters
+   * @returns {object[]} Scene parameters including ids.
+   */
+  static addUniqueIdsToInteractions(sceneParams) {
+    return sceneParams?.map((sceneParam) => {
+      if (sceneParam.interactions) {
+        sceneParam.interactions = sceneParam.interactions?.map(
           (interaction) => ({ ...interaction, id: H5P.createUUID() })
-        ),
-      })
-      : scene
-    );
-  }
-  /**
-     * Older interactions are missing label settings.
-     * This adds an empty `label` to avoid adding null checks everywhere.
-     * TODO: Add this to upgrades.json
-     *
-     * @param {Array<SceneParams>} scenes
-     * @returns {Array<SceneParams>}
-     */
-  static addMissingLabelSettings(scenes) {
-    return scenes?.map((scene) => scene.interactions
-      ? ({
-        ...scene,
-        interactions: scene.interactions?.map(
-          (interaction) => ({ ...interaction, label: interaction.label ?? {} })
-        ),
-      })
-      : scene
-    );
+        );
+      }
+
+      return sceneParam;
+    });
   }
 }

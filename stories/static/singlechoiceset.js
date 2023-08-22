@@ -17,7 +17,7 @@ H5P.SingleChoiceSet.StopWatch = (function () {
    * Starts the stop watch
    *
    * @public
-   * @return {H5P.SingleChoiceSet.StopWatch}
+   * @returns {H5P.SingleChoiceSet.StopWatch}
    */
   StopWatch.prototype.start = function () {
     /**
@@ -31,7 +31,7 @@ H5P.SingleChoiceSet.StopWatch = (function () {
    * Stops the stopwatch, and returns the duration in seconds.
    *
    * @public
-   * @return {number}
+   * @returns {number}
    */
   StopWatch.prototype.stop = function () {
     this.duration = this.duration + Date.now() - this.startTime;
@@ -51,7 +51,7 @@ H5P.SingleChoiceSet.StopWatch = (function () {
    * Returns the passed time in seconds
    *
    * @public
-   * @return {number}
+   * @returns {number}
    */
   StopWatch.prototype.passedTime = function () {
     return Math.round(this.duration / 10) / 100;
@@ -75,7 +75,7 @@ H5P.SingleChoiceSet.SoundEffects = (function () {
    * Setup defined sounds
    *
    * @param {string} libraryPath
-   * @return {boolean} True if setup was successfull, otherwise false
+   * @returns {boolean} True if setup was successfull, otherwise false
    */
   SoundEffects.setup = function (libraryPath) {
     if (isDefined || !H5P.SoundJS.initializeDefaultPlugins()) {
@@ -137,7 +137,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
   /**
    * Sets name
    * @param {string} name
-   * @return {XApiEventDefinitionBuilder}
+   * @returns {XApiEventDefinitionBuilder}
    */
   XApiEventDefinitionBuilder.prototype.name = function (name) {
     this.attributes.name = name;
@@ -147,7 +147,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
   /**
    * Question text and any additional information to generate the report.
    * @param {string} description
-   * @return {XApiEventDefinitionBuilder}
+   * @returns {XApiEventDefinitionBuilder}
    */
   XApiEventDefinitionBuilder.prototype.description = function (description) {
     this.attributes.description = description;
@@ -158,7 +158,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
    * Type of the interaction.
    * @param {string} interactionType
    * @see {@link https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#interaction-types|xAPI Spec}
-   * @return {XApiEventDefinitionBuilder}
+   * @returns {XApiEventDefinitionBuilder}
    */
   XApiEventDefinitionBuilder.prototype.interactionType = function (interactionType) {
     this.attributes.interactionType = interactionType;
@@ -169,7 +169,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
    * A pattern for determining the correct answers of the interaction
    * @param {string[]} correctResponsesPattern
    * @see {@link https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#response-patterns|xAPI Spec}
-   * @return {XApiEventDefinitionBuilder}
+   * @returns {XApiEventDefinitionBuilder}
    */
   XApiEventDefinitionBuilder.prototype.correctResponsesPattern = function (correctResponsesPattern) {
     this.attributes.correctResponsesPattern = correctResponsesPattern;
@@ -179,7 +179,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
   /**
    * Sets optional attributes
    * @param {object} optional Can have one of the following configuration objects: choices, scale, source, target, steps
-   * @return {XApiEventDefinitionBuilder}
+   * @returns {XApiEventDefinitionBuilder}
    */
   XApiEventDefinitionBuilder.prototype.optional = function (optional) {
     this.attributes.optional = optional;
@@ -187,7 +187,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
   };
 
   /**
-   * @return {object}
+   * @returns {object}
    */
   XApiEventDefinitionBuilder.prototype.build = function () {
     var definition = {};
@@ -231,7 +231,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
 
   /**
    * @param {boolean} completion
-   * @return {XApiEventResultBuilder}
+   * @returns {XApiEventResultBuilder}
    */
   XApiEventResultBuilder.prototype.completion = function (completion) {
     this.attributes.completion = completion;
@@ -240,7 +240,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
 
   /**
    * @param {boolean} success
-   * @return {XApiEventResultBuilder}
+   * @returns {XApiEventResultBuilder}
    */
   XApiEventResultBuilder.prototype.success = function (success) {
     this.attributes.success = success;
@@ -249,7 +249,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
 
   /**
    * @param {number} duration The duraction in seconds
-   * @return {XApiEventResultBuilder}
+   * @returns {XApiEventResultBuilder}
    */
   XApiEventResultBuilder.prototype.duration = function (duration) {
     this.attributes.duration = duration;
@@ -259,7 +259,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
   /**
    * Sets response
    * @param {string|string[]} response
-   * @return {XApiEventResultBuilder}
+   * @returns {XApiEventResultBuilder}
    */
   XApiEventResultBuilder.prototype.response = function (response) {
     this.attributes.response = (typeof response === 'string') ? response : response.join('[,]');
@@ -270,7 +270,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
    * Sets the score, and max score
    * @param {number} score
    * @param {number} maxScore
-   * @return {XApiEventResultBuilder}
+   * @returns {XApiEventResultBuilder}
    */
   XApiEventResultBuilder.prototype.score = function (score, maxScore) {
     this.attributes.rawScore = score;
@@ -280,7 +280,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
 
   /**
    * Builds the result object
-   * @return {object}
+   * @returns {object}
    */
   XApiEventResultBuilder.prototype.build = function () {
     var result = {};
@@ -332,7 +332,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
    * @param {object} verb
    *
    * @public
-   * @return {H5P.SingleChoiceSet.XApiEventBuilder}
+   * @returns {H5P.SingleChoiceSet.XApiEventBuilder}
    */
   XApiEventBuilder.prototype.verb = function (verb) {
     this.attributes.verb = verb;
@@ -345,7 +345,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
    * @param {string} objectType
    *
    * @public
-   * @return {H5P.SingleChoiceSet.XApiEventBuilder}
+   * @returns {H5P.SingleChoiceSet.XApiEventBuilder}
    */
   XApiEventBuilder.prototype.actor = function (name, mbox, objectType) {
     this.attributes.actor = {
@@ -361,7 +361,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
    * Sets contentId
    * @param {string} contentId
    * @param {string} [subContentId]
-   * @return {H5P.SingleChoiceSet.XApiEventBuilder}
+   * @returns {H5P.SingleChoiceSet.XApiEventBuilder}
    */
   XApiEventBuilder.prototype.contentId = function (contentId, subContentId) {
     this.attributes.contentId = contentId;
@@ -374,7 +374,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
    *
    * @param {string} parentContentId
    * @param {string} [parentSubContentId]
-   * @return {H5P.SingleChoiceSet.XApiEventBuilder}
+   * @returns {H5P.SingleChoiceSet.XApiEventBuilder}
    */
   XApiEventBuilder.prototype.context = function (parentContentId, parentSubContentId) {
     this.attributes.parentContentId = parentContentId;
@@ -386,7 +386,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
    * @param {object} result
    *
    * @public
-   * @return {H5P.SingleChoiceSet.XApiEventBuilder}
+   * @returns {H5P.SingleChoiceSet.XApiEventBuilder}
    */
   XApiEventBuilder.prototype.result = function (result) {
     this.attributes.result = result;
@@ -397,7 +397,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
    * @param {object} objectDefinition
    *
    * @public
-   * @return {H5P.SingleChoiceSet.XApiEventBuilder}
+   * @returns {H5P.SingleChoiceSet.XApiEventBuilder}
    */
   XApiEventBuilder.prototype.objectDefinition = function (objectDefinition) {
     this.attributes.objectDefinition = objectDefinition;
@@ -407,7 +407,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
   /**
    * Returns the buildt event
    * @public
-   * @return {H5P.XAPIEvent}
+   * @returns {H5P.XAPIEvent}
    */
   XApiEventBuilder.prototype.build = function () {
     var event = new H5P.XAPIEvent();
@@ -452,7 +452,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
    * Creates a Localized String object for en-US
    *
    * @param str
-   * @return {LocalizedString}
+   * @returns {LocalizedString}
    */
   var localizeToEnUS = function (str) {
     if (str != undefined) {
@@ -468,7 +468,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
    * @param {string} [subContentId]
    *
    * @see {@link https://github.com/h5p/h5p-php-library/blob/master/js/h5p-x-api-event.js#L240-L249}
-   * @return {string}
+   * @returns {string}
    */
   var getContentXAPIId = function (contentId, subContentId) {
     const cid = 'cid-' + contentId;
@@ -487,7 +487,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
    * Removes html elements from string
    *
    * @param {string} str
-   * @return {string}
+   * @returns {string}
    */
   var cleanString = function (str) {
     return $('<div>' + str + '</div>').text().trim();
@@ -511,7 +511,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
    *
    * @public
    * @static
-   * @return {H5P.SingleChoiceSet.XApiEventBuilder}
+   * @returns {H5P.SingleChoiceSet.XApiEventBuilder}
    */
   XApiEventBuilder.create = function () {
     return new XApiEventBuilder();
@@ -522,7 +522,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
    *
    * @public
    * @static
-   * @return {XApiEventDefinitionBuilder}
+   * @returns {XApiEventDefinitionBuilder}
    */
   XApiEventBuilder.createDefinition = function () {
     return new XApiEventDefinitionBuilder();
@@ -533,7 +533,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
    *
    * @public
    * @static
-   * @return {XApiEventResultBuilder}
+   * @returns {XApiEventResultBuilder}
    */
   XApiEventBuilder.createResult = function () {
     return new XApiEventResultBuilder();
@@ -548,7 +548,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
    * @public
    * @static
    * @see {@link https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#choice|xAPI-Spec}
-   * @return {object}
+   * @returns {object}
    */
   XApiEventBuilder.createChoice = function (id, description) {
     return {
@@ -565,7 +565,7 @@ H5P.SingleChoiceSet.XApiEventBuilder = (function ($, EventDispatcher) {
    * @public
    * @static
    * @see {@link https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#choice|xAPI-Spec}
-   * @return {string}
+   * @returns {string}
    */
   XApiEventBuilder.createCorrectResponsePattern = function (ids) {
     return ids.join('[,]');
@@ -648,7 +648,7 @@ H5P.SingleChoiceSet.ResultSlide = (function ($, EventDispatcher) {
    * Append the resultslide to a container
    *
    * @param  {jQuery} $container The container
-   * @return {jQuery}            This dom element
+   * @returns {jQuery}            This dom element
    */
   ResultSlide.prototype.appendTo = function ($container) {
     this.$resultSlide.appendTo($container);
@@ -886,7 +886,7 @@ H5P.SingleChoiceSet.Alternative = (function ($, EventDispatcher) {
   /**
    * Is this alternative the correct one?
    *
-   * @return {boolean}  Correct or not?
+   * @returns {boolean}  Correct or not?
    */
   Alternative.prototype.isCorrect = function () {
     return this.options.correct;
@@ -917,7 +917,7 @@ H5P.SingleChoiceSet.Alternative = (function ($, EventDispatcher) {
    * Append the alternative to a DOM container
    *
    * @param  {jQuery} $container The Dom element to append to
-   * @return {jQuery}            This dom element
+   * @returns {jQuery}            This dom element
    */
   Alternative.prototype.appendTo = function ($container) {
     $container.append(this.$alternative);
@@ -1448,7 +1448,7 @@ H5P.SingleChoiceSet = (function ($, UI, Question, SingleChoice, SolutionView, Re
    * @param {number} userAnswer
    * @param {number} duration
    *
-   * @return {H5P.XAPIEvent}
+   * @returns {H5P.XAPIEvent}
    */
   SingleChoiceSet.prototype.createXApiAnsweredEvent = function (question, userAnswer, duration) {
     var self = this;
@@ -1483,7 +1483,7 @@ H5P.SingleChoiceSet = (function ($, UI, Question, SingleChoice, SolutionView, Re
   /**
    * Returns the 'correct response pattern' for xApi
    *
-   * @return {string[]}
+   * @returns {string[]}
    */
   SingleChoiceSet.prototype.getXApiCorrectResponsePattern = function () {
     return [XApiEventBuilder.createCorrectResponsePattern([(0).toString()])]; // is always '0' for SCS
@@ -1494,7 +1494,7 @@ H5P.SingleChoiceSet = (function ($, UI, Question, SingleChoice, SolutionView, Re
    *
    * @param {String[]} answers
    *
-   * @return {{ choices: []}}
+   * @returns {{ choices: []}}
    */
   SingleChoiceSet.prototype.getXApiChoices = function (answers) {
     var choices = answers.map(function (answer, index) {
@@ -1838,7 +1838,7 @@ H5P.SingleChoiceSet = (function ($, UI, Question, SingleChoice, SolutionView, Re
    * or 0 if not existing
    *
    * @param {number} index
-   * @return {number}
+   * @returns {number}
    */
   SingleChoiceSet.prototype.timePassedInStopWatch = function (index) {
     if (this.stopWatches[index] !== undefined) {
@@ -1853,7 +1853,7 @@ H5P.SingleChoiceSet = (function ($, UI, Question, SingleChoice, SolutionView, Re
   /**
    * Returns the time the user has spent on all questions so far
    *
-   * @return {number}
+   * @returns {number}
    */
   SingleChoiceSet.prototype.getTotalPassedTime = function () {
     return this.stopWatches
@@ -1888,7 +1888,7 @@ H5P.SingleChoiceSet = (function ($, UI, Question, SingleChoice, SolutionView, Re
   /**
    * Retrieves the xAPI data necessary for generating result reports.
    *
-   * @return {object}
+   * @returns {object}
    */
   SingleChoiceSet.prototype.getXAPIData = function () {
     var self = this;
@@ -1932,7 +1932,7 @@ H5P.SingleChoiceSet = (function ($, UI, Question, SingleChoice, SolutionView, Re
    * Returns an attribute from this.parent if it exists
    *
    * @param {string} attributeName
-   * @return {*|undefined}
+   * @returns {*|undefined}
    */
   SingleChoiceSet.prototype.getParentAttribute = function (attributeName) {
     var self = this;
@@ -2002,7 +2002,7 @@ H5P.SingleChoiceSet = (function ($, UI, Question, SingleChoice, SolutionView, Re
    *
    * @param {Object[]} feedbacks
    * @param {number} scoreRatio
-   * @return {string}
+   * @returns {string}
    */
   var determineOverallFeedback = function (feedbacks, scoreRatio) {
     scoreRatio = Math.floor(scoreRatio * 100);

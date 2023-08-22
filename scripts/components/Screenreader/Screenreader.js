@@ -10,7 +10,8 @@ export default class Screenreader extends React.Component {
   }
 
   /**
-   * Render.
+   * React render function.
+   * @returns {object} JSX element.
    */
   render() {
     return (

@@ -8,6 +8,10 @@ import OpenContent from '../../Interactions/OpenContent';
 export let staticSceneWidth, staticSceneHeight;
 
 export default class StaticScene extends React.Component {
+  /**
+   * @class
+   * @param {object} props React properties.
+   */
   constructor(props) {
     super(props);
 
@@ -24,22 +28,17 @@ export default class StaticScene extends React.Component {
       isVerticalImage: false,
     };
 
-    /**
-     *  Note: Need to bind function reference once in the constructor
-     *        otherwise EventListener will not be removed, since it will
-     *        think it is a new function reference if we bind it when creating
-     *        the listener.
-     *        @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind}
-     */
     this.onMove = this.onMove.bind(this);
     this.stoppedDragging = this.stoppedDragging.bind(this);
+    this.resizeScene = this.resizeScene.bind(this);
   }
 
+  /**
+   * React life-cycle handler: Component did mount.
+   */
   componentDidMount() {
     // Initialize resize logic
-    this.context.on('resize', () => {
-      this.resizeScene();
-    });
+    this.context.on('resize', this.resizeScene);
     this.resizeScene();
 
     if (this.props.isActive && this.props.sceneWaitingForLoad !== null) {
@@ -48,6 +47,13 @@ export default class StaticScene extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.context.off('resize', this.resizeScene);
+  }
+
+  /**
+   * React life-cycle handler: Component did update.
+   */
   componentDidUpdate() {
     if (this.props.isActive && this.props.sceneWaitingForLoad !== null) {
       // Let main know that scene is finished loading
@@ -62,10 +68,15 @@ export default class StaticScene extends React.Component {
     }
   }
 
+  /**
+   * Resize scene.
+   */
   resizeScene() {
     if (!this.sceneWrapperRef || !this.sceneWrapperRef.current) {
       return;
     }
+
+    this.setStatisSceneSize();
 
     const wrapper = this.sceneWrapperRef.current;
     const wrapperSize = wrapper.getBoundingClientRect();
@@ -98,14 +109,22 @@ export default class StaticScene extends React.Component {
     this.forceUpdate();
   }
 
+  /**
+   * Get wrapper size.
+   * @param {boolean} [isVertical] True indicates vertical dragging.
+   * @returns {number|undefined} Wrapper height for vertical movement, else width.
+   */
   getWrapperSize(isVertical = false) {
     let wrapper = this.sceneWrapperRef.current;
     if (wrapper) {
       return isVertical ? wrapper.clientHeight : wrapper.clientWidth;
     }
-    return undefined;
   }
 
+  /**
+   * Get interaction being dragged.
+   * @returns {object|false} Interaction being dragged or false.
+   */
   getDraggingInteraction() {
     if (this.state.draggingInteractionIndex === null) {
       return false;
@@ -115,28 +134,38 @@ export default class StaticScene extends React.Component {
     return interactions[this.state.draggingInteractionIndex];
   }
 
-  getMouseMovedPercentages(mouseEvent, isVertical = false) {
-    let startPos = this.startX;
-    let wrapperSize = this.getWrapperSize(isVertical);
-    let mousePos = mouseEvent.clientX;
-
-    if (isVertical) {
-      startPos = this.startY;
-      mousePos = mouseEvent.clientY;
-    }
+  /**
+   * Get percentage of mouse movement.
+   * @param {PointerEvent} event Mouse event.
+   * @param {boolean} [isVertical] True for vertical mouse movement.
+   * @returns {number} Percentage of mouse movement.
+   */
+  getMouseMovedPercentages(event, isVertical = false) {
+    const startPos = isVertical ? this.startY : this.startX;
+    const mousePos = isVertical ? event.clientY : event.clientX;
+    const wrapperSize = this.getWrapperSize(isVertical);
 
     return ((startPos - mousePos) / wrapperSize) * 100;
   }
 
+  /**
+   * Get position value without percent symbol.
+   * @param {string} position Position string with percentage symbol.
+   * @returns {string|false} Position value without percent symbol or false.
+   */
   removePercentageDenotationFromPosition(position) {
     const lastChar = position.charAt(position.length - 1);
-    if (lastChar !== '%') {
-      return false;
-    }
 
-    return position.substr(0, position.length - 1);
+    return (lastChar === '%') ?
+      position.substring(0, position.length - 1) :
+      false;
   }
 
+  /**
+   * Get positions.
+   * @param {string} positions Positions values delimited by a comma.
+   * @returns {object} Position values as x and y.
+   */
   getPositions(positions) {
     const pos = positions.split(',');
     return {
@@ -145,14 +174,18 @@ export default class StaticScene extends React.Component {
     };
   }
 
-  getNewInteractionPosition(initialPos, mouseEvent, element, isVertical = false) {
-    let position = initialPos.x;
-    let mouseMoved = this.getMouseMovedPercentages(mouseEvent, isVertical);
+  /**
+   * Get new interaction position.
+   * @param {object} initialPos Position as object with x and y.
+   * @param {PointerEvent} event Event.
+   * @param {HTMLElement} element Element to move.
+   * @param {boolean} isVertical True if movement was vertical.
+   * @returns {number} New position.
+   */
+  getNewInteractionPosition(initialPos, event, element, isVertical = false) {
+    let position = isVertical ? initialPos.y : initialPos.x;
+    let mouseMoved = this.getMouseMovedPercentages(event, isVertical);
     let wrapperSize = this.getWrapperSize(isVertical);
-
-    if (isVertical) {
-      position = initialPos.y;
-    }
 
     position = this.removePercentageDenotationFromPosition(position);
     const movedTo = position - mouseMoved;
@@ -166,26 +199,27 @@ export default class StaticScene extends React.Component {
     const elementSizePercentage = (elementSize / wrapperSize) * 100;
     const positionThreshold = 100 - elementSizePercentage;
 
-    if (movedTo >= positionThreshold) {
-      return positionThreshold;
-    }
-
-    return movedTo;
+    return Math.min(movedTo, positionThreshold);
   }
 
-  getNewInteractionPositions(mouseEvent) {
+  /**
+   * Get new interaction position for both x and y coordinates.
+   * @param {PointerEvent} event Event.
+   * @returns {object} New positions.
+   */
+  getNewInteractionPositions(event) {
     const interaction = this.getDraggingInteraction();
     const initialPos = this.getPositions(interaction.interactionpos);
 
     const xPos = this.getNewInteractionPosition(
       initialPos,
-      mouseEvent,
+      event,
       this.state.draggingElement,
     );
 
     const yPos = this.getNewInteractionPosition(
       initialPos,
-      mouseEvent,
+      event,
       this.state.draggingElement,
       true,
     );
@@ -196,40 +230,50 @@ export default class StaticScene extends React.Component {
     };
   }
 
-  startDragging(interactionIndex, e) {
-    if (e.button !== 0) {
+  /**
+   * Start dragging.
+   * @param {number} interactionIndex Index of interaction.
+   * @param {PointerEvent} event Event.
+   */
+  startDragging(interactionIndex, event) {
+    if (event.button !== 0) {
       return;
     }
 
-    this.startX = e.clientX;
-    this.startY = e.clientY;
+    this.startX = event.clientX;
+    this.startY = event.clientY;
 
     window.addEventListener('mousemove', this.onMove);
     window.addEventListener('mouseup', this.stoppedDragging);
 
     this.setState({
       draggingInteractionIndex: interactionIndex,
-      draggingElement: e.target,
+      draggingElement: event.target,
       isDragDelayed: true,
     });
 
     // Small delay to not accidentally drag interactions when double clicking
-    setTimeout(() => {
-      this.setState({
-        isDragDelayed: false,
-      });
+    window.setTimeout(() => {
+      this.setState({ isDragDelayed: false });
     }, 50);
   }
 
-  onMove(e) {
+  /**
+   * Handle dragging movement.
+   * @param {PointerEvent} event Event.
+   */
+  onMove(event) {
     const isDragging = this.state.draggingInteractionIndex !== null;
     const isDragDelayed = this.state.isDragDelayed;
     if (!isDragging || isDragDelayed) {
       return;
     }
-    this.setState(this.getNewInteractionPositions(e));
+    this.setState(this.getNewInteractionPositions(event));
   }
 
+  /**
+   * Handle dragging stopped.
+   */
   stoppedDragging() {
     if (this.state.draggingInteractionIndex === null) {
       return;
@@ -247,6 +291,7 @@ export default class StaticScene extends React.Component {
         draggingElement: null,
         isDragDelayed: true,
       });
+
       return;
     }
 
@@ -262,34 +307,45 @@ export default class StaticScene extends React.Component {
     });
   }
 
+  /**
+   * Go to previous scene.
+   */
   goToPreviousScene() {
     if (this.props.sceneHistory.length > 0) {
       this.props.navigateToScene(SceneTypes.PREVIOUS_SCENE);
     }
   }
 
+  /**
+   * Handle scene loaded.
+   */
   onSceneLoaded() {
     const imageElement = this.imageElementRef.current;
     const ratio = imageElement.naturalWidth / imageElement.naturalHeight;
-    this.setState({
-      isVerticalImage: ratio < this.context.getRatio(),
-    });
+    this.setState({ isVerticalImage: ratio < this.context.getRatio() });
 
     this.focusScene();
 
-    const setStatisSceneSize = () => {
-      staticSceneWidth = imageElement.clientWidth;
-      staticSceneHeight = imageElement.clientHeight;
+    this.resizeScene();
+  }
 
-      this.setState({
-        isVerticalImage: ratio < this.context.getRatio(),
-      });
-    };
+  /**
+   * Set static scene size.
+   */
+  setStatisSceneSize() {
+    const imageElement = this.imageElementRef.current;
+    if (!imageElement) {
+      return;
+    }
 
-    this.context.on('resize', () => {
-      setStatisSceneSize();
+    const ratio = imageElement.naturalWidth / imageElement.naturalHeight;
+
+    staticSceneWidth = imageElement.clientWidth;
+    staticSceneHeight = imageElement.clientHeight;
+
+    this.setState({
+      isVerticalImage: ratio < this.context.getRatio(),
     });
-    setStatisSceneSize();
   }
 
   /**
@@ -302,10 +358,14 @@ export default class StaticScene extends React.Component {
     }
   }
 
-  // Since some interactions don't have titles this seeks to use the closest thing to a title to prevent "Untitled Text"
+  /**
+   * Get interaction title.
+   * @param {object} action Action.
+   * @returns {string} Title.
+   */
   getInteractionTitle(action) {
     const currentTitle = action.metadata.title;
-
+    // TODO: Does this work internationally? Also: Same in static scene => move to Scene.js
     switch (currentTitle) {
       case 'Untitled Text':
         return action.params.text;
@@ -316,13 +376,21 @@ export default class StaticScene extends React.Component {
     }
   }
 
+  /**
+   * Get adjusted position depending on font size (?).
+   * @param {number} posX X-coordinate.
+   * @param {number} posY Y-coordinate.
+   * @returns {object} Position with x and y.
+   */
   getAdjustedInteractionPositions(posX, posY) {
     const interactionEm = 2.5;
     const wrapper = this.sceneWrapperRef.current;
     const wrapperSize = wrapper.getBoundingClientRect();
+
     if (!wrapperSize.width || !wrapperSize.height) {
       return false;
     }
+
     const fontSize = parseFloat(wrapper.style.fontSize);
     const interactionSize = interactionEm * fontSize;
     const height = interactionSize / wrapperSize.height * 100;
@@ -341,6 +409,10 @@ export default class StaticScene extends React.Component {
     };
   }
 
+  /**
+   * React render function.
+   * @returns {object} JSX element.
+   */
   render() {
     if (!this.props.isActive) {
       return null;
