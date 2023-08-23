@@ -90,6 +90,8 @@ export default class ThreeSixtyScene extends React.Component {
    * @returns {boolean|undefined} False, when dragging context menu or context menu children.
    */
   handleSceneMoveStart(event) {
+    this.startPosition = this.props.threeSixty.getCurrentPosition();
+
     if (!this.context.extras.isEditor || event.data.isCamera) {
       return; // Not relevant.
     }
@@ -417,7 +419,10 @@ export default class ThreeSixtyScene extends React.Component {
           isHiddenBehindOverlay={ this.props.isHiddenBehindOverlay }
           nextFocus={ this.props.nextFocus }
           type={ 'interaction-' + index }
-          clickHandler={this.props.showInteraction.bind(this, index)}
+          clickHandler={(index) => {
+            this.handleNavButtonClick(index);
+          }
+          }
           doubleClickHandler={() => {
             this.context.trigger('doubleClickedInteraction', index);
           }}
@@ -463,6 +468,25 @@ export default class ThreeSixtyScene extends React.Component {
       yaw,
       pitch,
     };
+  }
+
+  /**
+   * Handle click on navigation button.
+   * @param {number} index Index of interaction linked to navigation button.
+   */
+  handleNavButtonClick(index) {
+    // Prevent click if user also dragged button beyond maximum slack.
+    const endPosition = this.props.threeSixty.getCurrentPosition();
+    if (
+      Math.abs(endPosition.yaw - this.startPosition.yaw) >
+        ThreeSixtyScene.MAX_YAW_DELTA ||
+      Math.abs(endPosition.pitch - this.startPosition.pitch) >
+        ThreeSixtyScene.MAX_PITCH_DELTA
+    ) {
+      return; // Dragged button to much for click
+    }
+
+    this.props.showInteraction.bind(this)(index);
   }
 
   /**
@@ -638,3 +662,9 @@ export default class ThreeSixtyScene extends React.Component {
 }
 
 ThreeSixtyScene.contextType = H5PContext;
+
+/** @constant {number} MAX_YAW_DELTA Maximum yaw delta allowed to distinguish click from drag. */
+ThreeSixtyScene.MAX_YAW_DELTA = 0.005;
+
+/** @constant {number} MAX_PITCH_DELTA Maximum pitch delta allowed to distinguish click from drag. */
+ThreeSixtyScene.MAX_PITCH_DELTA = 0.01;
