@@ -47,6 +47,9 @@ export default class StaticScene extends React.Component {
     }
   }
 
+  /**
+   * React life-cycle handler: Component will be unmounted.
+   */
   componentWillUnmount() {
     this.context.off('resize', this.resizeScene);
   }
@@ -268,6 +271,7 @@ export default class StaticScene extends React.Component {
     if (!isDragging || isDragDelayed) {
       return;
     }
+
     this.setState(this.getNewInteractionPositions(event));
   }
 
