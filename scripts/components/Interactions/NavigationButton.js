@@ -516,7 +516,7 @@ export default class NavigationButton extends React.Component {
             <HotspotNavButton
               reference={this.navButton}
               style={{ height:'100%', width:'100%' }}
-              ariaLabel={getLabelText(label)}
+              ariaLabel={getLabelText(label) || this.context.l10n.untitled}
               tabIndexValue={isInnerButtonTabbable ? undefined : -1}
               onClickEvent={this.onClick.bind(this)}
               onDoubleClickEvent={this.onDoubleClick.bind(this)}
@@ -533,7 +533,7 @@ export default class NavigationButton extends React.Component {
             :
             <button
               ref={this.navButton}
-              aria-label={getLabelText(label)}
+              aria-label={getLabelText(label) || this.context.l10n.untitled}
               className='nav-button'
               tabIndex={isInnerButtonTabbable ? undefined : -1}
               onClick={this.onClick.bind(this)}
