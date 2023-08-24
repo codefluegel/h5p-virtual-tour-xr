@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import FullscreenButton from './components/FullscreenButton/FullscreenButton.js';
 import Main from './components/Main';
 import { H5PContext } from './context/H5PContext';
 import { sceneRenderingQualityMapping } from './components/Scene/SceneTypes/ThreeSixtyScene';
@@ -92,8 +91,8 @@ export default class Wrapper extends H5P.EventDispatcher {
     this.extras = extras;
     this.sceneRenderingQuality = this.behavior.sceneRenderingQuality || 'high';
 
-    this.fullScreenSupported = this.isRoot() && H5P.fullscreenSupported;
-    if (this.fullScreenSupported) {
+    this.isFullScreenSupported = this.isRoot() && H5P.fullscreenSupported;
+    if (this.isFullScreenSupported) {
       this.fullscreenButtonAriaLabel = this.l10n.buttonFullscreenEnter;
       this.on('enterFullScreen', () => {
         window.setTimeout(() => {
@@ -153,19 +152,17 @@ export default class Wrapper extends H5P.EventDispatcher {
 
     ReactDOM.render(
       <H5PContext.Provider value={this}>
-        { this.fullScreenSupported &&
-          <FullscreenButton
-            ariaLabel={this.fullscreenButtonAriaLabel}
-            onClicked={this.toggleFullscreen.bind(this)}
-          />
-        }
         <Main
           forceStartScreen={this.enforcedStartSceneId}
           forceStartCamera={this.forceStartCamera}
           currentScene={this.currentSceneId}
           setCurrentSceneId={this.setCurrentSceneId.bind(this)}
           addThreeSixty={(tS) => this.threeSixty = tS}
-          onSetCameraPos={this.setCameraPosition.bind(this)} />
+          onSetCameraPos={this.setCameraPosition.bind(this)}
+          fullScreenSupported={this.isFullScreenSupported}
+          fullscreenButtonAriaLabel={this.fullscreenButtonAriaLabel}
+          onFullscreenClicked={this.toggleFullscreen.bind(this)}
+        />
       </H5PContext.Provider>,
       this.wrapper
     );
@@ -196,19 +193,17 @@ export default class Wrapper extends H5P.EventDispatcher {
 
     ReactDOM.render(
       <H5PContext.Provider value={this}>
-        { this.fullScreenSupported &&
-          <FullscreenButton
-            ariaLabel={this.fullscreenButtonAriaLabel}
-            onClicked={this.toggleFullscreen.bind(this)}
-          />
-        }
         <Main
           forceStartScreen={this.enforcedStartSceneId}
           forceStartCamera={this.forceStartCamera}
           currentScene={this.currentSceneId}
           setCurrentSceneId={this.setCurrentSceneId.bind(this)}
           addThreeSixty={(tS) => this.threeSixty = tS}
-          onSetCameraPos={this.setCameraPosition.bind(this)} />
+          onSetCameraPos={this.setCameraPosition.bind(this)}
+          fullScreenSupported={this.isFullScreenSupported}
+          fullscreenButtonAriaLabel={this.fullscreenButtonAriaLabel}
+          onFullscreenClicked={this.toggleFullscreen.bind(this)}
+        />
       </H5PContext.Provider>,
       this.wrapper
     );
@@ -233,12 +228,6 @@ export default class Wrapper extends H5P.EventDispatcher {
       // TODO: The scene is rendered in re-draw ans setCurrentScene, too. Could this be made simpler?
       ReactDOM.render(
         <H5PContext.Provider value={this}>
-          { this.fullScreenSupported &&
-            <FullscreenButton
-              ariaLabel={this.fullscreenButtonAriaLabel}
-              onClicked={this.toggleFullscreen.bind(this)}
-            />
-          }
           <Main
             forceStartScreen={this.enforcedStartSceneId}
             forceStartCamera={this.forceStartCamera}
@@ -246,13 +235,11 @@ export default class Wrapper extends H5P.EventDispatcher {
             setCurrentSceneId={this.setCurrentSceneId.bind(this)}
             addThreeSixty={(tS) => this.threeSixty = tS}
             onSetCameraPos={this.setCameraPosition.bind(this)}
-            isVeryFirstRender={true} />
-          { this.fullScreenSupported &&
-            <FullscreenButton
-              ariaLabel={this.fullscreenButtonAriaLabel}
-              onClicked={this.toggleFullscreen.bind(this)}
-            />
-          }
+            isVeryFirstRender={true}
+            fullScreenSupported={this.isFullScreenSupported}
+            fullscreenButtonAriaLabel={this.fullscreenButtonAriaLabel}
+            onFullscreenClicked={this.toggleFullscreen.bind(this)}
+          />
         </H5PContext.Provider>,
         this.wrapper
       );

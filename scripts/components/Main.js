@@ -6,6 +6,7 @@ import InteractionContent from './Dialog/InteractionContent';
 import { H5PContext } from '../context/H5PContext';
 import './Main.scss';
 import HUD from './HUD/HUD';
+import FullscreenButton from './FullscreenButton/FullscreenButton.js';
 import NoScene from './Scene/NoScene';
 import PasswordContent from './Dialog/PasswordContent';
 import ScoreSummary from './Dialog/ScoreSummary';
@@ -879,6 +880,13 @@ export default class Main extends React.Component {
         aria-label={ this.context.l10n.title }
         id={ this.documentID }
       >
+        { this.props.fullScreenSupported &&
+          <FullscreenButton
+            ariaLabel={this.props.fullscreenButtonAriaLabel}
+            onClicked={this.props.onFullscreenClicked}
+            tabIndex={isHiddenBehindOverlay ? '-1' : undefined}
+          />
+        }
         { showInteractionDialog && !showPasswordDialog &&
           <Dialog
             title={ currentInteraction.action.metadata.title }

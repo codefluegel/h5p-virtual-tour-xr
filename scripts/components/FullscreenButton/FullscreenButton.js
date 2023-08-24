@@ -21,6 +21,7 @@ export default class FullscreenButton extends React.Component {
         aria-label={ this.props.ariaLabel }
         className='h5p-ndla-virtual-tour-fullscreen-button'
         onClick={ this.props.onClicked }
+        tabIndex={ this.props.tabIndex }
       />
     );
   }
