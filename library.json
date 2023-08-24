@@ -13,7 +13,6 @@
   "patchVersion": 0,
 >>>>>>> b680721 (Move hotspot settings in semantics)
   "runnable": 1,
-  "fullscreen": 1,
   "embedTypes": [
     "iframe"
   ],

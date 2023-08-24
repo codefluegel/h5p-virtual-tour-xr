@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import FullscreenButton from './components/FullscreenButton/FullscreenButton.js';
 import Main from './components/Main';
 import { H5PContext } from './context/H5PContext';
 import { sceneRenderingQualityMapping } from './components/Scene/SceneTypes/ThreeSixtyScene';
@@ -59,6 +60,9 @@ export default class Wrapper extends H5P.EventDispatcher {
       noContent: 'No content',
       hint: 'Hint',
       lockedContent: 'Locked content',
+      back: 'Back',
+      buttonFullscreenEnter: 'Enter fullscreen mode',
+      buttonFullscreenExit: 'Exit fullscreen mode',
       ...params.l10n,
     };
 
@@ -87,6 +91,23 @@ export default class Wrapper extends H5P.EventDispatcher {
     this.contentId = contentId;
     this.extras = extras;
     this.sceneRenderingQuality = this.behavior.sceneRenderingQuality || 'high';
+
+    this.fullScreenSupported = this.isRoot() && H5P.fullscreenSupported;
+    if (this.fullScreenSupported) {
+      this.fullscreenButtonAriaLabel = this.l10n.buttonFullscreenEnter;
+      this.on('enterFullScreen', () => {
+        window.setTimeout(() => {
+          this.reDraw();
+        }, 50);
+      });
+
+      this.on('exitFullScreen', () => {
+        window.setTimeout(() => {
+          this.reDraw();
+          this.trigger('resize');
+        }, 50);
+      });
+    }
 
     this.on('resize', () => {
       const rect = this.getRect();
@@ -132,6 +153,12 @@ export default class Wrapper extends H5P.EventDispatcher {
 
     ReactDOM.render(
       <H5PContext.Provider value={this}>
+        { this.fullScreenSupported &&
+          <FullscreenButton
+            ariaLabel={this.fullscreenButtonAriaLabel}
+            onClicked={this.toggleFullscreen.bind(this)}
+          />
+        }
         <Main
           forceStartScreen={this.enforcedStartSceneId}
           forceStartCamera={this.forceStartCamera}
@@ -169,6 +196,12 @@ export default class Wrapper extends H5P.EventDispatcher {
 
     ReactDOM.render(
       <H5PContext.Provider value={this}>
+        { this.fullScreenSupported &&
+          <FullscreenButton
+            ariaLabel={this.fullscreenButtonAriaLabel}
+            onClicked={this.toggleFullscreen.bind(this)}
+          />
+        }
         <Main
           forceStartScreen={this.enforcedStartSceneId}
           forceStartCamera={this.forceStartCamera}
@@ -186,6 +219,8 @@ export default class Wrapper extends H5P.EventDispatcher {
    * @param {H5P.jQuery} $container Content's container.
    */
   attach($container) {
+    this.container = $container.get(0);
+
     const createElements = () => {
       this.wrapper = document.createElement('div');
       this.wrapper.classList.add('h5p-three-sixty-wrapper');
@@ -198,6 +233,12 @@ export default class Wrapper extends H5P.EventDispatcher {
       // TODO: The scene is rendered in re-draw ans setCurrentScene, too. Could this be made simpler?
       ReactDOM.render(
         <H5PContext.Provider value={this}>
+          { this.fullScreenSupported &&
+            <FullscreenButton
+              ariaLabel={this.fullscreenButtonAriaLabel}
+              onClicked={this.toggleFullscreen.bind(this)}
+            />
+          }
           <Main
             forceStartScreen={this.enforcedStartSceneId}
             forceStartCamera={this.forceStartCamera}
@@ -206,20 +247,26 @@ export default class Wrapper extends H5P.EventDispatcher {
             addThreeSixty={(tS) => this.threeSixty = tS}
             onSetCameraPos={this.setCameraPosition.bind(this)}
             isVeryFirstRender={true} />
+          { this.fullScreenSupported &&
+            <FullscreenButton
+              ariaLabel={this.fullscreenButtonAriaLabel}
+              onClicked={this.toggleFullscreen.bind(this)}
+            />
+          }
         </H5PContext.Provider>,
         this.wrapper
       );
     };
 
     /*
-      * Temporary (fingers crossed) hotfix for Firefox on Edlib.
-      * When overflow is set to `hidden` on Edlib (Why? H5P resizes the iframe
-      * that the document lives in), then Firefox will not detect hotspots
-      * as hovered/being clickable. Even with the `overflow` setting removed,
-      * Firefox does require hotspots to be quite centered. When close to the
-      * visible border of the scene, Firefox does not consider the hotspots
-      * to be hovered/clicked.
-      */
+     * Temporary (fingers crossed) hotfix for Firefox on Edlib.
+     * When overflow is set to `hidden` on Edlib (Why? H5P resizes the iframe
+     * that the document lives in), then Firefox will not detect hotspots
+     * as hovered/being clickable. Even with the `overflow` setting removed,
+     * Firefox does require hotspots to be quite centered. When close to the
+     * visible border of the scene, Firefox does not consider the hotspots
+     * to be hovered/clicked.
+     */
     document.body.style.overflow = '';
 
     if (!this.wrapper) {
@@ -229,6 +276,38 @@ export default class Wrapper extends H5P.EventDispatcher {
     // Append elements to DOM
     $container[0].appendChild(this.wrapper);
     $container[0].classList.add('h5p-three-image');
+  }
+
+  /**
+   * Toggle fullscreen button.
+   * @param {string|boolean} state enter|false for enter, exit|true for exit.
+   */
+  toggleFullscreen(state) {
+    if (!this.container) {
+      return;
+    }
+
+    if (typeof state === 'string') {
+      if (state === 'enter') {
+        state = false;
+      }
+      else if (state === 'exit') {
+        state = true;
+      }
+    }
+
+    if (typeof state !== 'boolean') {
+      state = !H5P.isFullscreen;
+    }
+
+    if (state) {
+      this.fullscreenButtonAriaLabel = this.l10n.buttonFullscreenExit;
+      H5P.fullScreen(H5P.jQuery(this.container), this);
+    }
+    else {
+      this.fullscreenButtonAriaLabel = this.l10n.buttonFullscreenEnter;
+      H5P.exitFullScreen();
+    }
   }
 
   /**

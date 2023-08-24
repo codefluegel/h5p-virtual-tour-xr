@@ -839,6 +839,20 @@
         "label": "Back",
         "importance": "low",
         "default": "Back"
+      },
+      {
+        "name": "buttonFullscreenEnter",
+        "type": "text",
+        "label": "Text for screenreaders. Title for fullscreen button (enter)",
+        "importance": "low",
+        "default": "Enter fullscreen mode"
+      },
+      {
+        "name": "buttonFullscreenExit",
+        "type": "text",
+        "label": "Text for screenreaders. Title for fullscreen button (exit)",
+        "importance": "low",
+        "default": "Exit fullscreen mode"
       }
     ]
   }
