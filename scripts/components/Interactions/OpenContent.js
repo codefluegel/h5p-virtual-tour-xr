@@ -11,6 +11,7 @@ export default class OpenContent extends React.Component {
    */
   constructor(props) {
     super(props);
+    this.props = props;
 
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
@@ -213,7 +214,7 @@ export default class OpenContent extends React.Component {
    * @param {PointerEvent} event Mouse event.
    * @param {boolean} isHorizontalDrag True for vertical dragging.
    */
-  onMouseMove = (event, isHorizontalDrag) => {
+  onMouseMove(event, isHorizontalDrag) {
     const { clientX, clientY } = event;
     const newSize = scaleOpenContentElement(
       clientX,
@@ -236,7 +237,7 @@ export default class OpenContent extends React.Component {
         this.setState({ sizeWidth: newSize }) :
         this.setState({ sizeHeight: newSize });
     }
-  };
+  }
 
   /**
    * Handle anchor drag mouse up.
@@ -341,7 +342,7 @@ export default class OpenContent extends React.Component {
    * Handle focus.
    * @param {FocusEvent} event Event.
    */
-  handleFocus = (event) => {
+  handleFocus(event) {
     if (this.context.extras.isEditor) {
       if (
         this.openContentWrapper &&
@@ -361,7 +362,7 @@ export default class OpenContent extends React.Component {
         this.props.onFocus();
       }
     }
-  };
+  }
 
   /**
    * React render function.
@@ -441,7 +442,7 @@ export default class OpenContent extends React.Component {
         className={wrapperClasses.join(' ')}
         style={this.getStyle()}
         tabIndex={0}
-        onFocus={this.handleFocus}
+        onFocus={this.handleFocus.bind(this)}
         onBlur={this.onBlur.bind(this)}
       >
         <div

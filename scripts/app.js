@@ -13,7 +13,7 @@ export default class Wrapper extends H5P.EventDispatcher {
    * @param {object} [extras] Saved state, metadata, etc.
    */
   constructor(params, contentId, extras = {}) {
-    super();
+    super('ndla-virtual-tour');
 
     this.enforcedStartSceneId = extras.forceStartScreen >= 0 || null;
     this.forceStartCamera = extras.forceStartCamera ?? null;

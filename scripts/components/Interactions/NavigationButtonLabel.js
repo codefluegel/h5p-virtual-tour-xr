@@ -50,6 +50,7 @@ export default class NavigationButtonLabel extends React.Component {
    */
   constructor(props) {
     super(props);
+    this.props = props;
 
     this.onClick.bind(this);
     this.innerLabelDiv = React.createRef();

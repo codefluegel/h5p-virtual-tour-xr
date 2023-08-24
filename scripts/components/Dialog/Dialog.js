@@ -10,6 +10,7 @@ export default class Dialog extends React.Component {
    */
   constructor(props) {
     super(props);
+    this.props = props;
 
     this.handleKeyDown = this.handleKeyDown.bind(this);
 
@@ -56,11 +57,11 @@ export default class Dialog extends React.Component {
    * Handle dialog reference.
    * @param {object} element Element.
    */
-  handleDialogRef = (element) => {
+  handleDialogRef(element) {
     if (element) {
       this.el = element;
     }
-  };
+  }
 
   /**
    * Handle resize.

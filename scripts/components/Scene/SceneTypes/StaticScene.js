@@ -14,6 +14,7 @@ export default class StaticScene extends React.Component {
    */
   constructor(props) {
     super(props);
+    this.props = props;
 
     this.sceneWrapperRef = React.createRef();
     this.imageElementRef = React.createRef();

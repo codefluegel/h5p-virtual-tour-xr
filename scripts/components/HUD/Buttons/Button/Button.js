@@ -8,16 +8,17 @@ export default class AudioButton extends React.Component {
    */
   constructor(props) {
     super(props);
+    this.props = props;
   }
 
   /**
    * Handle click.
    */
-  handleClick = () => {
+  handleClick() {
     if (!this.props.disabled) {
       this.props.onClick();
     }
-  };
+  }
 
   /**
    * React life-cycle handler: Component did update.
@@ -42,7 +43,7 @@ export default class AudioButton extends React.Component {
         <button
           ref={ (el) => this.element = el }
           className={ 'hud-btn ' + this.props.type }
-          onClick={ this.handleClick }
+          onClick={ this.handleClick.bind(this) }
           aria-label={ this.props.label }
           disabled={ !!this.props.disabled }
           tabIndex={ this.props.isHiddenBehindOverlay ? '-1' : undefined }

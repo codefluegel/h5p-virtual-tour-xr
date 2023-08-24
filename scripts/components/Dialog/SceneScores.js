@@ -4,6 +4,7 @@ import { H5PContext } from '../../context/H5PContext';
 export default class SceneTotalScores extends React.Component {
   constructor(props) {
     super(props);
+    this.props = props;
   }
 
   getSceneTitle(sceneId, sceneTitle) {

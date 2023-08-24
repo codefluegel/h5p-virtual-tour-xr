@@ -11,6 +11,7 @@ export default class ScoreSummary extends React.Component {
    */
   constructor(props) {
     super(props);
+    this.props = props;
 
     this.scoreBarDOM = React.createRef();
   }

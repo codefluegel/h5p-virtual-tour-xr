@@ -17,15 +17,14 @@ export default class AudioButton extends React.Component {
    */
   constructor(props) {
     super(props);
-
     this.props = props;
 
     // Separate players for the different scenes
     this.players = {};
-  }
 
-  // Keep track if scene audio has been turned on or not
-  state = { audioOn: false };
+    // Keep track if scene audio has been turned on or not
+    this.state = { audioOn: false };
+  }
 
   /**
    * Determine player ID
@@ -77,7 +76,7 @@ export default class AudioButton extends React.Component {
    * @param {string} id Player id.
    * @returns {HTMLAudioElement|null} or 'null' if track isn't playable.
    */
-  getPlayer = (id) => {
+  getPlayer(id) {
     if (!id) {
       return null;
     }
@@ -137,7 +136,7 @@ export default class AudioButton extends React.Component {
     this.props.updateSceneAudioPlayers(this.players);
 
     return this.players[id];
-  };
+  }
 
   /**
    * Handle audio button clicked

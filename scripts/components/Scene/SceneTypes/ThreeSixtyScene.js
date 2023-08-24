@@ -19,7 +19,6 @@ export default class ThreeSixtyScene extends React.Component {
    */
   constructor(props) {
     super(props);
-
     this.props = props;
 
     this.sceneRef = React.createRef();
@@ -237,7 +236,7 @@ export default class ThreeSixtyScene extends React.Component {
     if (!this.imageElement) {
       // Create image element used for loading on first load
       this.imageElement = document.createElement('img');
-      this.imageElement.addEventListener('load', this.sceneLoaded);
+      this.imageElement.addEventListener('load', this.sceneLoaded.bind(this));
     }
 
     this.setState({
@@ -263,7 +262,7 @@ export default class ThreeSixtyScene extends React.Component {
   /**
    * Handle scene loaded.
    */
-  sceneLoaded = () => {
+  sceneLoaded() {
     if (this.state.isLoaded && this.state.isUpdated && this.props.isActive) {
       // Has been loaded before, we only need to reload the texture
       this.props.threeSixty.update();
@@ -273,7 +272,7 @@ export default class ThreeSixtyScene extends React.Component {
         isLoaded: true // Indicates that this.imageElement can now be used
       });
     }
-  };
+  }
 
   /**
    * Create, add and render all interactions in 3D world.
@@ -281,7 +280,9 @@ export default class ThreeSixtyScene extends React.Component {
    * @param {object[]} interactions Interactions.
    */
   addInteractionHotspots(threeSixty, interactions) {
-    const list = interactions ? interactions.map(this.createInteraction) : [];
+    const list = interactions ?
+      interactions.map((interaction, index) => this.createInteraction(interaction, index))
+      : [];
     const components2d = [];
     const components3d = [];
 
@@ -319,8 +320,9 @@ export default class ThreeSixtyScene extends React.Component {
    * @param {number} index Interaction index.
    * @returns {object} Interaction.
    */
-  createInteraction = (interaction, index) => {
+  createInteraction(interaction, index) {
     const className = ['three-sixty'];
+
     if (
       this.props.audioIsPlaying === `interaction-${this.props.sceneId}-${index}`
     ) {
@@ -454,7 +456,7 @@ export default class ThreeSixtyScene extends React.Component {
       component,
       is3d,
     };
-  };
+  }
 
   /**
    * Convert params position string to object.
@@ -493,9 +495,9 @@ export default class ThreeSixtyScene extends React.Component {
    * Handle interaction focused.
    * @param {object} interaction Interaction.
    */
-  handleInteractionFocus = (interaction) => {
+  handleInteractionFocus(interaction) {
     this.props.onSetCameraPos(interaction.interactionpos);
-  };
+  }
 
   /**
    * React handler. Component did mount.

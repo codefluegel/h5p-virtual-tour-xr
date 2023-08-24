@@ -6,6 +6,7 @@ import { isVideoAudio } from '../../utils/audio-utils';
 export default class InteractionContent extends React.Component {
   constructor(props) {
     super(props);
+    this.props = props;
 
     this.state = {
       isInitialized: false,

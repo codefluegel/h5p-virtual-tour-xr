@@ -24,6 +24,7 @@ export default class Main extends React.Component {
    */
   constructor(props) {
     super(props);
+    this.props = props;
 
     this.audioPlayers = {};
     this.sceneAudioPlayers = {};
@@ -660,29 +661,29 @@ export default class Main extends React.Component {
    * Set player started.
    * @param {number} id Id of player that started playing.
    */
-  handleAudioIsPlaying = (id) => {
+  handleAudioIsPlaying(id) {
     this.setState({
       audioIsPlaying: id // Change the player
     });
-  };
+  }
 
   /**
    * Set player ended.
    * @param {number} id Id of player that stopped playing.
    */
-  handleSceneAudioWasPlaying = (id) => {
+  handleSceneAudioWasPlaying(id) {
     this.setState({
       sceneAudioWasPlaying: id // Set the prev player
     });
-  };
+  }
 
   /**
    * Get scene's audio players.
    * @param {object} players Audio players.
    */
-  getSceneAudioPlayers = (players) => {
+  getSceneAudioPlayers(players) {
     this.sceneAudioPlayers = players;
-  };
+  }
 
   /**
    * Center view of current scene.
@@ -884,7 +885,7 @@ export default class Main extends React.Component {
               currentScene={this.props.currentScene}
               currentInteraction={this.state.currentInteraction}
               audioIsPlaying={this.state.audioIsPlaying}
-              onAudioIsPlaying={this.handleAudioIsPlaying}
+              onAudioIsPlaying={this.handleAudioIsPlaying.bind(this)}
               updateScoreCard={this.updateScoreCard.bind(this)}
             />
           </Dialog>

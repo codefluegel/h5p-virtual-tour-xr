@@ -108,6 +108,7 @@ export default class NavigationButton extends React.Component {
    */
   constructor(props) {
     super(props);
+    this.props = props;
 
     this.navButtonWrapper = React.createRef();
     this.navButton = React.createRef();
@@ -155,10 +156,7 @@ export default class NavigationButton extends React.Component {
     }
 
     this.setState({ isFocused: true });
-
-    if (this.props.onFocusedInteraction) {
-      this.props.onFocusedInteraction();
-    }
+    this.props.onFocusedInteraction?.();
   }
 
   /**
@@ -177,13 +175,9 @@ export default class NavigationButton extends React.Component {
       return;
     }
 
-    this.setState({
-      isFocused: false,
-    });
+    this.setState({ isFocused: false });
 
-    if (this.props.onBlur) {
-      this.props.onBlur();
-    }
+    this.props.onBlur?.();
   }
 
   /**
@@ -346,7 +340,7 @@ export default class NavigationButton extends React.Component {
   /**
    * @param {FocusEvent} event Event.
    */
-  handleFocus = (event) => {
+  handleFocus(event) {
     if (this.context.extras.isEditor) {
       if (this.navButtonWrapper?.current === event.target) {
         this.setFocus();
@@ -363,7 +357,7 @@ export default class NavigationButton extends React.Component {
         this.props.onFocus();
       }
     }
-  };
+  }
 
   /**
    * Handle expand button focus.
@@ -507,7 +501,7 @@ export default class NavigationButton extends React.Component {
         className={wrapperClasses.join(' ')}
         style={this.getStyle(width, height)}
         tabIndex={isWrapperTabbable ? 0 : undefined}
-        onFocus={this.handleFocus}
+        onFocus={this.handleFocus.bind(this)}
         onClick={this.onClick.bind(this)}
         onBlur={this.onBlur.bind(this)}
       >

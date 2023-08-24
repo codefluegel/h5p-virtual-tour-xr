@@ -13,6 +13,7 @@ export default class HUD extends React.Component {
    */
   constructor(props) {
     super(props);
+    this.props = props;
     this.buttons = {};
   }
 

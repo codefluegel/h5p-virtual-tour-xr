@@ -12,6 +12,7 @@ export default class HotspotNavButton extends React.Component {
    */
   constructor(props) {
     super(props);
+    this.props = props;
 
     this.state = {
       anchorDrag : false,
@@ -96,7 +97,7 @@ export default class HotspotNavButton extends React.Component {
    * @param {PointerEvent} event Mouse event.
    * @param {boolean} isHorizontalDrag True for vertical dragging.
    */
-  onMouseMove = (event, isHorizontalDrag) => {
+  onMouseMove(event, isHorizontalDrag) {
     const { clientX, clientY } = event;
     const newSize = scaleOpenContentElement(
       clientX,
@@ -128,7 +129,7 @@ export default class HotspotNavButton extends React.Component {
 
       this.props.resizeOnDrag(this.state.sizeWidth, this.state.sizeHeight);
     }
-  };
+  }
 
   /**
    * Handle anchor drag mouse up.

@@ -14,6 +14,8 @@ const utilizeFocus = () => {
 export default class PasswordContent extends React.Component {
   constructor(props) {
     super(props);
+    this.props = props;
+
     this.inputRef = utilizeFocus();
     this.state = {
       unlocked: false,
@@ -24,12 +26,13 @@ export default class PasswordContent extends React.Component {
 
     this.codeFieldLabelId = `field-code-${H5P.createUUID()}-${this.props.currentInteractionIndex}`;
   }
-  handleOnChange = (event) => {
+  handleOnChange(event) {
     this.setState({
       inputPassword: event.target.value,
     });
-  };
-  handleOnClick = (event) => {
+  }
+
+  handleOnClick(event) {
     event.preventDefault();
     this.setState({
       hasClicked: true,
@@ -47,9 +50,9 @@ export default class PasswordContent extends React.Component {
         this.shakeIcon();
       }
     }
-  };
+  }
 
-  shakeIcon = () => {
+  shakeIcon() {
     this.setState({
       shakeClass: 'h5p-password-icon--shake',
     });
@@ -59,7 +62,7 @@ export default class PasswordContent extends React.Component {
         shakeClass: '',
       });
     }, 500);
-  };
+  }
 
   render() {
     return (
@@ -117,7 +120,7 @@ export default class PasswordContent extends React.Component {
                 id={this.codeFieldLabelId}
                 placeholder={this.context.l10n.code}
                 value={this.state.inputPassword}
-                onChange={this.handleOnChange}
+                onChange={this.handleOnChange.bind(this)}
               />
             </div>
             {this.props.hint && (
@@ -127,7 +130,7 @@ export default class PasswordContent extends React.Component {
               </div>
             )}
           </label>
-          <button className={'h5p-password-btn'} onClick={this.handleOnClick}>
+          <button className={'h5p-password-btn'} onClick={this.handleOnClick.bind(this)}>
             {this.state.unlocked
               ? this.context.l10n.unlockedStateAction
               : this.context.l10n.lockedStateAction}
