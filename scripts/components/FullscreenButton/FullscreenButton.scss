@@ -5,15 +5,15 @@
   color: #fff;
   cursor: pointer;
   font-family: "H5PFontAwesome4", sans-serif;
-  font-size: 1em;
-  height: 2.25em;
+  font-size: 1.125em;
+  height: 2.5rem;
   overflow: hidden;
   padding: 0;
   position: absolute;
-  right: 0.5em;
-  top: 0.5em;
+  right: 0.5rem;
+  top: 0.5rem;
   transition: border-color 100ms,opacity 100ms;
-  width: 2.25em;
+  width: 2.5rem;
   z-index: 1;
 
   &::before {
