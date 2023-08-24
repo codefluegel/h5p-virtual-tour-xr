@@ -419,7 +419,7 @@ export default class ThreeSixtyScene extends React.Component {
           isHiddenBehindOverlay={ this.props.isHiddenBehindOverlay }
           nextFocus={ this.props.nextFocus }
           type={ 'interaction-' + index }
-          clickHandler={(index) => {
+          clickHandler={() => {
             this.handleNavButtonClick(index);
           }
           }
