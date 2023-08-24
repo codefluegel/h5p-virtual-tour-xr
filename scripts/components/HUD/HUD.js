@@ -14,7 +14,121 @@ export default class HUD extends React.Component {
   constructor(props) {
     super(props);
     this.props = props;
-    this.buttons = {};
+
+    this.state = {
+      currentButtonIndex: 0
+    };
+
+    // This does not feel very React-ish, does it?
+    this.buttons = {
+      'audio': React.createRef(),
+      'scene-description': React.createRef(),
+      'reset': React.createRef(),
+      'go-to-start': React.createRef(),
+      'score-summary': React.createRef()
+    };
+  }
+
+  /**
+   * Move button focus.
+   * @param {number} offset Offset to move position by.
+   */
+  moveButtonFocus(offset) {
+    if (typeof offset !== 'number') {
+      return;
+    }
+
+    if (
+      this.state.currentButtonIndex + offset < 0 ||
+      this.state.currentButtonIndex + offset > Object.keys(this.buttons).length - 1
+    ) {
+      return; // Don't cycle
+    }
+
+    const buttonReference =
+      Object.values(this.buttons)[this.state.currentButtonIndex + offset];
+
+    if (!buttonReference?.current) {
+      this.moveButtonFocus(offset + 1 * Math.sign(offset));
+      return;
+    }
+
+    this.setState({
+      currentButtonIndex: this.state.currentButtonIndex + offset,
+      focusButton: this.state.currentButtonIndex + offset
+    });
+  }
+
+  /**
+   * Get tabindex for button.
+   * @param {string} type Button type.
+   * @returns {string} Tabindex.
+   */
+  getButtonTabIndex(type) {
+    return (Object.keys(this.buttons)[this.state.currentButtonIndex] === type) ?
+      '0' :
+      '-1';
+  }
+
+  /**
+   * Determine whether button should get focus.
+   * @param {string} type Button type.
+   * @returns {boolean} True, if button should get focus..
+   */
+  getButtonFocus(type) {
+    if (typeof this.state.focusButton !== 'number') {
+      return false;
+    }
+
+    return (Object.keys(this.buttons)[this.state.focusButton] === type);
+  }
+
+  /**
+   * Handle key down.
+   * @param {React.KeyboardEvent} event Keyboard event.
+   */
+  handleKeydown(event) {
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+      this.moveButtonFocus(-1);
+    }
+    else if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+      this.moveButtonFocus(1);
+    }
+    else if (event.key === 'Home') {
+      const homeButtonIndex =
+        Object.values(this.buttons).findIndex((button) => button.current);
+
+      if (homeButtonIndex !== -1) {
+        this.moveButtonFocus(homeButtonIndex - this.state.currentButtonIndex);
+      }
+    }
+    else if (event.key === 'End') {
+      const endButtonIndex =
+        Object.values(this.buttons).findLastIndex((button) => button.current);
+
+      if (endButtonIndex !== -1) {
+        this.moveButtonFocus(endButtonIndex - this.state.currentButtonIndex);
+      }
+    }
+    else {
+      return;
+    }
+
+    event.preventDefault();
+  }
+
+  /**
+   * Handle receiving focus.
+   */
+  handleFocus() {
+    this.setState({ focusButton: this.state.currentButtonIndex });
+  }
+
+  /**
+   * Handle blur.
+   */
+  handleBlur() {
+    this.setState({ focusButton: null });
   }
 
   /**
@@ -117,11 +231,39 @@ export default class HUD extends React.Component {
       }>
         <div className="hud-top-right">
         </div>
-        <div className="hud-bottom-left">
-          <AudioButton { ...this.getSceneAudioTrack(this.props.scene) }/>
+        <div
+          className="hud-bottom-left"
+          role="toolbar"
+          aria-label={ this.context.l10n.mainToolbar }
+          aria-controls={ this.props.ariaControls }
+          onFocus={ () => {
+            this.handleFocus();
+          }}
+          onBlur={ () => {
+            this.handleBlur();
+          }}
+          onKeyDown={ (event) => {
+            this.handleKeydown(event);
+          }}
+        >
+          {
+          /*
+            * TODO: Why was the AudioButton not implemented as a special case
+            * of a Button and
+            */
+          }
+          <AudioButton
+            ref={ this.buttons['audio'] }
+            tabIndex={ this.getButtonTabIndex('audio') }
+            focus={ this.getButtonFocus('audio') }
+            { ...this.getSceneAudioTrack(this.props.scene) }
+          />
           { this.props.scene.scenedescription &&
             <Button
               type={ 'scene-description' }
+              ref={ this.buttons['scene-description'] }
+              tabIndex={ this.getButtonTabIndex('scene-description') }
+              focus={ this.getButtonFocus('scene-description') }
               label={ this.context.l10n.sceneDescription }
               isHiddenBehindOverlay={ this.props.isHiddenBehindOverlay }
               nextFocus={ this.props.nextFocus }
@@ -132,6 +274,9 @@ export default class HUD extends React.Component {
             isThreeSixty &&
             <Button
               type={ 'reset' }
+              ref={ this.buttons['reset'] }
+              tabIndex={ this.getButtonTabIndex('reset') }
+              focus={ this.getButtonFocus('reset') }
               label={ this.context.l10n.resetCamera }
               isHiddenBehindOverlay={ this.props.isHiddenBehindOverlay }
               nextFocus={ this.props.nextFocus }
@@ -141,6 +286,9 @@ export default class HUD extends React.Component {
             showHomeButton &&
             <Button
               type={ 'go-to-start' }
+              ref={ this.buttons['go-to-start'] }
+              tabIndex={ this.getButtonTabIndex('go-to-start') }
+              focus={ this.getButtonFocus('go-to-start') }
               label={this.props.isStartScene ?
                 this.context.l10n.userIsAtStartScene :
                 this.context.l10n.goToStartScene
@@ -154,19 +302,13 @@ export default class HUD extends React.Component {
             showScoresButton &&
             <Button
               type={ 'score-summary' }
+              ref={ this.buttons['score-summary'] }
+              tabIndex={ this.getButtonTabIndex('score-summary') }
+              focus={ this.getButtonFocus('score-summary') }
               label={ this.context.l10n.scoreSummary }
               isHiddenBehindOverlay={ this.props.isHiddenBehindOverlay }
               nextFocus={ this.props.nextFocus }
               onClick={ this.props.onShowingScoreSummary }
-            />
-          }
-          { false &&
-            <Button
-              type={ 'submit-dialog' }
-              label={ this.context.l10n.submitDialog }
-              isHiddenBehindOverlay={ this.props.isHiddenBehindOverlay }
-              nextFocus={ this.props.nextFocus }
-              onClick={ this.props.onSubmitDialog}
             />
           }
         </div>

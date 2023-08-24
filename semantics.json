@@ -853,6 +853,13 @@
         "label": "Text for screenreaders. Title for fullscreen button (exit)",
         "importance": "low",
         "default": "Exit fullscreen mode"
+      },
+      {
+        "name": "mainToolbar",
+        "type": "text",
+        "label": "Main toolbar",
+        "importance": "low",
+        "default": "Main toolbar"
       }
     ]
   }

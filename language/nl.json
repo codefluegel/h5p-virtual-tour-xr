@@ -436,6 +436,10 @@
         {
           "label": "Text for screenreaders. Title for fullscreen button (exit)",
           "default": "Exit fullscreen mode"
+        },
+        {
+          "label": "Main toolbar",
+          "default": "Main toolbar"
         }
       ]
     }

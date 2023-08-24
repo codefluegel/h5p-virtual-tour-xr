@@ -296,6 +296,8 @@ export default class AudioButton extends React.Component {
     return (
       <Button
         type={type}
+        tabIndex={ this.props.tabIndex }
+        focus={ this.props.focus }
         label={
           this.props.isPlaying === id
             ? this.context.l10n.pauseAudioTrack

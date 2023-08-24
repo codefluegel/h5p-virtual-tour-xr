@@ -55,6 +55,8 @@ export default class Main extends React.Component {
     };
 
     this.isVeryFirstRenderDone = this.props.isVeryFirstRenderDone ?? false;
+
+    this.documentID = `document-dom-${H5P.createUUID()}`;
   }
 
   /**
@@ -872,7 +874,11 @@ export default class Main extends React.Component {
     });
 
     return (
-      <div role="document" aria-label={ this.context.l10n.title }>
+      <div
+        role="document"
+        aria-label={ this.context.l10n.title }
+        id={ this.documentID }
+      >
         { showInteractionDialog && !showPasswordDialog &&
           <Dialog
             title={ currentInteraction.action.metadata.title }
@@ -920,10 +926,10 @@ export default class Main extends React.Component {
         </Dialog>
         }
         { showingScoreSummary &&
-              <ScoreSummary
-                title={this.context.l10n.scoreSummary}
-                onHideTextDialog={ this.handleCloseTextDialog.bind(this) }
-                scores={this.state.scoreCard}></ScoreSummary>
+          <ScoreSummary
+            title={this.context.l10n.scoreSummary}
+            onHideTextDialog={ this.handleCloseTextDialog.bind(this) }
+            scores={this.state.scoreCard}></ScoreSummary>
 
         }
         {
@@ -970,7 +976,6 @@ export default class Main extends React.Component {
           onAudioIsPlaying={ this.handleAudioIsPlaying.bind(this) }
           onSceneAudioWasPlaying={ this.handleSceneAudioWasPlaying.bind(this) }
           onSceneDescription={ this.handleSceneDescription.bind(this) }
-          onSubmitDialog={ () => console.error('Please implement SubmitDialog') }
           onCenterScene={ this.centerScene.bind(this) }
           isStartScene = {isStartScene}
           onGoToStartScene={ this.goToStartScene.bind(this) }
@@ -979,6 +984,7 @@ export default class Main extends React.Component {
           showScoresButton={this.context.behavior.showScoresButton && this.hasOneQuestion()}
           updateSceneAudioPlayers={ this.getSceneAudioPlayers.bind(this) }
           interactionAudioPlayers={ this.audioPlayers }
+          ariaControls={ this.documentID }
         />
         <Screenreader
           readText = { this.state.readingText }

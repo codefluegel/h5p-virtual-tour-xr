@@ -26,8 +26,10 @@ export default class AudioButton extends React.Component {
    */
   componentDidUpdate(prevProps) {
     if (
-      prevProps.nextFocus !== this.props.nextFocus &&
-      this.props.type === this.props.nextFocus
+      this.props.focus || (
+        prevProps.nextFocus !== this.props.nextFocus &&
+        this.props.type === this.props.nextFocus
+      )
     ) {
       this.element.focus();
     }
@@ -46,7 +48,10 @@ export default class AudioButton extends React.Component {
           onClick={ this.handleClick.bind(this) }
           aria-label={ this.props.label }
           disabled={ !!this.props.disabled }
-          tabIndex={ this.props.isHiddenBehindOverlay ? '-1' : undefined }
+          tabIndex={ this.props.isHiddenBehindOverlay ?
+            '-1' :
+            this.props.tabIndex
+          }
         />
         <div className="tooltip" aria-hidden="true">
           <div className="text-wrap">{ this.props.label }</div>
