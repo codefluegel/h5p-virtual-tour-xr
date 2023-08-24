@@ -107,7 +107,7 @@
                         },
                         {
                           "label": "Ezarri puntu beroa tabulagarria izan dadin",
-                          "description": "Puntu beroa tabulatzeko aukera emango du. Irisgarritasunerako erabil daiteke."
+                          "description": "Puntu beroa tabulatzeko aukera emango du. Required to be checked to make the content accessible!"
                         },
                         {
                           "label": "Erakutsi eszenan eduki ireki gisa",

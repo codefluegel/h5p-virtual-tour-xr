@@ -107,7 +107,7 @@
                         },
                         {
                           "label": "Establece que o punto de acceso sexa tabulable",
-                          "description": "Permitirá que o punto de acceso sexa tabulable. Pódese usar para a accesibilidade."
+                          "description": "Permitirá que o punto de acceso sexa tabulable. Required to be checked to make the content accessible!"
                         },
                         {
                           "label": "Amosar como contido aberto na escena",

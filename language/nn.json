@@ -107,7 +107,7 @@
                         },
                         {
                           "label": "La det aktive feltet nås med tab-knappen",
-                          "description": "Gjør trykkflaten mer tastaturvennlig."
+                          "description": "Required to be checked to make the content accessible!"
                         },
                         {
                           "label": "Vis innhold i scenen",

@@ -107,7 +107,7 @@
                         },
                         {
                           "label": "Nastavte aktivní bod tak, aby byl dostupný pomocí TAB",
-                          "description": "Umožní, aby byl aktivní bod dostupný pomocí TAB. Lze použít pro bezbariérovost."
+                          "description": "Umožní, aby byl aktivní bod dostupný pomocí TAB. Required to be checked to make the content accessible!"
                         },
                         {
                           "label": "Zobrazit jako otevřený obsah ve scéně",

@@ -107,7 +107,7 @@
                         },
                         {
                           "label": "Set the hotspot be tabbable",
-                          "description": "Will allow hotspot to be tabbable. Can be used for accessibilty."
+                          "description": "Will allow hotspot to be tabbable. Required to be checked to make the content accessible!"
                         },
                         {
                           "label": "Show as open content in the scene",

@@ -107,7 +107,7 @@
                         },
                         {
                           "label": "Configurar que el hotspot sea reactivo al tabulador",
-                          "description": "Configurar que el hotspot sea reactivo al tabulador. Puede ser usado por accesibilidad."
+                          "description": "Configurar que el hotspot sea reactivo al tabulador. Required to be checked to make the content accessible!"
                         },
                         {
                           "label": "Mostrar como contenido abierto en la escena",

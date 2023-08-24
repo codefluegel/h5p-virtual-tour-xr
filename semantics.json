@@ -240,8 +240,9 @@
                         "name": "isHotspotTabbable",
                         "type": "boolean",
                         "label": "Set the hotspot be tabbable",
-                        "description": "Will allow hotspot to be tabbable. Can be used for accessibilty.",
-                        "optional": true
+                        "description": "Will allow hotspot to be tabbable. Required to be checked to make the content accessible!",
+                        "optional": true,
+                        "default": true
                       },
                       {
                         "name": "hotSpotSizeValues",

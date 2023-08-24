@@ -107,7 +107,7 @@
                         },
                         {
                           "label": "Gör så att det går att använda tabb för att nå hotspot",
-                          "description": "Gör så att hotspot kan nås via tabbning. Användbart för webbtillgänglighet."
+                          "description": "Gör så att hotspot kan nås via tabbning. Required to be checked to make the content accessible!"
                         },
                         {
                           "label": "Visa som öppet innehåll i scenen",
