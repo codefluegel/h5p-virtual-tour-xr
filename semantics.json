@@ -831,6 +831,13 @@
         "label": "Locked content",
         "importance": "low",
         "default": "Locked content"
+      },
+      {
+        "name": "back",
+        "type": "text",
+        "label": "Back",
+        "importance": "low",
+        "default": "Back"
       }
     ]
   }

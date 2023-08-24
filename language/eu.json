@@ -424,6 +424,10 @@
         {
           "label": "Blokeatutako edukia",
           "default": "Blokeatutako edukia"
+        },
+        {
+          "label": "Back",
+          "default": "Back"
         }
       ]
     }

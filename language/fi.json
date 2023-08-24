@@ -424,6 +424,10 @@
         {
           "label": "Locked content",
           "default": "Locked content"
+        },
+        {
+          "label": "Back",
+          "default": "Back"
         }
       ]
     }

@@ -533,7 +533,9 @@ export default class NavigationButton extends React.Component {
             :
             <button
               ref={this.navButton}
-              aria-label={getLabelText(label) || this.context.l10n.untitled}
+              aria-label={
+                getLabelText(label) || this.props.title || this.context.l10n.untitled
+              }
               className='nav-button'
               tabIndex={isInnerButtonTabbable ? undefined : -1}
               onClick={this.onClick.bind(this)}

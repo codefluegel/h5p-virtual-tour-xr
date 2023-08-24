@@ -424,6 +424,10 @@
         {
           "label": "Uzamčený obsah",
           "default": "Uzamčený obsah"
+        },
+        {
+          "label": "Back",
+          "default": "Back"
         }
       ]
     }

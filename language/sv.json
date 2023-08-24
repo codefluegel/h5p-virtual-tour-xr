@@ -424,6 +424,10 @@
         {
           "label": "Låst innehåll",
           "default": "Låst innehåll"
+        },
+        {
+          "label": "Back",
+          "default": "Back"
         }
       ]
     }

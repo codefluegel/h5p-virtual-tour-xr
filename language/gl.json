@@ -424,6 +424,10 @@
         {
           "label": "Contido bloqueado",
           "default": "Contido bloqueado"
+        },
+        {
+          "label": "Back",
+          "default": "Back"
         }
       ]
     }
