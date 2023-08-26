@@ -84,6 +84,9 @@ export default class Scene extends React.Component {
         sceneIcons={this.props.sceneIcons}
         sceneParams={this.props.sceneParams}
         addThreeSixty={ this.props.addThreeSixty }
+        setReactRoots={ this.props.setReactRoots }
+        getReactRoots={ this.props.getReactRoots }
+        reactRoots={ this.props.reactRoots }
         imageSrc={this.props.imageSrc}
         navigateToScene={this.props.navigateToScene.bind(this)}
         forceStartCamera={this.props.forceStartCamera}

@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import Main from './components/Main';
 import { H5PContext } from './context/H5PContext';
 import { sceneRenderingQualityMapping } from './components/Scene/SceneTypes/ThreeSixtyScene';
@@ -156,7 +156,8 @@ export default class Wrapper extends H5P.EventDispatcher {
    * Render app.
    */
   render() {
-    ReactDOM.render(
+    this.root = this.root ?? createRoot(this.wrapper);
+    this.root.render(
       <H5PContext.Provider value={this}>
         <Main
           forceStartScreen={this.enforcedStartSceneId}
@@ -170,8 +171,7 @@ export default class Wrapper extends H5P.EventDispatcher {
           fullscreenButtonAriaLabel={this.fullscreenButtonAriaLabel}
           onFullscreenClicked={this.toggleFullscreen.bind(this)}
         />
-      </H5PContext.Provider>,
-      this.wrapper
+      </H5PContext.Provider>
     );
 
     window.requestAnimationFrame(() => {

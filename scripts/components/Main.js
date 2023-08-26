@@ -971,6 +971,10 @@ export default class Main extends React.Component {
                 startBtnClicked={this.state.startBtnClicked}
                 read={ this.read.bind(this) }
                 sceneDescriptionARIA={ sceneParams.sceneDescriptionARIA }
+                setReactRoots={ (reactRoots) => {
+                  this.reactRoots = reactRoots;
+                } }
+                getReactRoots={ () => this.reactRoots ?? [null, null] }
               />
             );
           })

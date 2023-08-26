@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import NavigationButton, { getIconFromInteraction, getLabelFromInteraction } from '../../Interactions/NavigationButton';
 import { H5PContext } from '../../../context/H5PContext';
 import ContextMenu from '../../Shared/ContextMenu';
@@ -297,20 +297,25 @@ export default class ThreeSixtyScene extends React.Component {
 
     this.renderedInteractions = list.length;
 
-    const [rendererElement2d, rendererElement3d] = threeSixty.getRenderers();
+    let [reactRoot2D, reactRoot3D] = this.props.getReactRoots();
+    if (!reactRoot2D || !reactRoot3D) {
+      const [rendererElement2d, rendererElement3d] = threeSixty.getRenderers();
+      reactRoot2D = createRoot(rendererElement2d);
+      reactRoot3D = createRoot(rendererElement3d.firstChild);
 
-    ReactDOM.render(
+      this.props.setReactRoots([reactRoot2D, reactRoot3D]);
+    }
+
+    reactRoot2D.render(
       <H5PContext.Provider value={this.context}>
         { components2d }
-      </H5PContext.Provider>,
-      rendererElement2d,
+      </H5PContext.Provider>
     );
 
-    ReactDOM.render(
+    reactRoot3D.render(
       <H5PContext.Provider value={this.context}>
         { components3d }
-      </H5PContext.Provider>,
-      (rendererElement3d.firstChild),
+      </H5PContext.Provider>
     );
   }
 
