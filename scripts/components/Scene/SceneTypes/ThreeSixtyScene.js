@@ -205,12 +205,7 @@ export default class ThreeSixtyScene extends React.Component {
     threeSixty.on('firstrender', this.handleFirstRender);
 
     threeSixty.startRendering();
-    if (this.props.isPanorama) {
-      threeSixty.updateCylinder();
-    }
-    else {
-      threeSixty.update();
-    }
+    threeSixty.update();
 
     threeSixty.on('movestart', this.handleSceneMoveStart);
     threeSixty.on('movestop', this.handleSceneMoveStop);
