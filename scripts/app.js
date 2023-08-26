@@ -89,20 +89,19 @@ export default class Wrapper extends H5P.EventDispatcher {
 
     this.contentId = contentId;
     this.extras = extras;
-    this.sceneRenderingQuality = this.behavior.sceneRenderingQuality || 'high';
 
     this.isFullScreenSupported = this.isRoot() && H5P.fullscreenSupported;
     if (this.isFullScreenSupported) {
       this.fullscreenButtonAriaLabel = this.l10n.buttonFullscreenEnter;
       this.on('enterFullScreen', () => {
         window.setTimeout(() => {
-          this.reDraw();
+          this.render();
         }, 50);
       });
 
       this.on('exitFullScreen', () => {
         window.setTimeout(() => {
-          this.reDraw();
+          this.render();
           this.trigger('resize');
         }, 50);
       });
@@ -142,14 +141,21 @@ export default class Wrapper extends H5P.EventDispatcher {
   }
 
   /**
-   * Set current scene id.
-   * @param {number} sceneId Scene id.
+   * Add threeSixty instance.
+   * @param {object} threeSixty ThreeSixty instance.
    */
-  setCurrentSceneId(sceneId) {
-    this.currentSceneId = sceneId;
+  addThreeSixty(threeSixty) {
+    this.threeSixty = threeSixty;
 
-    this.trigger('changedScene', sceneId);
+    this.setSceneRenderingQuality(
+      this.behavior.sceneRenderingQuality || 'high'
+    );
+  }
 
+  /**
+   * Render app.
+   */
+  render() {
     ReactDOM.render(
       <H5PContext.Provider value={this}>
         <Main
@@ -157,8 +163,9 @@ export default class Wrapper extends H5P.EventDispatcher {
           forceStartCamera={this.forceStartCamera}
           currentScene={this.currentSceneId}
           setCurrentSceneId={this.setCurrentSceneId.bind(this)}
-          addThreeSixty={(tS) => this.threeSixty = tS}
+          addThreeSixty={this.addThreeSixty.bind(this)}
           onSetCameraPos={this.setCameraPosition.bind(this)}
+          isVeryFirstRender={!this.isAttached}
           fullScreenSupported={this.isFullScreenSupported}
           fullscreenButtonAriaLabel={this.fullscreenButtonAriaLabel}
           onFullscreenClicked={this.toggleFullscreen.bind(this)}
@@ -173,40 +180,13 @@ export default class Wrapper extends H5P.EventDispatcher {
   }
 
   /**
-   * Redraw scene.
-   * @param {number} [enforcedStartSceneId] If set, enforce drawing respective scene.
+   * Set current scene id.
+   * @param {number} sceneId Scene id.
    */
-  reDraw(enforcedStartSceneId = this.currentSceneId) {
-    const sceneRenderingQuality = this.behavior.sceneRenderingQuality;
-
-    if (
-      sceneRenderingQuality !== this.sceneRenderingQuality && this.threeSixty
-    ) {
-      this.setSceneRenderingQuality(sceneRenderingQuality);
-    }
-
-    if (enforcedStartSceneId !== this.currentSceneId) {
-      // TODO: That will also re-render the DOM. Could this be made simpler?
-      this.setCurrentSceneId(enforcedStartSceneId);
-      return;
-    }
-
-    ReactDOM.render(
-      <H5PContext.Provider value={this}>
-        <Main
-          forceStartScreen={this.enforcedStartSceneId}
-          forceStartCamera={this.forceStartCamera}
-          currentScene={this.currentSceneId}
-          setCurrentSceneId={this.setCurrentSceneId.bind(this)}
-          addThreeSixty={(tS) => this.threeSixty = tS}
-          onSetCameraPos={this.setCameraPosition.bind(this)}
-          fullScreenSupported={this.isFullScreenSupported}
-          fullscreenButtonAriaLabel={this.fullscreenButtonAriaLabel}
-          onFullscreenClicked={this.toggleFullscreen.bind(this)}
-        />
-      </H5PContext.Provider>,
-      this.wrapper
-    );
+  setCurrentSceneId(sceneId) {
+    this.currentSceneId = sceneId;
+    this.trigger('changedScene', sceneId);
+    this.render();
   }
 
   /**
@@ -225,24 +205,9 @@ export default class Wrapper extends H5P.EventDispatcher {
         this.currentSceneId = this.enforcedStartSceneId;
       }
 
-      // TODO: The scene is rendered in re-draw ans setCurrentScene, too. Could this be made simpler?
-      ReactDOM.render(
-        <H5PContext.Provider value={this}>
-          <Main
-            forceStartScreen={this.enforcedStartSceneId}
-            forceStartCamera={this.forceStartCamera}
-            currentScene={this.currentSceneId}
-            setCurrentSceneId={this.setCurrentSceneId.bind(this)}
-            addThreeSixty={(tS) => this.threeSixty = tS}
-            onSetCameraPos={this.setCameraPosition.bind(this)}
-            isVeryFirstRender={true}
-            fullScreenSupported={this.isFullScreenSupported}
-            fullscreenButtonAriaLabel={this.fullscreenButtonAriaLabel}
-            onFullscreenClicked={this.toggleFullscreen.bind(this)}
-          />
-        </H5PContext.Provider>,
-        this.wrapper
-      );
+      this.render();
+
+      this.isAttached = true;
     };
 
     /*
@@ -353,7 +318,7 @@ export default class Wrapper extends H5P.EventDispatcher {
    */
   setSceneRenderingQuality(quality) {
     const segments = sceneRenderingQualityMapping[quality];
-    this.threeSixty.setSegmentNumber(segments);
+    this.threeSixty?.setSegmentNumber(segments);
     this.sceneRenderingQuality = quality;
   }
 
