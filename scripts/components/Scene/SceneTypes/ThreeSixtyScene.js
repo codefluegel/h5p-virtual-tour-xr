@@ -293,8 +293,8 @@ export default class ThreeSixtyScene extends React.Component {
     this.renderedInteractions = list.length;
 
     let [reactRoot2D, reactRoot3D] = this.props.getReactRoots();
+    const [rendererElement2d, rendererElement3d] = threeSixty.getRenderers();
     if (!reactRoot2D || !reactRoot3D) {
-      const [rendererElement2d, rendererElement3d] = threeSixty.getRenderers();
       reactRoot2D = createRoot(rendererElement2d);
       reactRoot3D = createRoot(rendererElement3d.firstChild);
 
@@ -307,11 +307,25 @@ export default class ThreeSixtyScene extends React.Component {
       </H5PContext.Provider>
     );
 
-    reactRoot3D.render(
-      <H5PContext.Provider value={this.context}>
-        { components3d }
-      </H5PContext.Provider>
-    );
+    /*
+     * In contrast to React 16, React 18 we need to render the react2D root
+     * first before the react3D root can be rendered, as the latter is a child
+     * of the former (why by the way?) and would overruled by rendering the 2D
+     * root at the same time.
+     */
+    window.requestAnimationFrame(() => {
+      // Workaround for reactRoot2D.render overwriting rendererElement3d
+      const elements2d = [...rendererElement2d.childNodes];
+      if (!elements2d.includes(rendererElement3d)) {
+        rendererElement2d.insertBefore(rendererElement3d, elements2d[0]);
+      }
+
+      reactRoot3D.render(
+        <H5PContext.Provider value={this.context}>
+          { components3d }
+        </H5PContext.Provider>
+      );
+    });
   }
 
   /**
@@ -485,7 +499,7 @@ export default class ThreeSixtyScene extends React.Component {
       Math.abs(endPosition.pitch - this.startPosition.pitch) >
         ThreeSixtyScene.MAX_PITCH_DELTA
     ) {
-      return; // Dragged button to much for click
+      return; // Dragged button too much for click
     }
 
     this.props.showInteraction.bind(this)(index);
@@ -598,6 +612,10 @@ export default class ThreeSixtyScene extends React.Component {
           || hasChangedFocus
           || isHiddenBehindOverlayHasChanged
           || this.props.isEditingInteraction;
+
+      this.addInteractionHotspots(
+        this.props.threeSixty, this.props.sceneParams.interactions
+      );
 
       if (shouldUpdateInteractionHotspots) {
         this.addInteractionHotspots(
