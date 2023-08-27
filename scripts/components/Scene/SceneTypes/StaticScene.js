@@ -364,24 +364,6 @@ export default class StaticScene extends React.Component {
   }
 
   /**
-   * Get interaction title.
-   * @param {object} action Action.
-   * @returns {string} Title.
-   */
-  getInteractionTitle(action) {
-    const currentTitle = action.metadata.title;
-    // TODO: Does this work internationally? Also: Same in static scene => move to Scene.js
-    switch (currentTitle) {
-      case 'Untitled Text':
-        return action.params.text;
-      case 'Untitled Image':
-        return action.params.alt;
-      default:
-        return currentTitle;
-    }
-  }
-
-  /**
    * Get adjusted position depending on font size (?).
    * @param {number} posX X-coordinate.
    * @param {number} posY Y-coordinate.
@@ -509,7 +491,7 @@ export default class StaticScene extends React.Component {
                 title = nextScene.scenename;
               }
               else {
-                title = this.getInteractionTitle(interaction.action);
+                title = this.props.getInteractionTitle(interaction.action);
               }
 
               const key = interaction.id || `interaction-${this.props.sceneId}${index}`;

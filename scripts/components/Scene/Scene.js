@@ -46,6 +46,26 @@ export default class Scene extends React.Component {
   }
 
   /**
+   * Get interaction title.
+   * @param {object} action Action.
+   * @returns {string} Title.
+   */
+  getInteractionTitle(action) {
+    const currentTitle = action.metadata.title;
+    // TODO: Does this work internationally?
+    switch (currentTitle) {
+      case 'Untitled Text':
+        return action.params.text;
+
+      case 'Untitled Image':
+        return action.params.alt;
+
+      default:
+        return currentTitle;
+    }
+  }
+
+  /**
    * React render function.
    * @returns {object} JSX element.
    */
@@ -69,6 +89,7 @@ export default class Scene extends React.Component {
           focusedInteraction={this.props.focusedInteraction}
           sceneWaitingForLoad={this.props.sceneWaitingForLoad}
           doneLoadingNextScene={this.props.doneLoadingNextScene}
+          getInteractionTitle={this.getInteractionTitle.bind(this)}
         />
       );
     }
@@ -103,6 +124,7 @@ export default class Scene extends React.Component {
         doneLoadingNextScene={this.props.doneLoadingNextScene}
         startBtnClicked={this.props.startBtnClicked}
         isPanorama={this.props.sceneParams.sceneType === SceneTypes.PANORAMA}
+        getInteractionTitle={this.getInteractionTitle.bind(this)}
       />
     );
   }

@@ -121,26 +121,6 @@ export default class ThreeSixtyScene extends React.Component {
   }
 
   /**
-   * Get interaction title.
-   * @param {object} action Action.
-   * @returns {string} Title.
-   */
-  getInteractionTitle(action) {
-    const currentTitle = action.metadata.title;
-    // TODO: Does this work internationally? Also: Same in static scene => move to Scene.js
-    switch (currentTitle) {
-      case 'Untitled Text':
-        return action.params.text;
-
-      case 'Untitled Image':
-        return action.params.alt;
-
-      default:
-        return currentTitle;
-    }
-  }
-
-  /**
    * Handle dragging scene ended.
    * @param {H5P.Event} event Event.
    */
@@ -354,7 +334,7 @@ export default class ThreeSixtyScene extends React.Component {
       title = gotoScene.scenename; // Use scenename as title.
     }
     else {
-      title = this.getInteractionTitle(interaction.action);
+      title = this.props.getInteractionTitle(interaction.action);
     }
 
     const onMount = (element) => {

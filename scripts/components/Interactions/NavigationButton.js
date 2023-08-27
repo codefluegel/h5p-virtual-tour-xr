@@ -479,7 +479,7 @@ export default class NavigationButton extends React.Component {
     let width;
     let height;
 
-    // TODO: What is this used for? Change of scene type? Already covered in editor now, isn't it?
+    // TODO: Move to editor. View should not deal with setting the size.
     if (this.props.label && this.props.staticScene && this.props.showAsHotspot) {
       width = parseFloat(this.getHotspotValues()[0].toString());
       height = parseFloat(this.getHotspotValues()[1].toString());
