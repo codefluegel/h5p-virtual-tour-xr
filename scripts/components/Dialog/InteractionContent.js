@@ -51,12 +51,25 @@ export default class InteractionContent extends React.Component {
     const interaction = scene.interactions[this.props.currentInteraction];
     const library = interaction.action;
 
+    const machineName = interaction.action.library?.split?.(' ')[0];
+
+    if (machineName === 'H5P.Video') {
+      interaction.action.params.visuals.fit = (
+        interaction.action.params.sources.length && (
+          interaction.action.params.sources[0].mime === 'video/mp4' ||
+          interaction.action.params.sources[0].mime === 'video/webm' ||
+          interaction.action.params.sources[0].mime === 'video/ogg'
+        )
+      );
+    }
+
     this.instance = H5P.newRunnable(
       library,
       this.context.contentId,
       H5P.jQuery(contentRef)
     );
-    if (library.library.split(' ')[0] === 'H5P.Video') {
+
+    if (machineName === 'H5P.Video') {
       this.instance.on('stateChange', (e) => {
         if (e.data === H5P.Video.PLAYING) {
           this.props.onAudioIsPlaying(
