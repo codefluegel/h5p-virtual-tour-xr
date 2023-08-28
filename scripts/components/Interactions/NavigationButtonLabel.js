@@ -178,7 +178,6 @@ export default class NavigationButtonLabel extends React.Component {
    */
   componentWillUnmount() {
     this.context.off('resize', () => {
-      // TODO: Same as in componentDidMount. Move to extra function.
       if (
         this.state.isExpanded &&
         this.innerLabelDiv.current &&
