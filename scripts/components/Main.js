@@ -12,10 +12,9 @@ import PasswordContent from './Dialog/PasswordContent';
 import ScoreSummary from './Dialog/ScoreSummary';
 import {
   createAudioPlayer,
-  isInteractionAudio,
   fadeAudioInAndOut,
-  isSceneAudio,
-  isPlaylistAudio
+  getAudioPlayerType,
+  AUDIO_PLAYER_TYPES
 } from '../utils/audio-utils';
 
 export default class Main extends React.Component {
@@ -185,10 +184,10 @@ export default class Main extends React.Component {
 
     if (this.state.audioIsPlaying && this.state.audioIsPlaying !== prevState.audioIsPlaying) {
       // Something is playing audio
-
-      if (isInteractionAudio(prevState.audioIsPlaying)) {
-        // Thas last player was us, we need to stop it
-
+      if (
+        getAudioPlayerType(prevState.audioIsPlaying) === AUDIO_PLAYER_TYPES['interaction']
+      ) {
+        // The last player was us, we need to stop it
         const lastPlayer = this.getAudioPlayer(prevState.audioIsPlaying);
         fadeAudioInAndOut(lastPlayer, null, true);
       }
@@ -308,7 +307,7 @@ export default class Main extends React.Component {
     }
 
     /*
-     * TODO: What is this needed for? Is this supposed to determine whether a
+     * // TODO: What is this needed for? Is this supposed to determine whether a
      * library instance has scores? So whether getMaxScore() exists and
      * returns > 0? Why have an extra rule per library?
      * Cmp. https://github.com/otacke/h5p-game-map/blob/c228418e92170c8c8dccdb076a773b06cd880dc4/src/scripts/services/h5p-util.js#L10-L26
@@ -362,8 +361,8 @@ export default class Main extends React.Component {
     }
 
     // Pause any playing interaction audio on navigation
-    const isInteractionAudioPlaying = this.state.audioIsPlaying
-      && isInteractionAudio(this.state.audioIsPlaying);
+    const isInteractionAudioPlaying =
+      getAudioPlayerType(this.state.audioIsPlaying) === AUDIO_PLAYER_TYPES['interaction'];
 
     if (isInteractionAudioPlaying) {
       const lastPlayer = this.getAudioPlayer(this.state.audioIsPlaying);
@@ -527,11 +526,8 @@ export default class Main extends React.Component {
       else {
         // Start current audio playback
         if (
-          this.state.audioIsPlaying &&
-          (
-            isSceneAudio(this.state.audioIsPlaying) ||
-            isPlaylistAudio(this.state.audioIsPlaying)
-          )
+          [AUDIO_PLAYER_TYPES['scene'], AUDIO_PLAYER_TYPES['playlist']]
+            .includes(getAudioPlayerType(this.state.audioIsPlaying))
         ) {
           this.setState({
             sceneAudioWasPlaying: this.state.audioIsPlaying
@@ -540,7 +536,7 @@ export default class Main extends React.Component {
 
         const player = this.getAudioPlayer(playerId, interaction);
         const lastPlayer =
-          this.state.audioIsPlaying && isInteractionAudio(this.state.audioIsPlaying)
+          getAudioPlayerType(this.state.audioIsPlaying) === AUDIO_PLAYER_TYPES['interaction']
             ? this.getAudioPlayer(this.state.audioIsPlaying)
             : this.sceneAudioPlayers[this.state.audioIsPlaying];
 
@@ -558,11 +554,8 @@ export default class Main extends React.Component {
 
       // Save last scene player if any
       if (
-        this.state.audioIsPlaying &&
-        (
-          isSceneAudio(this.state.audioIsPlaying) ||
-          isPlaylistAudio(this.state.audioIsPlaying)
-        )
+        [AUDIO_PLAYER_TYPES['scene'], AUDIO_PLAYER_TYPES['playlist']]
+          .includes(getAudioPlayerType(this.state.audioIsPlaying))
       ) {
         this.setState({
           sceneAudioWasPlaying: this.state.audioIsPlaying
@@ -675,7 +668,7 @@ export default class Main extends React.Component {
 
   /**
    * Check correctness of password.
-   * TODO: Why is this handled here and not in some password component?
+   * // TODO: Why is this handled here and not in some password component?
    * @param {string} inputPassword Password that was entered.
    * @returns {boolean} True, if password was correct.
    */
@@ -726,7 +719,7 @@ export default class Main extends React.Component {
 
   /**
    * Update escape score card.
-   * TODO: Check if "escape score" === "total score"
+   * // TODO: Check if "escape score" === "total score"
    * @param {boolean} isUnlocked If true, unlocked. Else locked.
    */
   updateEscapeScoreCard(isUnlocked) {

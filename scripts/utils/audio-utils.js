@@ -1,3 +1,12 @@
+/** @constant {object} AUDIO_PLAYER_TYPES Valid audio types. */
+export const AUDIO_PLAYER_TYPES = {
+  interaction: 0,
+  video: 1,
+  playlist: 2,
+  global: 2, // Same as playlist
+  scene: 3
+};
+
 /**
  * Fade audio out by .1 every 25 milliseconds.
  * @param {HTMLAudioElement} player Audio player.
@@ -105,12 +114,18 @@ export const createAudioPlayer = (
   return player;
 };
 
-/*
- * TODO: There are four functions essentially doing the same thing.
- * Could as well be done by retrieving type of player.
- * getType(playerid = '') => playerid.split('-').shift() or potentially
- * mapping the return value to some constant.
+/**
+ * Determine type of audio player.
+ * @param {string} id Id of player.
+ * @returns {number|null} Type of audio player as mapped in AUDIO_PLAYER_TYPES or null.
  */
+export const getAudioPlayerType = (id) => {
+  if (typeof id !== 'string') {
+    return null;
+  }
+
+  return AUDIO_PLAYER_TYPES[id.split('-').shift()] ?? null;
+};
 
 /**
  * Determine if ID of player belongs to scene audio track.

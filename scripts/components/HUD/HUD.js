@@ -248,7 +248,7 @@ export default class HUD extends React.Component {
         >
           {
           /*
-            * TODO: Why was the AudioButton not implemented as a special case
+            * // TODO: Why was the AudioButton not implemented as a special case
             * of a Button and
             */
           }

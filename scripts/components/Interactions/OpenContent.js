@@ -284,7 +284,7 @@ export default class OpenContent extends React.Component {
     const machineName = H5P.libraryFromString(library).machineName;
 
     /*
-     * TODO: Check what this is for feels very weird.
+     * // TODO: Check what this is for feels very weird.
      * Shouldn't this attach the H5P instance DOM?
      */
     if (machineName === 'H5P.AdvancedText') {

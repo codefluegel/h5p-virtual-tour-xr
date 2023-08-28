@@ -3,9 +3,8 @@ import React from 'react';
 import { H5PContext } from '../../../context/H5PContext';
 import {
   createAudioPlayer,
-  isInteractionAudio,
-  isPlaylistAudio,
-  isSceneAudio,
+  getAudioPlayerType,
+  AUDIO_PLAYER_TYPES,
   fadeAudioInAndOut,
 } from '../../../utils/audio-utils';
 import Button from './Button/Button';
@@ -164,9 +163,10 @@ export default class AudioButton extends React.Component {
     }
     else {
       // Find out if there is an interaction playing
-      const lastPlayer = isInteractionAudio(this.props.isPlaying) ?
-        this.props.interactionAudioPlayers[this.props.isPlaying] :
-        null;
+      const lastPlayer =
+        getAudioPlayerType(this.props.isPlaying) === AUDIO_PLAYER_TYPES['interaction'] ?
+          this.props.interactionAudioPlayers[this.props.isPlaying] :
+          null;
 
       // Pause if lastplayer, then start the playback!
       fadeAudioInAndOut(lastPlayer, player, true);
@@ -183,15 +183,15 @@ export default class AudioButton extends React.Component {
 
       // If not scene audio is playing then change state for audioOn
       if (!(
-        isSceneAudio(this.props.isPlaying) ||
-        isPlaylistAudio(this.props.isPlaying)
+        [AUDIO_PLAYER_TYPES['scene'], AUDIO_PLAYER_TYPES['playlist']]
+          .includes(getAudioPlayerType(this.props.isPlaying))
       )) {
         this.setState({ audioOn: false });
       }
 
       if (
-        isSceneAudio(prevProps.isPlaying) ||
-        isPlaylistAudio(prevProps.isPlaying)
+        [AUDIO_PLAYER_TYPES['scene'], AUDIO_PLAYER_TYPES['playlist']]
+          .includes(getAudioPlayerType(prevProps.isPlaying))
       ) {
         // Thas last player was us, we need to stop it
 
@@ -207,8 +207,8 @@ export default class AudioButton extends React.Component {
     }
 
     if (
-      isSceneAudio(this.props.isPlaying) ||
-      isPlaylistAudio(this.props.isPlaying) ||
+      [AUDIO_PLAYER_TYPES['scene'], AUDIO_PLAYER_TYPES['playlist']]
+        .includes(getAudioPlayerType(this.props.isPlaying)) ||
       (this.props.sceneId !== prevProps.sceneId && this.state.audioOn === true)
     ) {
       // Playing something or we changed scene and scene audio is on
@@ -225,15 +225,18 @@ export default class AudioButton extends React.Component {
     }
 
     if (
-      isSceneAudio(this.props.isPlaying) ||
-      isPlaylistAudio(this.props.isPlaying)
+      [AUDIO_PLAYER_TYPES['scene'], AUDIO_PLAYER_TYPES['playlist']]
+        .includes(getAudioPlayerType(this.props.isPlaying))
     ) {
       const isNewScene = this.props.sceneId !== prevProps.sceneId;
       if (this.props.restartAudioOnSceneStart && isNewScene) {
         const currentPlayerId = this.getPlayerId();
         const player = this.getPlayer(currentPlayerId);
 
-        if (player && isPlaylistAudio(currentPlayerId)) {
+        if (
+          player &&
+          getAudioPlayerType(currentPlayerId) === AUDIO_PLAYER_TYPES['playlist']
+        ) {
           // Pause
           player?.pause();
 
@@ -259,7 +262,8 @@ export default class AudioButton extends React.Component {
     if (
       !this.props.isPlaying &&
       this.props.sceneWasPlaying &&
-      isInteractionAudio(prevProps.isPlaying)
+      getAudioPlayerType(prevProps.isPlaying) ===
+        AUDIO_PLAYER_TYPES['interaction']
     ) {
       // An interaction audio is over and we played scene audio or global audio before that!
 
