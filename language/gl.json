@@ -137,15 +137,17 @@
                       "label": "Amosar como contido aberto na escena",
                       "description": "Permite que o contido se amose nunha caixa de diálogo aberta directamente na escena."
                     },
+                    {},
+                    {},
                     {
-                      "label": "Estilo do botón",
-                      "description": "Decide como debe ser a icona.",
+                      "label": "Button style",
+                      "description": "Decide how the icon should look.",
                       "options": [
                         {
-                          "label": "Icona de texto"
+                          "label": "Text icon"
                         },
                         {
-                          "label": "Icona de información"
+                          "label": "Info icon"
                         }
                       ]
                     }
@@ -190,21 +192,23 @@
             ]
           }
         },
+        {},
         {
-          "label": "Pista de son"
+          "label": "Listas de reprodución"
         },
         {
-          "label": "Listas de reprodución",
+          "label": "Playlists",
           "field": {
             "fields": [
               {
-                "label": "Título da lista de reprodución",
-                "description": "Úsase para identificar a lista de reprodución"
+                "label": "Playlist Title",
+                "description": "Used to identify the playlist"
               },
               {
-                "label": "Pistas de son",
-                "description": "Engade pistas de son á lista de reprodución."
-              }
+                "label": "Audio Tracks",
+                "description": "Add audio tracks to the playlist."
+              },
+              {}
             ]
           }
         }

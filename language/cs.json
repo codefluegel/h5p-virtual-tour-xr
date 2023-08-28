@@ -137,15 +137,17 @@
                       "label": "Zobrazit jako otevřený obsah ve scéně",
                       "description": "Umožňuje zobrazení obsahu v otevřeném dialogovém okně přímo ve scéně."
                     },
+                    {},
+                    {},
                     {
-                      "label": "Styl tlačítka",
-                      "description": "Rozhodnout, jak má ikona vypadat.",
+                      "label": "Button style",
+                      "description": "Decide how the icon should look.",
                       "options": [
                         {
-                          "label": "Text ikony"
+                          "label": "Text icon"
                         },
                         {
-                          "label": "Informační ikona"
+                          "label": "Info icon"
                         }
                       ]
                     }
@@ -190,21 +192,23 @@
             ]
           }
         },
+        {},
         {
-          "label": "Zvuková stopa"
+          "label": "Seznam skladeb"
         },
         {
-          "label": "Seznam skladeb",
+          "label": "Playlists",
           "field": {
             "fields": [
               {
-                "label": "Nadpis seznamu skladeb",
-                "description": "Používá se k identifikaci seznamu skladeb"
+                "label": "Playlist Title",
+                "description": "Used to identify the playlist"
               },
               {
-                "label": "Zvukové stopy",
-                "description": "Přidejte zvukové stopy do seznamu stop."
-              }
+                "label": "Audio Tracks",
+                "description": "Add audio tracks to the playlist."
+              },
+              {}
             ]
           }
         }

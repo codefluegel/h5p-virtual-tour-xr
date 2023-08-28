@@ -137,15 +137,17 @@
                       "label": "Erakutsi eszenan eduki ireki gisa",
                       "description": "Edukia irekita dagoen elkarrizketa-koadroan zuzenean eszenan erakusteko aukera ematen du."
                     },
+                    {},
+                    {},
                     {
-                      "label": "Botoiaren estiloa",
-                      "description": "Erabaki ikonoa nola ikusi behar den.",
+                      "label": "Button style",
+                      "description": "Decide how the icon should look.",
                       "options": [
                         {
-                          "label": "Testuaren ikonoa"
+                          "label": "Text icon"
                         },
                         {
-                          "label": "Informazioaren ikonoa"
+                          "label": "Info icon"
                         }
                       ]
                     }
@@ -190,8 +192,9 @@
             ]
           }
         },
+        {},
         {
-          "label": "Audio-pista"
+          "label": "Playlists"
         },
         {
           "label": "Playlists",
@@ -204,7 +207,8 @@
               {
                 "label": "Audio Tracks",
                 "description": "Add audio tracks to the playlist."
-              }
+              },
+              {}
             ]
           }
         }

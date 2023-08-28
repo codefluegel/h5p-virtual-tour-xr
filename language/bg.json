@@ -137,6 +137,8 @@
                       "label": "Show as open content in the scene",
                       "description": "Allows the content to be shown in an open dialog box directly in the scene."
                     },
+                    {},
+                    {},
                     {
                       "label": "Button style",
                       "description": "Decide how the icon should look.",
@@ -190,8 +192,9 @@
             ]
           }
         },
+        {},
         {
-          "label": "Аудио запис"
+          "label": "Playlists"
         },
         {
           "label": "Playlists",
@@ -204,7 +207,8 @@
               {
                 "label": "Audio Tracks",
                 "description": "Add audio tracks to the playlist."
-              }
+              },
+              {}
             ]
           }
         }

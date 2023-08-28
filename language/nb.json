@@ -137,15 +137,17 @@
                       "label": "Vis innhold i scenen",
                       "description": "Lar innholdet vises åpent rett i scenen."
                     },
+                    {},
+                    {},
                     {
-                      "label": "Knappetype",
-                      "description": "Velg hvilket ikon som skal vises.",
+                      "label": "Button style",
+                      "description": "Decide how the icon should look.",
                       "options": [
                         {
-                          "label": "Tekstikon"
+                          "label": "Text icon"
                         },
                         {
-                          "label": "Informasjonsikon"
+                          "label": "Info icon"
                         }
                       ]
                     }
@@ -190,21 +192,23 @@
             ]
           }
         },
+        {},
         {
-          "label": "Lydspor"
+          "label": "Spillelister"
         },
         {
-          "label": "Spillelister",
+          "label": "Playlists",
           "field": {
             "fields": [
               {
-                "label": "Navn på spilleliste",
-                "description": "Brukes for å gjenkjenne spillelisten"
+                "label": "Playlist Title",
+                "description": "Used to identify the playlist"
               },
               {
-                "label": "Lydspor",
-                "description": "Legg ett eller flere lydspor til i spillelisten."
-              }
+                "label": "Audio Tracks",
+                "description": "Add audio tracks to the playlist."
+              },
+              {}
             ]
           }
         }

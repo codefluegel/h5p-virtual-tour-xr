@@ -137,15 +137,17 @@
                       "label": "Mostrar como contenido abierto en la escena",
                       "description": "Permite que el contenido sea mostrado en la caja de diálogo abierta directamente en la escena."
                     },
+                    {},
+                    {},
                     {
-                      "label": "Estilo del botón",
-                      "description": "Decidir cómo debería verse el ícono.",
+                      "label": "Button style",
+                      "description": "Decide how the icon should look.",
                       "options": [
                         {
-                          "label": "Ícono de texto"
+                          "label": "Text icon"
                         },
                         {
-                          "label": "Ícono de información"
+                          "label": "Info icon"
                         }
                       ]
                     }
@@ -190,21 +192,23 @@
             ]
           }
         },
+        {},
         {
-          "label": "Pista de Audio"
+          "label": "Listas de reproducción"
         },
         {
-          "label": "Listas de reproducción",
+          "label": "Playlists",
           "field": {
             "fields": [
               {
-                "label": "Título de Lista de reproducción",
-                "description": "Usado para identificar la lista de reproducción"
+                "label": "Playlist Title",
+                "description": "Used to identify the playlist"
               },
               {
-                "label": "Pistas de Audio",
-                "description": "Añadir pistas de audio a la lista de reproducción."
-              }
+                "label": "Audio Tracks",
+                "description": "Add audio tracks to the playlist."
+              },
+              {}
             ]
           }
         }

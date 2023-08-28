@@ -137,15 +137,17 @@
                       "label": "Visa som öppet innehåll i scenen",
                       "description": "Tillåter att innehållet visas i en öppen dialogbox, direkt i scenen."
                     },
+                    {},
+                    {},
                     {
-                      "label": "Knapptyp",
-                      "description": "Avgör hur ikonen ska se ut.",
+                      "label": "Button style",
+                      "description": "Decide how the icon should look.",
                       "options": [
                         {
-                          "label": "Textikon"
+                          "label": "Text icon"
                         },
                         {
-                          "label": "Info-ikon"
+                          "label": "Info icon"
                         }
                       ]
                     }
@@ -190,8 +192,9 @@
             ]
           }
         },
+        {},
         {
-          "label": "Ljudspår"
+          "label": "Playlists"
         },
         {
           "label": "Playlists",
@@ -204,7 +207,8 @@
               {
                 "label": "Audio Tracks",
                 "description": "Add audio tracks to the playlist."
-              }
+              },
+              {}
             ]
           }
         }
