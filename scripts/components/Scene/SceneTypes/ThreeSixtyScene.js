@@ -563,7 +563,6 @@ export default class ThreeSixtyScene extends React.Component {
     // Need to respond to dialog toggling in order to hide the buttons under the overlay
     const isHiddenBehindOverlayHasChanged = (this.props.isHiddenBehindOverlay !== prevProps.isHiddenBehindOverlay);
     if (isHiddenBehindOverlayHasChanged && this.state.isUpdated) {
-      // TODO: Update scene element
       this.props.threeSixty.setTabIndex(false);
     }
 
