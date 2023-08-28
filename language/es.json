@@ -96,27 +96,12 @@
                               "label": "Ocultar"
                             }
                           ]
-                        },
-                        {
-                          "label": "Mostrar como punto caliente (hotspot)",
-                          "description": "Permite añadir áreas de interacciones a la imagen del fondo, las que pueden ser de tamaño personalizado."
-                        },
-                        {
-                          "label": "Mostrar hotspot cuando el ratón le pasa encima",
-                          "description": "Permitirá que el hotspot sea visible cuando el ratón está pasando por encima del área."
-                        },
-                        {
-                          "label": "Configurar que el hotspot sea reactivo al tabulador",
-                          "description": "Configurar que el hotspot sea reactivo al tabulador. Required to be checked to make the content accessible!"
-                        },
-                        {
-                          "label": "Mostrar como contenido abierto en la escena",
-                          "description": "Permite que el contenido sea mostrado en la caja de diálogo abierta directamente en la escena."
-                        },
-                        {
-                          "default": "256,128",
-                          "label": "Valores para almacenar la altura y ancho del hotspot"
-                        },
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Password settings",
+                      "fields": [
                         {
                           "label": "Código para la interacción",
                           "description": "Si no está vacío, el usuario tiene que escribir el código para abrir este contenido."
@@ -127,8 +112,31 @@
                         }
                       ]
                     },
-                    {},
-                    {},
+                    {
+                      "label": "Mostrar como punto caliente (hotspot)",
+                      "description": "Permite añadir áreas de interacciones a la imagen del fondo, las que pueden ser de tamaño personalizado."
+                    },
+                    {
+                      "label": "Hotspot settings",
+                      "fields": [
+                        {
+                          "label": "Mostrar hotspot cuando el ratón le pasa encima",
+                          "description": "Permitirá que el hotspot sea visible cuando el ratón está pasando por encima del área."
+                        },
+                        {
+                          "label": "Configurar que el hotspot sea reactivo al tabulador",
+                          "description": "Configurar que el hotspot sea reactivo al tabulador. Required to be checked to make the content accessible!"
+                        },
+                        {
+                          "default": "256,128",
+                          "label": "Valores para almacenar la altura y ancho del hotspot"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Mostrar como contenido abierto en la escena",
+                      "description": "Permite que el contenido sea mostrado en la caja de diálogo abierta directamente en la escena."
+                    },
                     {
                       "label": "Estilo del botón",
                       "description": "Decidir cómo debería verse el ícono.",
@@ -182,7 +190,6 @@
             ]
           }
         },
-        {},
         {
           "label": "Pista de Audio"
         },
@@ -197,8 +204,7 @@
               {
                 "label": "Pistas de Audio",
                 "description": "Añadir pistas de audio a la lista de reproducción."
-              },
-              {}
+              }
             ]
           }
         }
@@ -436,10 +442,6 @@
         {
           "label": "Text for screenreaders. Title for fullscreen button (exit)",
           "default": "Exit fullscreen mode"
-        },
-        {
-          "label": "Main toolbar",
-          "default": "Main toolbar"
         },
         {
           "label": "Main toolbar",

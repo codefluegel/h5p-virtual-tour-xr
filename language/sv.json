@@ -96,27 +96,12 @@
                               "label": "Dölj"
                             }
                           ]
-                        },
-                        {
-                          "label": "Visa som hotspot",
-                          "description": "Möjliggör att lägga till interaktions-områden på bakgrundsbilden som kan av vara anpassad storlek."
-                        },
-                        {
-                          "label": "Visa hotspot vid hovring med markör",
-                          "description": "Låter hotspot bli synlig vid hovring med markör över området."
-                        },
-                        {
-                          "label": "Gör så att det går att använda tabb för att nå hotspot",
-                          "description": "Gör så att hotspot kan nås via tabbning. Required to be checked to make the content accessible!"
-                        },
-                        {
-                          "label": "Visa som öppet innehåll i scenen",
-                          "description": "Tillåter att innehållet visas i en öppen dialogbox, direkt i scenen."
-                        },
-                        {
-                          "default": "256,128",
-                          "label": "Värden för att lagra höjd och bredd för hotspot"
-                        },
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Password settings",
+                      "fields": [
                         {
                           "label": "Kod för interaktionen",
                           "description": "If not empty, the user has to input the code in order to open this content."
@@ -127,8 +112,31 @@
                         }
                       ]
                     },
-                    {},
-                    {},
+                    {
+                      "label": "Visa som hotspot",
+                      "description": "Möjliggör att lägga till interaktions-områden på bakgrundsbilden som kan av vara anpassad storlek."
+                    },
+                    {
+                      "label": "Hotspot settings",
+                      "fields": [
+                        {
+                          "label": "Visa hotspot vid hovring med markör",
+                          "description": "Låter hotspot bli synlig vid hovring med markör över området."
+                        },
+                        {
+                          "label": "Gör så att det går att använda tabb för att nå hotspot",
+                          "description": "Gör så att hotspot kan nås via tabbning. Required to be checked to make the content accessible!"
+                        },
+                        {
+                          "default": "256,128",
+                          "label": "Värden för att lagra höjd och bredd för hotspot"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Visa som öppet innehåll i scenen",
+                      "description": "Tillåter att innehållet visas i en öppen dialogbox, direkt i scenen."
+                    },
                     {
                       "label": "Knapptyp",
                       "description": "Avgör hur ikonen ska se ut.",
@@ -182,7 +190,6 @@
             ]
           }
         },
-        {},
         {
           "label": "Ljudspår"
         },
@@ -197,8 +204,7 @@
               {
                 "label": "Audio Tracks",
                 "description": "Add audio tracks to the playlist."
-              },
-              {}
+              }
             ]
           }
         }

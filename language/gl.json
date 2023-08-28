@@ -96,27 +96,12 @@
                               "label": "Agochar"
                             }
                           ]
-                        },
-                        {
-                          "label": "Amosar como punto de acceso",
-                          "description": "Permite engadir áreas de interacción á imaxe de fondo que poden ter un tamaño personalizado."
-                        },
-                        {
-                          "label": "Amosar o punto de acceso cando o rato estea enriba",
-                          "description": "Permitirá que o punto de acceso sexa visible cando o rato estea sobre a zona."
-                        },
-                        {
-                          "label": "Establece que o punto de acceso sexa tabulable",
-                          "description": "Permitirá que o punto de acceso sexa tabulable. Required to be checked to make the content accessible!"
-                        },
-                        {
-                          "label": "Amosar como contido aberto na escena",
-                          "description": "Permite que o contido se amose nunha caixa de diálogo aberta directamente na escena."
-                        },
-                        {
-                          "default": "256,128",
-                          "label": "Valores para almacenar a altura e o ancho do punto de acceso"
-                        },
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Password settings",
+                      "fields": [
                         {
                           "label": "Código para a interacción",
                           "description": "Se non está baleiro, o usuario ten que introducir o código para poder abrir este contido. Separa varios códigos correctos con /."
@@ -127,8 +112,31 @@
                         }
                       ]
                     },
-                    {},
-                    {},
+                    {
+                      "label": "Amosar como punto de acceso",
+                      "description": "Permite engadir áreas de interacción á imaxe de fondo que poden ter un tamaño personalizado."
+                    },
+                    {
+                      "label": "Hotspot settings",
+                      "fields": [
+                        {
+                          "label": "Amosar o punto de acceso cando o rato estea enriba",
+                          "description": "Permitirá que o punto de acceso sexa visible cando o rato estea sobre a zona."
+                        },
+                        {
+                          "label": "Establece que o punto de acceso sexa tabulable",
+                          "description": "Permitirá que o punto de acceso sexa tabulable. Required to be checked to make the content accessible!"
+                        },
+                        {
+                          "default": "256,128",
+                          "label": "Valores para almacenar a altura e o ancho do punto de acceso"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Amosar como contido aberto na escena",
+                      "description": "Permite que o contido se amose nunha caixa de diálogo aberta directamente na escena."
+                    },
                     {
                       "label": "Estilo do botón",
                       "description": "Decide como debe ser a icona.",
@@ -182,7 +190,6 @@
             ]
           }
         },
-        {},
         {
           "label": "Pista de son"
         },
@@ -197,8 +204,7 @@
               {
                 "label": "Pistas de son",
                 "description": "Engade pistas de son á lista de reprodución."
-              },
-              {}
+              }
             ]
           }
         }

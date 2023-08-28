@@ -96,27 +96,12 @@
                               "label": "Skrýt"
                             }
                           ]
-                        },
-                        {
-                          "label": "Zobrazit jako aktivní body",
-                          "description": "Umožňuje přidat k obrázku na pozadí oblasti interakce, které mohou mít vlastní velikost."
-                        },
-                        {
-                          "label": "Zobrazit aktivní bod, když se myš pohybuje",
-                          "description": "Umožní, aby byl aktivní bod viditelný, když se myš pohybuje v oblasti."
-                        },
-                        {
-                          "label": "Nastavte aktivní bod tak, aby byl dostupný pomocí TAB",
-                          "description": "Umožní, aby byl aktivní bod dostupný pomocí TAB. Required to be checked to make the content accessible!"
-                        },
-                        {
-                          "label": "Zobrazit jako otevřený obsah ve scéně",
-                          "description": "Umožňuje zobrazení obsahu v otevřeném dialogovém okně přímo ve scéně."
-                        },
-                        {
-                          "default": "256,128",
-                          "label": "Hodnoty pro uložení výšky a šířky aktivního bodu"
-                        },
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Password settings",
+                      "fields": [
                         {
                           "label": "Kód pro interakci",
                           "description": "Pokud není prázdný, uživatel musí zadat kód, aby mohl tento obsah otevřít. Více správných kódů oddělte pomocí /."
@@ -127,8 +112,31 @@
                         }
                       ]
                     },
-                    {},
-                    {},
+                    {
+                      "label": "Zobrazit jako aktivní body",
+                      "description": "Umožňuje přidat k obrázku na pozadí oblasti interakce, které mohou mít vlastní velikost."
+                    },
+                    {
+                      "label": "Hotspot settings",
+                      "fields": [
+                        {
+                          "label": "Zobrazit aktivní bod, když se myš pohybuje",
+                          "description": "Umožní, aby byl aktivní bod viditelný, když se myš pohybuje v oblasti."
+                        },
+                        {
+                          "label": "Nastavte aktivní bod tak, aby byl dostupný pomocí TAB",
+                          "description": "Umožní, aby byl aktivní bod dostupný pomocí TAB. Required to be checked to make the content accessible!"
+                        },
+                        {
+                          "default": "256,128",
+                          "label": "Hodnoty pro uložení výšky a šířky aktivního bodu"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Zobrazit jako otevřený obsah ve scéně",
+                      "description": "Umožňuje zobrazení obsahu v otevřeném dialogovém okně přímo ve scéně."
+                    },
                     {
                       "label": "Styl tlačítka",
                       "description": "Rozhodnout, jak má ikona vypadat.",
@@ -182,7 +190,6 @@
             ]
           }
         },
-        {},
         {
           "label": "Zvuková stopa"
         },
@@ -197,8 +204,7 @@
               {
                 "label": "Zvukové stopy",
                 "description": "Přidejte zvukové stopy do seznamu stop."
-              },
-              {}
+              }
             ]
           }
         }

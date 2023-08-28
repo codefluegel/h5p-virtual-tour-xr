@@ -96,11 +96,29 @@
                               "label": "Hide"
                             }
                           ]
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Password settings",
+                      "fields": [
+                        {
+                          "label": "Code for the interaction",
+                          "description": "If not empty, the user has to input the code in order to open this content. Separate multiple correct codes with /."
                         },
                         {
-                          "label": "Show as hotspot",
-                          "description": "Allows for adding interaction areas to the background image that can be custom size."
-                        },
+                          "label": "A hint for the interaction code",
+                          "description": "An optional hint for the code, can be left empty if wanted"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Show as hotspot",
+                      "description": "Allows for adding interaction areas to the background image that can be custom size."
+                    },
+                    {
+                      "label": "Hotspot settings",
+                      "fields": [
                         {
                           "label": "Show hotspot when mouse is hovering",
                           "description": "Will allow hotspot to be visible when mouse is hovering the area."
@@ -110,25 +128,15 @@
                           "description": "Will allow hotspot to be tabbable. Required to be checked to make the content accessible!"
                         },
                         {
-                          "label": "Show as open content in the scene",
-                          "description": "Allows the content to be shown in an open dialog box directly in the scene."
-                        },
-                        {
                           "default": "256,128",
                           "label": "Values for storing the height and width for hotspot"
-                        },
-                        {
-                          "label": "Code for the interaction",
-                          "description": "If not empty, the user has to input the code in order to open this content."
-                        },
-                        {
-                          "label": "A hint for the interaction code",
-                          "description": "An optional hint for the code, can be left empty if wanted"
                         }
                       ]
                     },
-                    {},
-                    {},
+                    {
+                      "label": "Show as open content in the scene",
+                      "description": "Allows the content to be shown in an open dialog box directly in the scene."
+                    },
                     {
                       "label": "Button style",
                       "description": "Decide how the icon should look.",
@@ -182,7 +190,6 @@
             ]
           }
         },
-        {},
         {
           "label": "Piste audio"
         },
@@ -197,8 +204,7 @@
               {
                 "label": "Audio Tracks",
                 "description": "Add audio tracks to the playlist."
-              },
-              {}
+              }
             ]
           }
         }

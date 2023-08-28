@@ -96,27 +96,12 @@
                               "label": "Ezkutatu"
                             }
                           ]
-                        },
-                        {
-                          "label": "Erakutsi puntu bero gisa",
-                          "description": "Atzeko irudiari interakzio-eremuak gehitzeko aukera ematen du. Haien tamaina pertsonalizatu daiteke."
-                        },
-                        {
-                          "label": "Erakutsi puntu beroa sagua gainetik pasatzean",
-                          "description": "Puntu beroa ikusgai egongo da sagua eremuaren gainetik pasatzean."
-                        },
-                        {
-                          "label": "Ezarri puntu beroa tabulagarria izan dadin",
-                          "description": "Puntu beroa tabulatzeko aukera emango du. Required to be checked to make the content accessible!"
-                        },
-                        {
-                          "label": "Erakutsi eszenan eduki ireki gisa",
-                          "description": "Edukia irekita dagoen elkarrizketa-koadroan zuzenean eszenan erakusteko aukera ematen du."
-                        },
-                        {
-                          "default": "256,128",
-                          "label": "Puntu beroaren altuera eta zabalera gordetzeko balioak"
-                        },
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Password settings",
+                      "fields": [
                         {
                           "label": "Elkarrekintzarako kodea",
                           "description": "If not empty, the user has to input the code in order to open this content."
@@ -127,8 +112,31 @@
                         }
                       ]
                     },
-                    {},
-                    {},
+                    {
+                      "label": "Erakutsi puntu bero gisa",
+                      "description": "Atzeko irudiari interakzio-eremuak gehitzeko aukera ematen du. Haien tamaina pertsonalizatu daiteke."
+                    },
+                    {
+                      "label": "Hotspot settings",
+                      "fields": [
+                        {
+                          "label": "Erakutsi puntu beroa sagua gainetik pasatzean",
+                          "description": "Puntu beroa ikusgai egongo da sagua eremuaren gainetik pasatzean."
+                        },
+                        {
+                          "label": "Ezarri puntu beroa tabulagarria izan dadin",
+                          "description": "Puntu beroa tabulatzeko aukera emango du. Required to be checked to make the content accessible!"
+                        },
+                        {
+                          "default": "256,128",
+                          "label": "Puntu beroaren altuera eta zabalera gordetzeko balioak"
+                        }
+                      ]
+                    },
+                    {
+                      "label": "Erakutsi eszenan eduki ireki gisa",
+                      "description": "Edukia irekita dagoen elkarrizketa-koadroan zuzenean eszenan erakusteko aukera ematen du."
+                    },
                     {
                       "label": "Botoiaren estiloa",
                       "description": "Erabaki ikonoa nola ikusi behar den.",
@@ -182,7 +190,6 @@
             ]
           }
         },
-        {},
         {
           "label": "Audio-pista"
         },
@@ -197,8 +204,7 @@
               {
                 "label": "Audio Tracks",
                 "description": "Add audio tracks to the playlist."
-              },
-              {}
+              }
             ]
           }
         }
@@ -436,10 +442,6 @@
         {
           "label": "Text for screenreaders. Title for fullscreen button (exit)",
           "default": "Exit fullscreen mode"
-        },
-        {
-          "label": "Main toolbar",
-          "default": "Main toolbar"
         },
         {
           "label": "Main toolbar",
