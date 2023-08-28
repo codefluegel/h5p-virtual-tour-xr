@@ -336,15 +336,6 @@ export default class Main extends React.Component {
       this.context.contentId
     );
 
-    /*
-     * TODO: Double check, but this was fixed in 2020 already, so this workaround
-     * should not be required anymore!
-     */
-    const libraryName = H5P.libraryFromString(interaction.action.library).machineName;
-    if (libraryName === 'H5P.Blanks') {
-      question.createQuestions('');
-    }
-
     return question.getMaxScore();
   }
 
