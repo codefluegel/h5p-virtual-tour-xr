@@ -31,8 +31,8 @@ export default class OpenContent extends React.Component {
     };
 
     this.openContent = React.createRef();
-
     this.openContentWrapper = React.createRef();
+    this.h5pInstanceRef = React.createRef();
   }
 
   /**
@@ -93,6 +93,8 @@ export default class OpenContent extends React.Component {
       // Let parent know this element should be added to the THREE world.
       this.props.onMount(this.openContentWrapper.current);
     }
+
+    this.attachContentFromInteraction(this.h5pInstanceRef.current);
 
     this.addFocusListener();
     if (this.state.isFocused) {
@@ -272,35 +274,22 @@ export default class OpenContent extends React.Component {
 
   /**
    * Get content from interaction.
-   * @returns {string} Content from interaction.
+   * @param {HTMLElement} wrapper Wrapper to take in H5P content.
    */
-  getContentFromInteraction() {
+  attachContentFromInteraction(wrapper) {
     const scene = this.context.params.scenes.find((scene) => {
       return scene.sceneId === this.props.sceneId;
     });
 
     const interaction = scene.interactions[this.props.interactionIndex];
-    const library = interaction.action.library;
-    const machineName = H5P.libraryFromString(library).machineName;
 
-    /*
-     * // TODO: Check what this is for feels very weird.
-     * Shouldn't this attach the H5P instance DOM?
-     */
-    if (machineName === 'H5P.AdvancedText') {
-      return interaction.action.params.text;
-    }
-    else if (machineName === 'H5P.Image') {
-      const imgSrc = H5P.getPath(
-        interaction.action.params.file.path,
-        this.context.contentId
-      );
-      const image = `<img src=${imgSrc} alt=${interaction.action.params.alt}/>`;
-      return image;
-    }
-    else {
-      return '';
-    }
+    H5P.newRunnable(
+      interaction.action,
+      this.context.contentId,
+      H5P.jQuery(wrapper)
+    );
+
+    // TODO: Shoud this resize? Did open content itself resize before?
   }
 
   /**
@@ -461,9 +450,10 @@ export default class OpenContent extends React.Component {
         >
           <div
             className={'inner-content'}
-            dangerouslySetInnerHTML={{
-              __html: this.getContentFromInteraction(),
-            }}
+            ref={this.h5pInstanceRef}
+            // dangerouslySetInnerHTML={{
+            //   __html: this.getContentFromInteraction(),
+            // }}
           />
           {this.context.extras.isEditor ? (
             <>
