@@ -301,7 +301,12 @@ export default class Wrapper extends H5P.EventDispatcher {
           return interaction;
         }
 
-        const instance = H5P.newRunnable(interaction.action, this.contentId);
+        const instance = H5P.newRunnable(
+          interaction.action,
+          this.contentId,
+          // Some content types assume to be attached to some DOM immediately
+          H5P.jQuery(document.createElement('div'))
+        );
         interaction.instanceMaxScore = instance?.getMaxScore?.() ?? 0;
 
         return interaction;
