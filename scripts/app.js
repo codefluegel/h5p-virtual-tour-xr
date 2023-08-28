@@ -15,6 +15,8 @@ export default class Wrapper extends H5P.EventDispatcher {
   constructor(params, contentId, extras = {}) {
     super('ndla-virtual-tour');
 
+    this.isEditor = extras.isEditor;
+
     this.enforcedStartSceneId = extras.forceStartScreen >= 0 || null;
     this.forceStartCamera = extras.forceStartCamera ?? null;
 
@@ -294,6 +296,11 @@ export default class Wrapper extends H5P.EventDispatcher {
       }
 
       scene.interactions = scene.interactions.map((interaction) => {
+        if (this.isEditor) {
+          interaction.instanceMaxScore = 0;
+          return interaction;
+        }
+
         const instance = H5P.newRunnable(interaction.action, this.contentId);
         interaction.instanceMaxScore = instance?.getMaxScore?.() ?? 0;
 

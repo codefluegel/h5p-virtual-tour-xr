@@ -296,6 +296,10 @@ export default class Main extends React.Component {
     }
 
     return this.context.params.scenes.some((scene) => {
+      if (!scene.interactions) {
+        return false;
+      }
+
       return scene.interactions.some((interaction) => {
         return this.getQuestionMaxScore(interaction) > 0;
       });
