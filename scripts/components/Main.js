@@ -687,7 +687,6 @@ export default class Main extends React.Component {
 
   /**
    * Update escape score card.
-   * // TODO: Check if "escape score" === "total score"
    * @param {boolean} isUnlocked If true, unlocked. Else locked.
    */
   updateEscapeScoreCard(isUnlocked) {
