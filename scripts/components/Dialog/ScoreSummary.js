@@ -52,7 +52,6 @@ export default class ScoreSummary extends React.Component {
       items.push(<SceneScores key={sceneId} sceneId={sceneId} sceneScores={sceneScores}></SceneScores>);
     }
 
-    // TODO: Why was this not build as a component?
     const children = (
       <div className="h5p-summary-table-pages">
         <table className="h5p-score-table">
@@ -67,7 +66,8 @@ export default class ScoreSummary extends React.Component {
             <tr><td className="h5p-td h5p-summary-task-title">Total:</td><td ref={this.scoreBarDOM} className="h5p-td h5p-summary-score-bar"></td></tr>
           </tfoot>
         </table>
-      </div>);
+      </div>
+    );
 
     return (
       <Dialog
