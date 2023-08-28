@@ -135,6 +135,10 @@ export default class ThreeSixtyScene extends React.Component {
    * React life-cycle handler: Component will unmount.
    */
   componentWillUnmount() {
+    if (!this.props.threeSixty) {
+      return; // Was not set up properly.
+    }
+
     // Remove handlers.
     this.props.threeSixty.stopRendering();
     this.props.threeSixty.off('movestart', this.handleSceneMoveStart);
