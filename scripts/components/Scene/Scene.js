@@ -51,18 +51,14 @@ export default class Scene extends React.Component {
    * @returns {string} Title.
    */
   getInteractionTitle(action) {
-    const currentTitle = action.metadata.title;
-    // TODO: Does this work internationally?
-    switch (currentTitle) {
-      case 'Untitled Text':
-        return action.params.text;
-
-      case 'Untitled Image':
-        return action.params.alt;
-
-      default:
-        return currentTitle;
+    const machineName = H5P.libraryFromString(action.library)?.machineName;
+    if (machineName === 'H5P.GoToScene') {
+      return this.context.params.scenes.find((scene) => {
+        return scene.sceneId === action.params.nextSceneId;
+      })?.scenename ?? this.context.l10n.untitled;
     }
+
+    return action.metadata.title ?? this.context.l10n.untitled;
   }
 
   /**

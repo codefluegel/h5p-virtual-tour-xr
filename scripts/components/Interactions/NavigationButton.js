@@ -461,20 +461,13 @@ export default class NavigationButton extends React.Component {
     const isInnerButtonTabbable = !this.context.extras.isEditor
       && !this.props.isHiddenBehindOverlay;
 
-    if (this.props.title) {
-      const titleText = document.createElement('div');
-      titleText.innerHTML = this.props.title;
-    }
-
-    let label = this.props.label ? this.props.label : {
-      labelPosition: 'inherit',
-      showLabel: 'inherit'
-    };
-
-    let labelPos = getLabelPos(this.context.behavior.label, label);
-    let hoverLabel = isHoverLabel(this.context.behavior.label, label);
+    const label = this.props.label ?
+      this.props.label :
+      { labelPosition: 'inherit', showLabel: 'inherit' };
 
     const labelText = getLabelText(label);
+    const labelPos = getLabelPos(this.context.behavior.label, label);
+    const hoverLabel = isHoverLabel(this.context.behavior.label, label);
 
     let width;
     let height;
@@ -527,9 +520,7 @@ export default class NavigationButton extends React.Component {
             :
             <button
               ref={this.navButton}
-              aria-label={
-                getLabelText(label) || this.props.title || this.context.l10n.untitled
-              }
+              aria-label={ getLabelText(label) || this.props.title }
               className='nav-button'
               tabIndex={isInnerButtonTabbable ? undefined : -1}
               onClick={this.onClick.bind(this)}

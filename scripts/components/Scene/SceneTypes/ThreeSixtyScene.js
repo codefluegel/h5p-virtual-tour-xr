@@ -323,19 +323,9 @@ export default class ThreeSixtyScene extends React.Component {
       className.push('active');
     }
 
-    let title;
     const isGoToSceneInteraction =
-      interaction.action.library.split(' ')[0] === 'H5P.GoToScene';
-
-    if (isGoToSceneInteraction) {
-      const gotoScene = this.context.params.scenes.find((scene) => {
-        return scene.sceneId === interaction.action.params.nextSceneId;
-      });
-      title = gotoScene.scenename; // Use scenename as title.
-    }
-    else {
-      title = this.props.getInteractionTitle(interaction.action);
-    }
+      H5P.libraryFromString(interaction.action.library)?.machineName === 'H5P.GoToScene';
+    const title = this.props.getInteractionTitle(interaction.action);
 
     const onMount = (element) => {
       element.dataset.interactionId = interaction.id;

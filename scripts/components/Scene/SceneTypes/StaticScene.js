@@ -478,21 +478,10 @@ export default class StaticScene extends React.Component {
                 }
               }
 
-              let title;
+              const isGoToSceneInteraction =
+                H5P.libraryFromString(interaction.action.library)?.machineName === 'H5P.GoToScene';
 
-              const library = H5P.libraryFromString(interaction.action.library);
-              const machineName = library.machineName;
-              const isGoToSceneInteraction = machineName === 'H5P.GoToScene';
-              const scenes = this.context.params.scenes;
-              if (isGoToSceneInteraction) {
-                const nextScene = scenes.find((scene) => {
-                  return scene.sceneId === interaction.action.params.nextSceneId;
-                });
-                title = nextScene.scenename;
-              }
-              else {
-                title = this.props.getInteractionTitle(interaction.action);
-              }
+              const title = this.props.getInteractionTitle(interaction.action);
 
               const key = interaction.id || `interaction-${this.props.sceneId}${index}`;
 
@@ -526,7 +515,7 @@ export default class StaticScene extends React.Component {
                   <NavigationButton
                     key={key}
                     title={title}
-                    icon={getIconFromInteraction(interaction, scenes)}
+                    icon={getIconFromInteraction(interaction, this.context.params.scenes)}
                     label={getLabelFromInteraction(interaction)}
                     type={'interaction-' + index}
                     isHiddenBehindOverlay={this.props.isHiddenBehindOverlay}
