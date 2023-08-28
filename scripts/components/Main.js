@@ -281,20 +281,9 @@ export default class Main extends React.Component {
    * @returns {number} Maximum score of interaction.
    */
   getQuestionMaxScore(interaction) {
-    if (this.context.extras.isEditor) {
-      return 1;
-    }
-
-    /*
-     * It would be an option to keep an instance once it was created instead of
-     * creating it here and then throw it away and potentially re-create it
-     * later on.
-     */
-    const question = H5P.newRunnable(interaction.action,
-      this.context.contentId
-    );
-
-    return question?.getMaxScore?.() ?? 0;
+    return this.context.extras.isEditor ?
+      1 :
+      interaction.instanceMaxScore ?? 0;
   }
 
   /**
@@ -306,32 +295,11 @@ export default class Main extends React.Component {
       return false;
     }
 
-    /*
-     * // TODO: What is this needed for? Is this supposed to determine whether a
-     * library instance has scores? So whether getMaxScore() exists and
-     * returns > 0? Why have an extra rule per library?
-     * Cmp. https://github.com/otacke/h5p-game-map/blob/c228418e92170c8c8dccdb076a773b06cd880dc4/src/scripts/services/h5p-util.js#L10-L26
-     */
-    for (const sceneId in this.context.params.scenes) {
-      const scene = this.context.params.scenes[sceneId];
-      for (let i = 0; i < scene?.interactions?.length; i++) {
-        const interaction = scene.interactions[i];
-        const libraryName = H5P.libraryFromString(interaction.action.library).machineName;
-        switch (libraryName) {
-          case 'H5P.Summary':
-            return true;
-          case 'H5P.SingleChoiceSet':
-            return true;
-          case 'H5P.Blanks':
-            return true;
-          case 'H5P.MultiChoice':
-            return true;
-          default:
-            // Noop
-        }
-      }
-    }
-    return false;
+    return this.context.params.scenes.some((scene) => {
+      return scene.interactions.some((interaction) => {
+        return this.getQuestionMaxScore(interaction) > 0;
+      });
+    });
   }
 
   /**

@@ -82,6 +82,8 @@ export default class Wrapper extends H5P.EventDispatcher {
       return sceneParams;
     });
 
+    this.initializeInteractionMaxScores();
+
     // Sanitize localization
     for (const key in this.l10n) {
       this.l10n[key] = purifyHTML(this.l10n[key]);
@@ -277,6 +279,29 @@ export default class Wrapper extends H5P.EventDispatcher {
   getRatio() {
     const rect = this.wrapper.getBoundingClientRect();
     return (rect.width / rect.height);
+  }
+
+  /**
+   * Compute max scores of interactions.
+   * Done on creating main instance, because components need to know right from
+   * the start whether there's at least one scored instance and subcontent
+   * instances are only created on demand later on.
+   */
+  initializeInteractionMaxScores() {
+    this.params.scenes = this.params.scenes.map((scene) => {
+      if (!scene.interactions) {
+        return scene;
+      }
+
+      scene.interactions = scene.interactions.map((interaction) => {
+        const instance = H5P.newRunnable(interaction.action, this.contentId);
+        interaction.instanceMaxScore = instance?.getMaxScore?.() ?? 0;
+
+        return interaction;
+      });
+
+      return scene;
+    });
   }
 
   /**
