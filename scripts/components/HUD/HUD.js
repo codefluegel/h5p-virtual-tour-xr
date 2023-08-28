@@ -246,12 +246,6 @@ export default class HUD extends React.Component {
             this.handleKeydown(event);
           }}
         >
-          {
-          /*
-            * // TODO: Why was the AudioButton not implemented as a special case
-            * of a Button and
-            */
-          }
           <AudioButton
             ref={ this.buttons['audio'] }
             tabIndex={ this.getButtonTabIndex('audio') }
