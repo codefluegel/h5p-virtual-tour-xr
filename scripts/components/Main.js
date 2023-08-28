@@ -229,7 +229,7 @@ export default class Main extends React.Component {
 
     for (const sceneId in this.context.params.scenes) {
       const scene = this.context.params.scenes[sceneId];
-      scoreCard.sceneScoreCards[scene.sceneId] = this.initialSceneScoreCard(scene);
+      scoreCard.sceneScoreCards[scene.sceneId] = this.initializeSceneScoreCard(scene);
       scoreCard.numQuestionsInTour += scoreCard.sceneScoreCards[scene.sceneId].numQuestionsInScene;
     }
     return scoreCard;
@@ -240,69 +240,28 @@ export default class Main extends React.Component {
    * @param {object} scene Scene parameters.
    * @returns {object} Scene score card.
    */
-  initialSceneScoreCard(scene) {
+  initializeSceneScoreCard(scene) {
     const sceneScoreCard = {
       title: scene.scenename,
       numQuestionsInScene: 0,
       scores: {}
     };
 
-    if (scene.interactions) {
-      for (let i = 0; i < scene.interactions.length; i++) {
-        const interaction = scene.interactions[i];
-        const libraryName = H5P.libraryFromString(interaction.action.library).machineName;
-
-        // TODO: This is all the same ... Premature over-engineering?
-        switch (libraryName) {
-          case 'H5P.Summary':
-            sceneScoreCard.scores[i] = {
-              title: this.getScoreLabelFromInteraction(interaction),
-              raw: 0,
-              max: this.getQuestionMaxScore(interaction),
-              scaled: 0
-            };
-
-            sceneScoreCard.numQuestionsInScene += 1;
-            break;
-
-          case 'H5P.SingleChoiceSet':
-            sceneScoreCard.scores[i] = {
-              title: this.getScoreLabelFromInteraction(interaction),
-              raw: 0,
-              max: this.getQuestionMaxScore(interaction),
-              scaled: 0
-            };
-
-            sceneScoreCard.numQuestionsInScene += 1;
-            break;
-
-          case 'H5P.Blanks':
-            sceneScoreCard.scores[i] = {
-              title: this.getScoreLabelFromInteraction(interaction),
-              raw: 0,
-              max: this.getQuestionMaxScore(interaction),
-              scaled: 0
-            };
-
-            sceneScoreCard.numQuestionsInScene += 1;
-            break;
-
-          case 'H5P.MultiChoice':
-            sceneScoreCard.scores[i] = {
-              title: this.getScoreLabelFromInteraction(interaction),
-              raw: 0,
-              max: this.getQuestionMaxScore(interaction),
-              scaled: 0
-            };
-
-            sceneScoreCard.numQuestionsInScene += 1;
-            break;
-
-          default:
-            // Noop
-        }
+    scene?.interactions?.forEach((interaction, index) => {
+      const maxScore = this.getQuestionMaxScore(interaction);
+      if (!maxScore) {
+        return;
       }
-    }
+
+      sceneScoreCard.scores[index] = {
+        title: this.getScoreLabelFromInteraction(interaction),
+        raw: 0,
+        max: maxScore,
+        scaled: 0
+      };
+
+      sceneScoreCard.numQuestionsInScene += 1;
+    });
 
     return sceneScoreCard;
   }
@@ -328,15 +287,15 @@ export default class Main extends React.Component {
     }
 
     /*
-     * TODO: The instance is created just for retrieving the score and then
-     * dumped? Why not keep instances once they have been created instead?
+     * It would be an option to keep an instance once it was created instead of
+     * creating it here and then throw it away and potentially re-create it
+     * later on.
      */
-    const question = H5P.newRunnable(
-      interaction.action,
+    const question = H5P.newRunnable(interaction.action,
       this.context.contentId
     );
 
-    return question.getMaxScore();
+    return question?.getMaxScore?.() ?? 0;
   }
 
   /**
