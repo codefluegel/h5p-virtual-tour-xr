@@ -158,7 +158,7 @@ export default class HUD extends React.Component {
     }
 
     if (scene?.audioType === 'playlist' && scene?.playlist) {
-      const playlist = this.checkIfPlaylist(
+      const playlist = this.getPlaylistFromParent(
         scene, this.context.params.playlists
       );
       if (playlist != null) {
@@ -175,7 +175,7 @@ export default class HUD extends React.Component {
       scene && (noSceneAudio || noScenePlaylist) &&
       this.context.behavior?.playlist
     ) {
-      const playlist = this.checkIfPlaylist(
+      const playlist = this.getPlaylistFromParent(
         this.context.behavior, this.context.params.playlists
       );
       if (playlist != null) {
@@ -189,12 +189,12 @@ export default class HUD extends React.Component {
   }
 
   /**
-   * Determine whether parent contains playlist. // TODO: Rename function to recflect purpose
+   * Get playlist from parent.
    * @param {object} parent Parent.
    * @param {object} playlists Playlists.
    * @returns {object|null} Playlist.
    */
-  checkIfPlaylist(parent, playlists) {
+  getPlaylistFromParent(parent, playlists) {
     const parentHasPlaylist = (parent !== null) &&
       (parent.playlist !== null) && (parent.audioType === 'playlist');
 
