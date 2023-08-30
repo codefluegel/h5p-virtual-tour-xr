@@ -135,8 +135,8 @@ export default class HotspotNavButton extends React.Component {
    * Handle anchor drag mouse up.
    */
   onAnchorDragMouseUp() {
-    let newSizeWidth = this.state.sizeWidth;
-    let newSizeHeight = this.state.sizeHeight;
+    const newSizeWidth = this.state.sizeWidth;
+    const newSizeHeight = this.state.sizeHeight;
 
     this.setState({ anchorDrag: false });
 
@@ -175,7 +175,7 @@ export default class HotspotNavButton extends React.Component {
         document.addEventListener(
           'mouseup',
           () => {
-            document.removeEventListener('mousemove',  mouseMoveHandler);
+            document.removeEventListener('mousemove', mouseMoveHandler);
             this.toggleDrag();
             this.onAnchorDragMouseUp();
           },

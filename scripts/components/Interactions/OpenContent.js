@@ -204,9 +204,9 @@ export default class OpenContent extends React.Component {
       startMousePos: isHorizontalDrag ?
         event.clientX :
         event.clientY,
-      startMidPoint: isHorizontalDrag
-        ? this.state.sizeWidth / 2
-        : this.state.sizeHeight / 2,
+      startMidPoint: isHorizontalDrag ?
+        this.state.sizeWidth / 2 :
+        this.state.sizeHeight / 2,
       elementRect: this.openContent.current?.getBoundingClientRect() ?? null,
     });
   }
@@ -380,7 +380,7 @@ export default class OpenContent extends React.Component {
       const hotspotBtnRef = useRef(null);
 
       const mouseMoveHandler = (event) => {
-        this.onMouseMove(event, !innerProps.horizontalDrag);
+        this.onMouseMove(event, innerProps.horizontalDrag);
       };
 
       // Add mouseup listener on document so user can release mouse everywhere
