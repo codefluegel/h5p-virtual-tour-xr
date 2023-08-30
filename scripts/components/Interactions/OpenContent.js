@@ -211,8 +211,6 @@ export default class OpenContent extends React.Component {
     });
   }
 
-  // TODO: Fix sizing this
-
   /**
    * Handle mouse movement.
    * @param {PointerEvent} event Mouse event.
