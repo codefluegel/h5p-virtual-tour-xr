@@ -288,8 +288,6 @@ export default class OpenContent extends React.Component {
       this.context.contentId,
       H5P.jQuery(wrapper)
     );
-
-    // TODO: Shoud this resize? Did open content itself resize before?
   }
 
   /**
