@@ -2,16 +2,24 @@ import React from 'react';
 import { H5PContext } from '../../context/H5PContext';
 import './PasswordContent.scss';
 
+/**
+ * Utilize focus on input reference.
+ * @returns {object} Reference object with setFocus function.
+ */
 const utilizeFocus = () => {
   const ref = React.createRef();
   const setFocus = () => {
-    ref.current &&  ref.current.focus();
+    ref.current?.focus();
   };
 
   return { setFocus, ref };
 };
 
 export default class PasswordContent extends React.Component {
+  /**
+   * @class
+   * @param {object} props React props.
+   */
   constructor(props) {
     super(props);
     this.props = props;
@@ -26,12 +34,19 @@ export default class PasswordContent extends React.Component {
 
     this.codeFieldLabelId = `field-code-${H5P.createUUID()}-${this.props.currentInteractionIndex}`;
   }
+
+  /**
+   * Handle change event of password input field.
+   * @param {Event} event Change event of input field.
+   */
   handleOnChange(event) {
-    this.setState({
-      inputPassword: event.target.value,
-    });
+    this.setState({ inputPassword: event.target.value });
   }
 
+  /**
+   * Handle click on password button.
+   * @param {PointerEvent} event Event.
+   */
   handleOnClick(event) {
     event.preventDefault();
     this.setState({
@@ -85,6 +100,10 @@ export default class PasswordContent extends React.Component {
     this.setState({ shakeClass: 'h5p-password-icon--shake' });
   }
 
+  /**
+   * React render function.
+   * @returns {object} JSX object.
+   */
   render() {
     return (
       <div className="h5p-password-content">
