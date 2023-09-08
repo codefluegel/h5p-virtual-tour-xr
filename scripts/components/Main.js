@@ -639,33 +639,6 @@ export default class Main extends React.Component {
   }
 
   /**
-   * Check correctness of password.
-   * // TODO: Why is this handled here and not in some password component?
-   * @param {string} inputPassword Password that was entered.
-   * @returns {boolean} True, if password was correct.
-   */
-  handlePassword(inputPassword) {
-    const interaction = this.getInteractionFromCurrentScene(
-      this.state.currentInteraction
-    );
-
-    const passwords =
-      interaction.passwordSettings.interactionPassword.toLowerCase().split('/');
-
-    const isCorrectPassword = passwords.includes(inputPassword.toLowerCase());
-    interaction.unlocked = interaction.unlocked || isCorrectPassword;
-
-    if (!isCorrectPassword) {
-      this.read(this.context.l10n.wrongCode);
-    }
-    else {
-      this.read(this.context.l10n.contentUnlocked);
-    }
-
-    return isCorrectPassword;
-  }
-
-  /**
    * Update score card.
    * @param {number} sceneId Scene id.
    * @param {number} interactionId Interaction index.
@@ -827,7 +800,7 @@ export default class Main extends React.Component {
             takeFocus={ this.isVeryFirstRenderDone }
           >
             <PasswordContent
-              handlePassword={this.handlePassword.bind(this)}
+              read={this.read.bind(this)}
               showInteraction={this.showInteraction.bind(this)}
               currentInteractionIndex={this.state.currentInteraction}
               currentInteraction={currentInteraction}

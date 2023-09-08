@@ -41,15 +41,41 @@ export default class PasswordContent extends React.Component {
       this.props.showInteraction(this.props.currentInteractionIndex);
     }
     else {
-      this.props.updateEscapeScoreCard(this.props.handlePassword(this.state.inputPassword));
+      const isCorrectPassword = this.handlePassword(this.state.inputPassword);
+
+      this.props.updateEscapeScoreCard(isCorrectPassword);
 
       this.setState({
-        unlocked: this.props.handlePassword(this.state.inputPassword),
+        unlocked: isCorrectPassword,
       });
       if (!this.props.currentInteraction.unlocked) {
         this.shakeIcon();
       }
     }
+  }
+
+  /**
+   * Check correctness of password.
+   * @param {string} inputPassword Password that was entered.
+   * @returns {boolean} True, if password was correct.
+   */
+  handlePassword(inputPassword) {
+    const interaction = this.props.currentInteraction;
+
+    const passwords = interaction.passwordSettings.interactionPassword
+      .toLowerCase().split('/');
+
+    const isCorrectPassword = passwords.includes(inputPassword.toLowerCase());
+    interaction.unlocked = interaction.unlocked || isCorrectPassword;
+
+    if (!isCorrectPassword) {
+      this.props.read(this.context.l10n.wrongCode);
+    }
+    else {
+      this.props.read(this.context.l10n.contentUnlocked);
+    }
+
+    return isCorrectPassword;
   }
 
   shakeIcon() {
