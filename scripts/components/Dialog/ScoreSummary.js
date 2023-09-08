@@ -37,7 +37,9 @@ export default class ScoreSummary extends React.Component {
    */
   componentDidMount() {
     const totalScores = this.getTotalScores(this.props.scores.sceneScoreCards);
-    const scoreBar = new H5P.JoubelScoreBar(totalScores.max, 'label', 'helpText', 'scoreExplanationButtonLabel');
+    const scoreBar = new H5P.JoubelScoreBar(
+      totalScores.max, 'label', 'helpText', 'scoreExplanationButtonLabel'
+    );
     scoreBar.setScore(totalScores.score);
     scoreBar.appendTo(this.scoreBarDOM.current);
   }
@@ -48,8 +50,14 @@ export default class ScoreSummary extends React.Component {
    */
   render() {
     const items = [];
-    for (const [sceneId, sceneScores] of Object.entries(this.props.scores.sceneScoreCards)) {
-      items.push(<SceneScores key={sceneId} sceneId={sceneId} sceneScores={sceneScores}></SceneScores>);
+    for (
+      const [sceneId, sceneScores] of
+      Object.entries(this.props.scores.sceneScoreCards)
+    ) {
+      items.push(
+        <SceneScores key={sceneId} sceneId={sceneId} sceneScores={sceneScores}>
+        </SceneScores>
+      );
     }
 
     const children = (
@@ -57,13 +65,32 @@ export default class ScoreSummary extends React.Component {
         <table className="h5p-score-table">
           <thead>
             <tr>
-              <th className="h5p-summary-table-header slide">{this.context.l10n.assignment}</th>
-              <th className="h5p-summary-table-header score">{this.context.l10n.score} <span>/</span> {this.context.l10n.total.toLowerCase()}</th>
+              <th
+                className="h5p-summary-table-header slide"
+              >
+                {this.context.l10n.assignment}
+              </th>
+              <th
+                className="h5p-summary-table-header score"
+              >
+                {this.context.l10n.score} <span>/</span> {this.context.l10n.total.toLowerCase()}
+              </th>
             </tr>
           </thead>
           {items}
           <tfoot>
-            <tr><td className="h5p-td h5p-summary-task-title">Total:</td><td ref={this.scoreBarDOM} className="h5p-td h5p-summary-score-bar"></td></tr>
+            <tr>
+              <td
+                className="h5p-td h5p-summary-task-title"
+              >
+                Total:
+              </td>
+              <td
+                ref={this.scoreBarDOM}
+                className="h5p-td h5p-summary-score-bar"
+              >
+              </td>
+            </tr>
           </tfoot>
         </table>
       </div>

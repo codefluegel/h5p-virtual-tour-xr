@@ -4,6 +4,10 @@ import { H5PContext } from '../../context/H5PContext';
 import { isVideoAudio } from '../../utils/audio-utils';
 
 export default class InteractionContent extends React.Component {
+  /**
+   * @class
+   * @param {object} props React props.
+   */
   constructor(props) {
     super(props);
     this.props = props;
@@ -13,8 +17,15 @@ export default class InteractionContent extends React.Component {
     };
   }
 
+  /**
+   * React life-cycle function: component did update.
+   * @param {object} prevProps Props before update.
+   */
   componentDidUpdate(prevProps) {
-    if (this.props.audioIsPlaying && this.props.audioIsPlaying !== prevProps.audioIsPlaying) {
+    if (
+      this.props.audioIsPlaying &&
+      this.props.audioIsPlaying !== prevProps.audioIsPlaying
+    ) {
       // The Audio Player has changed
 
       if (isVideoAudio(prevProps.audioIsPlaying)) {
@@ -35,6 +46,10 @@ export default class InteractionContent extends React.Component {
     }
   }
 
+  /**
+   * Initialize content.
+   * @param {HTMLElement} contentRef Content DOM reference.
+   */
   initializeContent(contentRef) {
     if (!contentRef || this.state.isInitialized) {
       return;
@@ -96,12 +111,23 @@ export default class InteractionContent extends React.Component {
 
     this.instance.on('resize', () => this.props.onResize());
     this.instance.on('xAPI', (event) => {
-      if (event.data.statement.verb.id === 'http://adlnet.gov/expapi/verbs/answered') {
-        this.props.updateScoreCard(this.props.currentScene, this.props.currentInteraction, event.data.statement.result.score);
+      if (
+        event.data.statement.verb.id ===
+          'http://adlnet.gov/expapi/verbs/answered'
+      ) {
+        this.props.updateScoreCard(
+          this.props.currentScene,
+          this.props.currentInteraction,
+          event.data.statement.result.score
+        );
       }
     });
   }
 
+  /**
+   * React render function.
+   * @returns {object} JSX element.
+   */
   render() {
     return (
       <div ref={ (el) => this.initializeContent(el) } />
