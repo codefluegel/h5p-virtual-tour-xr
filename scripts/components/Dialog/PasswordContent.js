@@ -78,16 +78,11 @@ export default class PasswordContent extends React.Component {
     return isCorrectPassword;
   }
 
+  /**
+   * Shake icon.
+   */
   shakeIcon() {
-    this.setState({
-      shakeClass: 'h5p-password-icon--shake',
-    });
-
-    window.setTimeout(() => {
-      this.setState({
-        shakeClass: '',
-      });
-    }, 500);
+    this.setState({ shakeClass: 'h5p-password-icon--shake' });
   }
 
   render() {
@@ -106,6 +101,9 @@ export default class PasswordContent extends React.Component {
             className={`h5p-password-icon ${
               this.state.unlocked ? 'unlocked' : 'locked'
             } ${this.state.shakeClass}`}
+            onAnimationEnd={() => {
+              this.setState({ shakeClass: '' });
+            }}
           />
         </div>
         <div className='h1'>
