@@ -85,11 +85,25 @@ H5PUpgrades['H5P.NDLAThreeImage'] = (function () {
                   interaction.hotspotSettings.isHotspotTabbable = interaction.label.isHotspotTabbable;
                 }
 
-                if (typeof interaction.label.hotSpotSizeValues === 'string') {
-                  interaction.hotspotSettings.hotSpotSizeValues = interaction.label.hotSpotSizeValues;
+                if (scene.type === 'static') {
+                  if (typeof interaction.label.hotSpotSizeValues === 'string') {
+                    interaction.hotspotSettings.hotSpotSizeValues = interaction.label.hotSpotSizeValues;
+
+                    if (interaction.hotspotSettings.hotSpotSizeValues === '256,128') {
+                      interaction.hotspotSettings.hotSpotSizeValues = '25,25'; // Was previously done in view
+                    }
+                  }
+                  else {
+                    interaction.hotspotSettings.hotSpotSizeValues = '25,25'; // Was hardcoded into view
+                  }
                 }
                 else {
-                  interaction.hotspotSettings.hotSpotSizeValues = '256,128';
+                  if (typeof interaction.label.hotSpotSizeValues === 'string') {
+                    interaction.hotspotSettings.hotSpotSizeValues = interaction.label.hotSpotSizeValues;
+                  }
+                  else {
+                    interaction.hotspotSettings.hotSpotSizeValues = '256,128';
+                  }
                 }
 
                 delete interaction.label.showAsHotspot;

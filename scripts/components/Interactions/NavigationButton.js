@@ -473,20 +473,26 @@ export default class NavigationButton extends React.Component {
     let height;
 
     // TODO: Move to editor. View should not deal with setting the size.
-    if (this.props.label && this.props.staticScene && this.props.showAsHotspot) {
-      width = parseFloat(this.getHotspotValues()[0].toString());
-      height = parseFloat(this.getHotspotValues()[1].toString());
+    // if (this.props.label && this.props.staticScene && this.props.showAsHotspot) {
+    //   width = parseFloat(this.getHotspotValues()[0].toString());
+    //   height = parseFloat(this.getHotspotValues()[1].toString());
 
-      // Change default size if static scene
-      if (
-        width === NavigationButton.DEFAULT_WIDTH_3D &&
-        height === NavigationButton.DEFAULT_HEIGHT_3D
-      ) {
-        width = NavigationButton.DEFAULT_WIDTH_2D;
-        height = NavigationButton.DEFAULT_HEIGHT_2D;
-        this.setHotspotValues(width, height);
-      }
-    }
+    //   console.log(
+    //     labelText,
+    //     width, height,
+    //     NavigationButton.DEFAULT_WIDTH_3D, NavigationButton.DEFAULT_HEIGHT_3D
+    //   );
+
+    //   // Change default size if static scene
+    //   if (
+    //     width === NavigationButton.DEFAULT_WIDTH_3D &&
+    //     height === NavigationButton.DEFAULT_HEIGHT_3D
+    //   ) {
+    //     width = NavigationButton.DEFAULT_WIDTH_2D;
+    //     height = NavigationButton.DEFAULT_HEIGHT_2D;
+    //     this.setHotspotValues(width, height);
+    //   }
+    // }
 
     return (
       <div
