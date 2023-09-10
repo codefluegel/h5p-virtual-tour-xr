@@ -550,6 +550,3 @@ NavigationButton.DEFAULT_WIDTH_3D = 256;
 
 /** @constant {number} DEFAULT_HEIGHT_3D Default button height in 3d content. */
 NavigationButton.DEFAULT_HEIGHT_3D = 128;
-
-export const DEFAULT_WIDTH_3D = NavigationButton.DEFAULT_WIDTH_3D;
-export const DEFAULT_HEIGHT_3D = NavigationButton.DEFAULT_HEIGHT_3D;
