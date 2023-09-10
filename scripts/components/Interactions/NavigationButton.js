@@ -545,19 +545,11 @@ export default class NavigationButton extends React.Component {
 }
 NavigationButton.contextType = H5PContext;
 
-/** @constant {number} DEFAULT_WIDTH_2D Default button width in 2d content. */
-NavigationButton.DEFAULT_WIDTH_2D = 25;
-
-/** @constant {number} DEFAULT_HEIGHT_2D Default button height in 2d content. */
-NavigationButton.DEFAULT_HEIGHT_2D = 25;
-
 /** @constant {number} DEFAULT_WIDTH_3D Default button width in 3d content. */
 NavigationButton.DEFAULT_WIDTH_3D = 256;
 
 /** @constant {number} DEFAULT_HEIGHT_3D Default button height in 3d content. */
 NavigationButton.DEFAULT_HEIGHT_3D = 128;
 
-export const DEFAULT_WIDTH_2D = NavigationButton.DEFAULT_WIDTH_2D;
-export const DEFAULT_HEIGHT_2D = NavigationButton.DEFAULT_HEIGHT_2D;
 export const DEFAULT_WIDTH_3D = NavigationButton.DEFAULT_WIDTH_3D;
 export const DEFAULT_HEIGHT_3D = NavigationButton.DEFAULT_HEIGHT_3D;
