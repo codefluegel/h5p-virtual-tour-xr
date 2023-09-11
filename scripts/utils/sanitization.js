@@ -41,16 +41,15 @@ const setSceneDefaults = (sceneParams) => {
   return sceneParams
     .filter((sceneParam) => !!sceneParam.scenesrc) // Should only happen if subcontent in visual editor
     .map((sceneParam, index) => {
-      sceneParam = extend({
-        sceneType: '360',
-        showBackButton: true,
-        scenename: `${index}`, // Should only happen if subcontent in visual editor
-        showSceneDescriptionInitially: false,
-        interactions: [],
-        iconType: 'arrow',
-        audioType: 'audio',
-        restartAudioOnSceneStart: false
-      }, sceneParam);
+      // Will break when extending or "cloning", some reference somewhere
+      sceneParam.sceneType = sceneParam.sceneType ?? '360';
+      sceneParam.showBackButton = sceneParam.showBackButton ?? true;
+      sceneParam.sceneName = sceneParam.sceneName ?? `${index}`; // Should only happen if subcontent in visual editor
+      sceneParam.showSceneDescriptionInitially = sceneParam.showSceneDescriptionInitially ?? false;
+      sceneParam.interactions = sceneParam.interactions ?? [];
+      sceneParam.iconType = sceneParam.iconType ?? 'arrow';
+      sceneParam.audioType = sceneParam.audioType ?? 'audio';
+      sceneParam.restartAudioOnSceneStart = sceneParam.restartAudioOnSceneStart ?? false;
 
       // Sanitize scene description aria that was entered as HTML
       if (sceneParam.sceneDescriptionARIA) {

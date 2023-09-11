@@ -30,9 +30,7 @@ export default class Wrapper extends H5P.EventDispatcher {
     this.behavior = this.params.behaviour;
 
     // Parameters has been wrapped in the threeImage widget group
-    if (this.params.threeImage) {
-      this.params = this.params.threeImage;
-    }
+    this.params = this.params.threeImage;
 
     this.initializeInteractionMaxScores();
 
