@@ -237,7 +237,11 @@ export default class NavigationButtonLabel extends React.Component {
     // Scrollheight will be incorrect if height === 100%, therefore we reset
     this.innerLabelDiv.current.style.height = '';
 
-    // TODO: Check what these hardcoded values are based on and potentially replace with CSS class
+    /*
+     * // TODO: Check what these hardcoded values introduced by H5P Group
+     * originally are based on and potentially replace with CSS class.
+     * Not urgent.
+     */
     return (
       this.innerLabelDiv.current.scrollWidth >
         this.innerLabelDiv.current.offsetWidth ||
