@@ -1,6 +1,6 @@
 import React from 'react';
 import './NavigationButton.scss';
-import { findSemanticsPath, H5PContext } from '../../context/H5PContext';
+import { H5PContext } from '../../context/H5PContext';
 import NavigationButtonLabel, { getLabelPos, getLabelText, isHoverLabel } from './NavigationButtonLabel';
 import HotspotNavButton from './HotspotNavButton';
 
@@ -390,9 +390,7 @@ export default class NavigationButton extends React.Component {
   getHotspotValues() {
     const interaction = this.getCurrentInteraction();
 
-    return interaction.hotspotSettings.hotSpotSizeValues ?
-      interaction.hotspotSettings.hotSpotSizeValues.split(',') :
-      [NavigationButton.DEFAULT_WIDTH_3D, NavigationButton.DEFAULT_HEIGHT_3D];
+    return interaction.hotspotSettings.hotSpotSizeValues.split(',');
   }
 
   /**
@@ -544,13 +542,3 @@ export default class NavigationButton extends React.Component {
   }
 }
 NavigationButton.contextType = H5PContext;
-
-// Retrieve default values from semantics.json instead of duplicating them
-const hotSpotSizeValues =
-  findSemanticsPath('threeImage/scenes/scene/interactions/interaction/hotspotSettings/hotSpotSizeValues')?.default;
-
-/** @constant {number} DEFAULT_WIDTH_3D Default button width in 3d content. */
-NavigationButton.DEFAULT_WIDTH_3D = hotSpotSizeValues?.split(',')?.[0] ?? 256;
-
-/** @constant {number} DEFAULT_HEIGHT_3D Default button height in 3d content. */
-NavigationButton.DEFAULT_HEIGHT_3D = hotSpotSizeValues?.split(',')?.[1] ?? 128;

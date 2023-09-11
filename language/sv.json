@@ -26,7 +26,9 @@
                 "label": "Visa knapp \"Tillbaka\"",
                 "description": "Visa knapp för att navigera bakåt till din föregående scen"
               },
-              {},
+              {
+                "label": "SceneId"
+              },
               {
                 "label": "Scen-titel",
                 "description": "Används för att identifiera scenen"
@@ -138,7 +140,9 @@
                       "description": "Tillåter att innehållet visas i en öppen dialogbox, direkt i scenen."
                     },
                     {},
-                    {},
+                    {
+                      "label": "Interaction position"
+                    },
                     {
                       "label": "Button style",
                       "description": "Decide how the icon should look.",
@@ -450,6 +454,10 @@
         {
           "label": "Main toolbar",
           "default": "Main toolbar"
+        },
+        {
+          "label": "No valid scenes set",
+          "default": "No valid scenes have been set."
         }
       ]
     }

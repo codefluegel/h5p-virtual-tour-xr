@@ -26,7 +26,9 @@
                 "label": "Erakutsi \"Atzera\" botoia",
                 "description": "Erakutsi aurreko eszenara joateko botoia"
               },
-              {},
+              {
+                "label": "SceneId"
+              },
               {
                 "label": "Eszenaren izenburua",
                 "description": "Egileentzako eszena identifikatzeko erabiltzen da"
@@ -138,7 +140,9 @@
                       "description": "Edukia irekita dagoen elkarrizketa-koadroan zuzenean eszenan erakusteko aukera ematen du."
                     },
                     {},
-                    {},
+                    {
+                      "label": "Interaction position"
+                    },
                     {
                       "label": "Button style",
                       "description": "Decide how the icon should look.",
@@ -450,6 +454,10 @@
         {
           "label": "Main toolbar",
           "default": "Main toolbar"
+        },
+        {
+          "label": "No valid scenes set",
+          "default": "No valid scenes have been set."
         }
       ]
     }

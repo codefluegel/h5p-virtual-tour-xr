@@ -3,7 +3,8 @@ import { createRoot } from 'react-dom/client';
 import Main from './components/Main';
 import { H5PContext } from './context/H5PContext';
 import { sceneRenderingQualityMapping } from './components/Scene/SceneTypes/ThreeSixtyScene';
-import { purifyHTML } from './utils/utils';
+import { sanitizeContentTypeParameters } from './utils/sanitization.js';
+import MessageBox from './components/MessageBox/MessageBox';
 
 export default class Wrapper extends H5P.EventDispatcher {
   /**
@@ -15,84 +16,25 @@ export default class Wrapper extends H5P.EventDispatcher {
   constructor(params, contentId, extras = {}) {
     super('ndla-virtual-tour');
 
+    this.params = sanitizeContentTypeParameters(params);
+
+    this.contentId = contentId;
+    this.extras = extras;
+
     this.isEditor = extras.isEditor;
 
     this.enforcedStartSceneId = extras.forceStartScreen >= 0 || null;
     this.forceStartCamera = extras.forceStartCamera ?? null;
 
-    // TODO: Parameter sanitization
-
-    params.threeImage.scenes = Wrapper.addUniqueIdsToInteractions(params.threeImage.scenes);
-
-    this.behavior = {
-      label: {
-        showLabel: false,
-        labelPosition: 'right',
-        ...params.behaviour?.label
-      },
-      ...params.behaviour
-    };
-
-    this.l10n = {
-      // Text defaults
-      title: 'Virtual Tour',
-      playAudioTrack: 'Play Audio Track',
-      pauseAudioTrack: 'Pause Audio Track',
-      sceneDescription: 'Scene Description',
-      resetCamera: 'Reset Camera',
-      submitDialog: 'Submit Dialog',
-      closeDialog: 'Close Dialog',
-      expandButtonAriaLabel: 'Expand the visual label',
-      goToStartScene: 'Go to start scene',
-      userIsAtStartScene: 'You are at the start scene',
-      unlocked: 'Unlocked',
-      locked: 'Locked',
-      searchRoomForCode: 'Search the room until you find the code',
-      wrongCode: 'The code was wrong, try again.',
-      contentUnlocked: 'The content has been unlocked!',
-      code: 'Code',
-      showCode: 'Show code',
-      hideCode: 'Hide code',
-      unlockedStateAction: 'Continue',
-      lockedStateAction: 'Unlock',
-      hotspotDragHorizAlt: 'Drag horizontally to scale hotspot',
-      hotspotDragVertiAlt: 'Drag vertically to scale hotspot',
-      backgroundLoading: 'Loading background image...',
-      noContent: 'No content',
-      hint: 'Hint',
-      lockedContent: 'Locked content',
-      back: 'Back',
-      buttonFullscreenEnter: 'Enter fullscreen mode',
-      buttonFullscreenExit: 'Exit fullscreen mode',
-      ...params.l10n,
-    };
+    this.l10n = this.params.l10n;
+    this.behavior = this.params.behaviour;
 
     // Parameters has been wrapped in the threeImage widget group
-    if (params.threeImage) {
-      params = params.threeImage;
+    if (this.params.threeImage) {
+      this.params = this.params.threeImage;
     }
-
-    this.params = params || {};
-    this.params.scenes = this.params.scenes ?? [];
-
-    // Sanitize scene description aria that was entered as HTML
-    this.params.scenes = this.params.scenes.map((sceneParams) => {
-      if (sceneParams.sceneDescriptionARIA) {
-        sceneParams.sceneDescriptionARIA = purifyHTML(sceneParams.sceneDescriptionARIA);
-      }
-
-      return sceneParams;
-    });
 
     this.initializeInteractionMaxScores();
-
-    // Sanitize localization
-    for (const key in this.l10n) {
-      this.l10n[key] = purifyHTML(this.l10n[key]);
-    }
-
-    this.contentId = contentId;
-    this.extras = extras;
 
     this.isFullScreenSupported = this.isRoot() && H5P.fullscreenSupported;
     if (this.isFullScreenSupported) {
@@ -112,36 +54,43 @@ export default class Wrapper extends H5P.EventDispatcher {
     }
 
     this.on('resize', () => {
-      const rect = this.getRect();
-      // Fullscreen should use all of the space
-      const ratio = (H5P.isFullscreen ? (rect.height / rect.width) : (9 / 16));
-
-      this.wrapper.style.height = H5P.isFullscreen ?
-        '100%' :
-        `${rect.width * ratio}px`;
-
-      // Apply separate styles for mobile
-      if (rect.width <= 480) {
-        this.wrapper.classList.add('h5p-phone-size');
-      }
-      else {
-        this.wrapper.classList.remove('h5p-phone-size');
-      }
-      if (rect.width < 768) {
-        this.wrapper.classList.add('h5p-medium-tablet-size');
-      }
-      else {
-        this.wrapper.classList.remove('h5p-medium-tablet-size');
-      }
-
-      // Resize scene
-      if (this.currentSceneId === null || !this.threeSixty) {
-        return;
-      }
-
-      const updatedRect = this.wrapper.getBoundingClientRect();
-      this.threeSixty.resize(updatedRect.width / updatedRect.height);
+      this.resize();
     });
+  }
+
+  /**
+   * Resize app.
+   */
+  resize() {
+    const rect = this.getRect();
+    // Fullscreen should use all of the space
+    const ratio = (H5P.isFullscreen ? (rect.height / rect.width) : (9 / 16));
+
+    this.wrapper.style.height = H5P.isFullscreen ?
+      '100%' :
+      `${rect.width * ratio}px`;
+
+    // Apply separate styles for mobile
+    if (rect.width <= 480) {
+      this.wrapper.classList.add('h5p-phone-size');
+    }
+    else {
+      this.wrapper.classList.remove('h5p-phone-size');
+    }
+    if (rect.width < 768) {
+      this.wrapper.classList.add('h5p-medium-tablet-size');
+    }
+    else {
+      this.wrapper.classList.remove('h5p-medium-tablet-size');
+    }
+
+    // Resize scene
+    if (this.currentSceneId === null || !this.threeSixty) {
+      return;
+    }
+
+    const updatedRect = this.wrapper.getBoundingClientRect();
+    this.threeSixty.resize(updatedRect.width / updatedRect.height);
   }
 
   /**
@@ -204,12 +153,22 @@ export default class Wrapper extends H5P.EventDispatcher {
       this.wrapper = document.createElement('div');
       this.wrapper.classList.add('h5p-three-sixty-wrapper');
 
-      this.currentSceneId = this.params.startSceneId;
-      if (this.enforcedStartSceneId) {
-        this.currentSceneId = this.enforcedStartSceneId;
-      }
+      if (this.params.scenes.length) {
+        this.currentSceneId = this.params.startSceneId;
+        if (this.enforcedStartSceneId) {
+          this.currentSceneId = this.enforcedStartSceneId;
+        }
 
-      this.render();
+        this.render();
+      }
+      else {
+        console.log('MessageBox');
+
+        const messageBox = new MessageBox({
+          text: this.l10n.noValidScenesSet
+        });
+        this.wrapper.append(messageBox.getDOM());
+      }
 
       this.isAttached = true;
     };
@@ -357,22 +316,5 @@ export default class Wrapper extends H5P.EventDispatcher {
     const segments = sceneRenderingQualityMapping[quality];
     this.threeSixty?.setSegmentNumber(segments);
     this.sceneRenderingQuality = quality;
-  }
-
-  /**
-   * Add unique ids to interactions as key for mapping React components.
-   * @param {object[]} sceneParams Scene parameters
-   * @returns {object[]} Scene parameters including ids.
-   */
-  static addUniqueIdsToInteractions(sceneParams) {
-    return sceneParams?.map((sceneParam) => {
-      if (sceneParam.interactions) {
-        sceneParam.interactions = sceneParam.interactions?.map(
-          (interaction) => ({ ...interaction, id: H5P.createUUID() })
-        );
-      }
-
-      return sceneParam;
-    });
   }
 }

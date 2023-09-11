@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import './OpenContent.scss';
 import { H5PContext } from '../../context/H5PContext';
 import { scaleOpenContentElement } from '../../utils/open-content-utils';
-import { DEFAULT_WIDTH_3D, DEFAULT_HEIGHT_3D } from './NavigationButton';
 
 export default class OpenContent extends React.Component {
   /**
@@ -139,9 +138,7 @@ export default class OpenContent extends React.Component {
     });
     const interaction = scene.interactions[this.props.interactionIndex];
 
-    return interaction.hotspotSettings?.hotSpotSizeValues
-      ? interaction.hotspotSettings?.hotSpotSizeValues.split(',')
-      : [DEFAULT_WIDTH_3D, DEFAULT_HEIGHT_3D];
+    return interaction.hotspotSettings.hotSpotSizeValues.split(',');
   }
 
   /**

@@ -26,7 +26,9 @@
                 "label": "Vis \"Tilbake\"-knapp",
                 "description": "Vis knapp som tar brukaren tilbake til forrige scene"
               },
-              {},
+              {
+                "label": "SceneId"
+              },
               {
                 "label": "Scenetittel",
                 "description": "Brukes for å identifisere scenen"
@@ -138,7 +140,9 @@
                       "description": "Lar innholdet vises åpent rett i scenen."
                     },
                     {},
-                    {},
+                    {
+                      "label": "Interaction position"
+                    },
                     {
                       "label": "Button style",
                       "description": "Decide how the icon should look.",
@@ -450,6 +454,10 @@
         {
           "label": "Main toolbar",
           "default": "Main toolbar"
+        },
+        {
+          "label": "No valid scenes set",
+          "default": "No valid scenes have been set."
         }
       ]
     }

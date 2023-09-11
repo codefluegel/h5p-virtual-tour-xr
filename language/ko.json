@@ -26,7 +26,9 @@
                 "label": "\"Back\" (뒤로가기) 버튼 표시",
                 "description": "이전 장면으로 이동하기 위한 버튼 표시"
               },
-              {},
+              {
+                "label": "SceneId"
+              },
               {
                 "label": "장면 제목",
                 "description": "장면을 구분하기 위해 사용"
@@ -138,7 +140,9 @@
                       "description": "Allows the content to be shown in an open dialog box directly in the scene."
                     },
                     {},
-                    {},
+                    {
+                      "label": "Interaction position"
+                    },
                     {
                       "label": "Button style",
                       "description": "Decide how the icon should look.",
@@ -450,6 +454,10 @@
         {
           "label": "Main toolbar",
           "default": "Main toolbar"
+        },
+        {
+          "label": "No valid scenes set",
+          "default": "No valid scenes have been set."
         }
       ]
     }

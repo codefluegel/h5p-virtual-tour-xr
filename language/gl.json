@@ -26,7 +26,9 @@
                 "label": "Amosar botón \"Atrás\"",
                 "description": "Amosar botón para volver á escena anterior"
               },
-              {},
+              {
+                "label": "SceneId"
+              },
               {
                 "label": "Título da Escena",
                 "description": "Úsase para identificar a escena"
@@ -138,7 +140,9 @@
                       "description": "Permite que o contido se amose nunha caixa de diálogo aberta directamente na escena."
                     },
                     {},
-                    {},
+                    {
+                      "label": "Interaction position"
+                    },
                     {
                       "label": "Button style",
                       "description": "Decide how the icon should look.",
@@ -450,6 +454,10 @@
         {
           "label": "Main toolbar",
           "default": "Main toolbar"
+        },
+        {
+          "label": "No valid scenes set",
+          "default": "No valid scenes have been set."
         }
       ]
     }

@@ -56,7 +56,9 @@
             },
             {
               "name": "sceneId",
-              "type": "number"
+              "type": "number",
+              "label": "SceneId",
+              "widget": "none"
             },
             {
               "name": "scenename",
@@ -103,7 +105,9 @@
               "name": "cameraStartPosition",
               "type": "text",
               "label": "Initial camera position",
-              "description": "Camera position in pitch and yaw"
+              "description": "Camera position in pitch and yaw",
+              "optional": true,
+              "widget": "none"
             },
             {
               "name": "interactions",
@@ -234,6 +238,7 @@
                         "type": "boolean",
                         "label": "Show hotspot when mouse is hovering",
                         "description": "Will allow hotspot to be visible when mouse is hovering the area.",
+                        "default": false,
                         "optional": true
                       },
                       {
@@ -249,7 +254,6 @@
                         "type": "text",
                         "default": "256,128",
                         "label": "Values for storing the height and width for hotspot",
-                        "optional": true,
                         "widget": "none"
                       }
                     ]
@@ -287,7 +291,9 @@
                   },
                   {
                     "name": "interactionpos",
-                    "type": "text"
+                    "type": "text",
+                    "label": "Interaction position",
+                    "widget": "none"
                   },
                   {
                     "name": "iconTypeTextBox",
@@ -385,6 +391,7 @@
               "description": "Here you can pick an existing playlist as audio.",
               "name": "playlist",
               "type": "text",
+              "optional": true,
               "widget": "showWhen",
               "showWhen": {
                 "rules": [
@@ -458,6 +465,7 @@
     "label": "Playlists",
     "importance": "low",
     "description": "These options will let you add playlists for the scenes.",
+    "optional": true,
     "fields": [
       {
         "name": "audioPlaylists",
@@ -860,6 +868,13 @@
         "label": "Main toolbar",
         "importance": "low",
         "default": "Main toolbar"
+      },
+      {
+        "name": "noValidScenesSet",
+        "type": "text",
+        "label": "No valid scenes set",
+        "importance": "low",
+        "default": "No valid scenes have been set."
       }
     ]
   }

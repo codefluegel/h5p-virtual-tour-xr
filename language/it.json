@@ -26,7 +26,9 @@
                 "label": "Mostra il pulsante \"Indietro\"",
                 "description": "Mostra il pulsante per tornare alla scena precedente"
               },
-              {},
+              {
+                "label": "SceneId"
+              },
               {
                 "label": "Titolo della scena",
                 "description": "Usato per individuare la scena per gli autori"
@@ -138,7 +140,9 @@
                       "description": "Allows the content to be shown in an open dialog box directly in the scene."
                     },
                     {},
-                    {},
+                    {
+                      "label": "Interaction position"
+                    },
                     {
                       "label": "Button style",
                       "description": "Decide how the icon should look.",
@@ -450,6 +454,10 @@
         {
           "label": "Main toolbar",
           "default": "Main toolbar"
+        },
+        {
+          "label": "No valid scenes set",
+          "default": "No valid scenes have been set."
         }
       ]
     }
