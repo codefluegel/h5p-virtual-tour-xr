@@ -5,13 +5,8 @@
   "license": "MIT",
   "author": "Joubel AS",
   "majorVersion": 0,
-<<<<<<< HEAD
-  "minorVersion": 4,
-  "patchVersion": 106,
-=======
   "minorVersion": 5,
   "patchVersion": 0,
->>>>>>> b680721 (Move hotspot settings in semantics)
   "runnable": 1,
   "embedTypes": [
     "iframe"
@@ -34,6 +29,11 @@
     {
       "machineName": "H5P.NDLAThreeSixty",
       "majorVersion": 0,
+      "minorVersion": 5
+    },
+    {
+      "machineName": "FontAwesome",
+      "majorVersion": 4,
       "minorVersion": 5
     }
   ],

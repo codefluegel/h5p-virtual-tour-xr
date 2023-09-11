@@ -587,7 +587,7 @@ H5P.fullScreen = function ($element, instance, exitCallback, body, forceSemiFull
     // Create semi fullscreen.
 
     if (H5P.isFramed) {
-      return; // TODO: Should we support semi-fullscreen for IE9 & 10 ?
+      return;
     }
 
     before('h5p-semi-fullscreen');

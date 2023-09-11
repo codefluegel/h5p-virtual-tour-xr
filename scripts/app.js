@@ -162,8 +162,6 @@ export default class Wrapper extends H5P.EventDispatcher {
         this.render();
       }
       else {
-        console.log('MessageBox');
-
         const messageBox = new MessageBox({
           text: this.l10n.noValidScenesSet
         });
