@@ -508,7 +508,8 @@ export default class ThreeSixtyScene extends React.Component {
   componentDidUpdate(prevProps) {
     if (
       (this.props.isActive && this.state.isLoaded && !this.state.isUpdated) ||
-      (this.props.isActive && this.props.updateThreeSixty)
+      (this.props.isActive && this.props.updateThreeSixty) ||
+      (this.props.isActive && prevProps.isPanorama !== this.props.isPanorama)
     ) {
       // Active and loaded, prepare the scene
       window.setTimeout(() => {
