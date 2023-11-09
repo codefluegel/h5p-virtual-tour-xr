@@ -1,7 +1,7 @@
 {
   "machineName": "H5P.NDLAThreeImage",
-  "title": "NDLA Virtual Tour (360)",
-  "description": "Explore an interactive world in 3D.",
+  "title": "NDLA Escape Room 360",
+  "description": "Escape from an interactive world in 3D.",
   "license": "MIT",
   "author": "Joubel AS",
   "majorVersion": 0,
@@ -17,12 +17,12 @@
   },
   "preloadedJs": [
     {
-      "path": "dist/h5p-ndla-three-image.js"
+      "path": "dist/h5p-ndla-escape-room.js"
     }
   ],
   "preloadedCss": [
     {
-      "path": "dist/h5p-ndla-three-image.css"
+      "path": "dist/h5p-ndla-escape-room.css"
     }
   ],
   "preloadedDependencies": [
