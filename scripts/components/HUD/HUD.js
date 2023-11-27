@@ -23,6 +23,8 @@ export default class HUD extends React.Component {
     this.resetButtonRef = React.createRef();
     this.goToStartButtonRef = React.createRef();
     this.scoreSummaryButtonRef = React.createRef();
+    this.zoomInButtonRef = React.createRef();
+    this.zoomOutButtonRef = React.createRef();
 
     this.buttons = {};
   }
@@ -56,6 +58,12 @@ export default class HUD extends React.Component {
     // Score summary button
     if (this.props.showScoresButton) {
       this.buttons['score-summary'] = this.scoreSummaryButtonRef;
+    }
+
+    // Zoom buttons
+    if (this.props.scene.enableZoom && this.props.scene.sceneType !== SceneTypes.STATIC_SCENE) {
+      this.buttons['zoom-in'] = this.zoomInButtonRef;
+      this.buttons['zoom-out'] = this.zoomOutButtonRef;
     }
   }
 
@@ -260,6 +268,8 @@ export default class HUD extends React.Component {
     const showHomeButton = this.props.showHomeButton;
     const isThreeSixty =
       this.props.scene.sceneType === SceneTypes.THREE_SIXTY_SCENE;
+    const staticScene =
+      this.props.scene.sceneType === SceneTypes.STATIC_SCENE;
 
     return (
       <div className="hud" aria-hidden={ this.props.isHiddenBehindOverlay ?
@@ -340,6 +350,30 @@ export default class HUD extends React.Component {
               isHiddenBehindOverlay={ this.props.isHiddenBehindOverlay }
               nextFocus={ this.props.nextFocus }
               onClick={ this.props.onShowingScoreSummary }
+            />
+          }
+          { !staticScene &&
+            <Button
+              type={ 'zoom-in' }
+              ref={ this.buttons['zoom-in'] }
+              tabIndex={ this.getButtonTabIndex('zoom-in') }
+              focus={ this.getButtonFocus('zoom-in') }
+              label={ 'Zoom in' }
+              isHiddenBehindOverlay={ this.props.isHiddenBehindOverlay }
+              nextFocus={ this.props.nextFocus }
+              onClick={ this.props.onZoomIn }
+            />
+          }
+          { !staticScene &&
+            <Button
+              type={ 'zoom-out' }
+              ref={ this.buttons['zoom-out'] }
+              tabIndex={ this.getButtonTabIndex('zoom-out') }
+              focus={ this.getButtonFocus('zoom-out') }
+              label={ 'Zoom out' }
+              isHiddenBehindOverlay={ this.props.isHiddenBehindOverlay }
+              nextFocus={ this.props.nextFocus }
+              onClick={ this.props.onZoomOut }
             />
           }
         </div>

@@ -629,6 +629,14 @@ export default class Main extends React.Component {
     });
   }
 
+  onZoomIn() {
+    this.props.onZoom('zoomIn');
+  }
+
+  onZoomOut() {
+    this.props.onZoom('zoomOut');
+  }
+
   /**
    * Remove all scenes waiting to be loaded.
    */
@@ -879,6 +887,8 @@ export default class Main extends React.Component {
           isStartScene = {isStartScene}
           onGoToStartScene={ this.goToStartScene.bind(this) }
           onShowingScoreSummary={this.handleScoreSummary.bind(this)}
+          onZoomIn={ this.onZoomIn.bind(this) }
+          onZoomOut={ this.onZoomOut.bind(this) }
           showHomeButton={this.context.behavior.showHomeButton}
           showScoresButton={this.context.behavior.showScoresButton && this.hasOneQuestion()}
           updateSceneAudioPlayers={ this.getSceneAudioPlayers.bind(this) }
