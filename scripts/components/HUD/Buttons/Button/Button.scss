@@ -92,6 +92,12 @@
   &.go-to-start:before {
     content: $goToStart;
   }
+  &.zoom-in:before {
+    content: $zoomIn;
+  }
+  &.zoom-out:before {
+    content: $zoomOut;
+  }
   &.score-summary:before {
     content: $scoreSummary;
   }
