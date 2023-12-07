@@ -26,8 +26,6 @@ export default class HUD extends React.Component {
       'reset': React.createRef(),
       'go-to-start': React.createRef(),
       'score-summary': React.createRef(),
-      'zoom-in': React.createRef(),
-      'zoom-out': React.createRef(),
     };
   }
 
@@ -307,30 +305,6 @@ export default class HUD extends React.Component {
               isHiddenBehindOverlay={ this.props.isHiddenBehindOverlay }
               nextFocus={ this.props.nextFocus }
               onClick={ this.props.onShowingScoreSummary }
-            />
-          }
-          { !staticScene &&
-            <Button
-              type={ 'zoom-in' }
-              ref={ this.buttons['zoom-in'] }
-              tabIndex={ this.getButtonTabIndex('zoom-in') }
-              focus={ this.getButtonFocus('zoom-in') }
-              label={ 'Zoom in' }
-              isHiddenBehindOverlay={ this.props.isHiddenBehindOverlay }
-              nextFocus={ this.props.nextFocus }
-              onClick={ this.props.onZoomIn }
-            />
-          }
-          { !staticScene &&
-            <Button
-              type={ 'zoom-out' }
-              ref={ this.buttons['zoom-out'] }
-              tabIndex={ this.getButtonTabIndex('zoom-out') }
-              focus={ this.getButtonFocus('zoom-out') }
-              label={ 'Zoom out' }
-              isHiddenBehindOverlay={ this.props.isHiddenBehindOverlay }
-              nextFocus={ this.props.nextFocus }
-              onClick={ this.props.onZoomOut }
             />
           }
         </div>

@@ -5,7 +5,6 @@ import { H5PContext } from './context/H5PContext';
 import { sceneRenderingQualityMapping } from './components/Scene/SceneTypes/ThreeSixtyScene';
 import { sanitizeContentTypeParameters } from './utils/sanitization.js';
 import MessageBox from './components/MessageBox/MessageBox';
-import { getNewFovValue } from './utils/zoom-utils.js';
 
 export default class Wrapper extends H5P.EventDispatcher {
   /**
@@ -118,7 +117,6 @@ export default class Wrapper extends H5P.EventDispatcher {
           setCurrentSceneId={this.setCurrentSceneId.bind(this)}
           addThreeSixty={this.addThreeSixty.bind(this)}
           onSetCameraPos={this.setCameraPosition.bind(this)}
-          onZoom={this.zoom.bind(this)}
           isVeryFirstRender={!this.isAttached}
           fullScreenSupported={this.isFullScreenSupported}
           fullscreenButtonAriaLabel={this.fullscreenButtonAriaLabel}
@@ -304,25 +302,6 @@ export default class Wrapper extends H5P.EventDispatcher {
       camera: this.threeSixty.getCurrentPosition(),
       fov: this.threeSixty.getCurrentFov(),
     };
-  }
-
-  /**
-   * Handle zooming in/out by changing field of view.
-   * @param {string} zoomType Zoomtype defined as zoomIn or zoomOut
-   */
-  zoom(zoomType) {
-    if (this.currentSceneId === null || !this.threeSixty) {
-      return; // No scene available to set camera position for.
-    }
-
-    const currentFov = this.threeSixty.getCurrentFov();
-    const maxFov = this.threeSixty.options.isPanorama ? 53 : 75;
-    const zoomFactor = this.threeSixty.camera.zoom;
-
-    const newFov = getNewFovValue(currentFov, maxFov, zoomType);
-
-    this.threeSixty.camera.fov = newFov * zoomFactor;
-    this.threeSixty.camera.updateProjectionMatrix();
   }
 
   /**

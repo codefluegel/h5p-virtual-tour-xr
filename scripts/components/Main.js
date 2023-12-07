@@ -10,6 +10,7 @@ import FullscreenButton from './FullscreenButton/FullscreenButton.js';
 import NoScene from './Scene/NoScene';
 import PasswordContent from './Dialog/PasswordContent';
 import ScoreSummary from './Dialog/ScoreSummary';
+import ZoomButtons from './ZoomButtons/ZoomButtons.js';
 import {
   createAudioPlayer,
   fadeAudioInAndOut,
@@ -630,11 +631,11 @@ export default class Main extends React.Component {
   }
 
   onZoomIn() {
-    this.props.onZoom('zoomIn');
+    this.state.threeSixty.zoomControls.dollyIn();
   }
 
   onZoomOut() {
-    this.props.onZoom('zoomOut');
+    this.state.threeSixty.zoomControls.dollyOut();
   }
 
   /**
@@ -752,6 +753,7 @@ export default class Main extends React.Component {
       dialogClasses.push(interactionClass);
     }
 
+    const showZoomButtons = scene.sceneType !== SceneTypes.STATIC_SCENE;
     const showInteractionDialog = this.state.showingInteraction &&
       this.state.currentInteraction !== null;
     const showPasswordDialog = this.state.showingPassword &&
@@ -887,14 +889,21 @@ export default class Main extends React.Component {
           isStartScene = {isStartScene}
           onGoToStartScene={ this.goToStartScene.bind(this) }
           onShowingScoreSummary={this.handleScoreSummary.bind(this)}
-          onZoomIn={ this.onZoomIn.bind(this) }
-          onZoomOut={ this.onZoomOut.bind(this) }
           showHomeButton={this.context.behavior.showHomeButton}
           showScoresButton={this.context.behavior.showScoresButton && this.hasOneQuestion()}
           updateSceneAudioPlayers={ this.getSceneAudioPlayers.bind(this) }
           interactionAudioPlayers={ this.audioPlayers }
           ariaControls={ this.documentID }
         />
+        { showZoomButtons &&
+          <ZoomButtons
+            onZoomIn={ this.onZoomIn.bind(this) }
+            onZoomOut={ this.onZoomOut.bind(this) }
+            tabIndex={ isHiddenBehindOverlay ? '-1' : undefined }
+            //isZoomInDisabled={ this.state.threeSixty?.zoomControls.isDollyInDisabled() }
+            //isZoomOutDisabled={ this.state.threeSixty?.zoomControls.isDollyOutDisabled() }
+          />
+        }
         <Screenreader
           readText = { this.state.readingText }
         />
