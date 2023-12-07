@@ -1,7 +1,7 @@
 import React from 'react';
 import './Button.scss';
 
-export default class AudioButton extends React.Component {
+export default class Button extends React.Component {
   /**
    * @class
    * @param {object} props React props.
