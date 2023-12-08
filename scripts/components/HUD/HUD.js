@@ -268,8 +268,6 @@ export default class HUD extends React.Component {
     const showHomeButton = this.props.showHomeButton;
     const isThreeSixty =
       this.props.scene.sceneType === SceneTypes.THREE_SIXTY_SCENE;
-    const staticScene =
-      this.props.scene.sceneType === SceneTypes.STATIC_SCENE;
 
     return (
       <div className="hud" aria-hidden={ this.props.isHiddenBehindOverlay ?

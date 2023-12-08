@@ -875,6 +875,20 @@
         "label": "No valid scenes set",
         "importance": "low",
         "default": "No valid scenes have been set."
+      },
+      {
+        "name": "buttonZoomIn",
+        "type": "text",
+        "label": "Text for screenreaders. Title for zoom in button",
+        "importance": "low",
+        "default": "Zoom in"
+      },
+      {
+        "name": "buttonZoomOut",
+        "type": "text",
+        "label": "Text for screenreaders. Title for zoom out button",
+        "importance": "low",
+        "default": "Zoom out"
       }
     ]
   }

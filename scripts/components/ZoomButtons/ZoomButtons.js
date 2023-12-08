@@ -19,14 +19,14 @@ export default class ZoomButtons extends React.Component {
     return (
       <div className='h5p-ndla-virtual-tour-zoom-buttons'>
         <button
-          aria-label={ 'Zoom in' }
+          aria-label={ this.props.labelZoomIn }
           className='h5p-ndla-virtual-tour-zoom-button zoom-in'
           onClick={ this.props.onZoomIn }
           tabIndex={ this.props.tabIndex }
           disabled={ this.props.isZoomInDisabled }
         />
         <button
-          aria-label={ 'Zoom out' }
+          aria-label={ this.props.labelZoomOut }
           className='h5p-ndla-virtual-tour-zoom-button zoom-out'
           onClick={ this.props.onZoomOut }
           tabIndex={ this.props.tabIndex }

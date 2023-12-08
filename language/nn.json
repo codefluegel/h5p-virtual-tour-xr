@@ -458,6 +458,14 @@
         {
           "label": "No valid scenes set",
           "default": "No valid scenes have been set."
+        },
+        {
+          "label": "Tekst for skjermlesarar. Tittel for \"zoom inn\"-knapp",
+          "default": "Zoom inn"
+        },
+        {
+          "label": "Tekst for skjermlesarar. Tittel for \"zoom ut\"-knapp",
+          "default": "Zoom ut"
         }
       ]
     }
