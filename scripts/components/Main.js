@@ -900,6 +900,8 @@ export default class Main extends React.Component {
             onZoomIn={ this.onZoomIn.bind(this) }
             onZoomOut={ this.onZoomOut.bind(this) }
             tabIndex={ isHiddenBehindOverlay ? '-1' : undefined }
+            labelZoomIn={ this.context.l10n.buttonZoomIn }
+            labelZoomOut={ this.context.l10n.buttonZoomOut }
             //isZoomInDisabled={ this.state.threeSixty?.zoomControls.isDollyInDisabled() }
             //isZoomOutDisabled={ this.state.threeSixty?.zoomControls.isDollyOutDisabled() }
           />
