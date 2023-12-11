@@ -49,6 +49,8 @@ export default class Main extends React.Component {
       updateThreeSixty: false,
       startBtnClicked: false,
       scoreCard: {},
+      maxZoomedIn: false,
+      maxZoomedOut: true,
       labelBehavior: {
         showLabel: true,
         labelPosition: 'right'
@@ -193,6 +195,14 @@ export default class Main extends React.Component {
         fadeAudioInAndOut(lastPlayer, null, true);
       }
     }
+
+    // Listen for zoomed in and out
+    this.state.threeSixty?.zoomControls?.on('zoom', () => {
+      this.setState({
+        maxZoomedIn: this.state.threeSixty?.zoomControls?.isDollyInDisabled(),
+        maxZoomedOut: this.state.threeSixty?.zoomControls?.isDollyOutDisabled()
+      });
+    });
   }
 
   /**
@@ -315,6 +325,8 @@ export default class Main extends React.Component {
     this.setState({
       sceneWaitingForLoad: this.props.currentScene,
       focusedInteraction: null,
+      maxZoomedIn: false,
+      maxZoomedOut: true,
     });
 
     let nextSceneId = null;
@@ -902,8 +914,8 @@ export default class Main extends React.Component {
             tabIndex={ isHiddenBehindOverlay ? '-1' : undefined }
             labelZoomIn={ this.context.l10n.buttonZoomIn }
             labelZoomOut={ this.context.l10n.buttonZoomOut }
-            //isZoomInDisabled={ this.state.threeSixty?.zoomControls.isDollyInDisabled() }
-            //isZoomOutDisabled={ this.state.threeSixty?.zoomControls.isDollyOutDisabled() }
+            isZoomInDisabled={ this.state.maxZoomedIn }
+            isZoomOutDisabled={ this.state.maxZoomedOut }
           />
         }
         <Screenreader
