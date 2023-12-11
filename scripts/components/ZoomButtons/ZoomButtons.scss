@@ -4,7 +4,7 @@
   right: 0.5rem;
 
   .h5p-ndla-virtual-tour-zoom-button {
-    font-size: 2.5em;
+    font-size: 1em;
     background: #000;
     border-radius: 50%;
     border: 0.1em solid transparent;
@@ -49,6 +49,68 @@
     &[disabled] {
       cursor: default;
       opacity: 0.5;
+    }
+  }
+
+  .h5p-ndla-virtual-tour-zoom-button-wrapper {
+    position: relative;
+    font-size: 2.5em;
+
+    .tooltip {
+      padding: 0.25em 1em;
+      font-size: 0.35em;
+      background: #000;
+      color: #fff;
+      position: absolute;
+      right: 0.25em;
+      bottom: 200%;
+      z-index: 11;
+      line-height: 1.75;
+      box-shadow: rgba(0, 0, 0, 0.4) 0 3px 10px;
+      pointer-events: none;
+  
+      opacity: 0;
+      visibility: hidden;
+      transition: visibility 0s linear 0.1s, opacity 0.1s linear, bottom 0.1s linear, top 0.1s linear;
+  
+      .text-wrap {
+        max-width: 30em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    .tooltip:after {
+      display: block;
+      background: #000;
+      box-shadow: rgba(0, 0, 0, 0.4) 0 3px 10px;
+      content: " ";
+      width: 0.75em;
+      height: 0.75em;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      transform: translateX(-70%) translateY(-50%) rotate(45deg);
+    }
+
+    @mixin tooltip-styling {
+      visibility: visible;
+      opacity: 1;
+      transition-delay: 0s;
+    }
+  
+    &:hover .tooltip {
+      @include tooltip-styling;
+    }
+  
+    &:focus-within .tooltip {
+      @include tooltip-styling;
+    }
+
+    &:hover .tooltip,
+    &:focus-within .tooltip {
+      bottom: 140%;
     }
   }
 }
