@@ -1,6 +1,5 @@
 import React from 'react';
 import './HUD.scss';
-
 import { H5PContext } from '../../context/H5PContext';
 import AudioButton from './Buttons/AudioButton';
 import Button from './Buttons/Button/Button';
@@ -19,14 +18,45 @@ export default class HUD extends React.Component {
       currentButtonIndex: 0
     };
 
-    // This does not feel very React-ish, does it?
-    this.buttons = {
-      'audio': React.createRef(),
-      'scene-description': React.createRef(),
-      'reset': React.createRef(),
-      'go-to-start': React.createRef(),
-      'score-summary': React.createRef()
-    };
+    this.audioButtonRef = React.createRef();
+    this.sceneDescriptionButtonRef = React.createRef();
+    this.resetButtonRef = React.createRef();
+    this.goToStartButtonRef = React.createRef();
+    this.scoreSummaryButtonRef = React.createRef();
+
+    this.buttons = {};
+  }
+
+  /**
+   * Add button refs.
+   */
+  addButtonRefs() {
+    this.buttons = {};
+
+    // Audio button
+    if (this.props.scene.audio) {
+      this.buttons['audio'] = this.audioButtonRef;
+    }
+
+    // Scene description button
+    if (this.props.scene.scenedescription) {
+      this.buttons['scene-description'] = this.sceneDescriptionButtonRef;
+    }
+
+    // Reset button
+    if (this.props.scene.sceneType === SceneTypes.THREE_SIXTY_SCENE) {
+      this.buttons['reset'] = this.resetButtonRef;
+    }
+
+    // Go to start button
+    if (this.props.showHomeButton && !this.props.isStartScene) {
+      this.buttons['go-to-start'] = this.goToStartButtonRef;
+    }
+
+    // Score summary button
+    if (this.props.showScoresButton) {
+      this.buttons['score-summary'] = this.scoreSummaryButtonRef;
+    }
   }
 
   /**
@@ -212,6 +242,13 @@ export default class HUD extends React.Component {
    */
   showSceneDescription() {
     this.props.onSceneDescription(this.props.scene.scenedescription);
+  }
+
+  /**
+   * React componentDidUpdate.
+   */
+  componentDidUpdate() {
+    this.addButtonRefs();
   }
 
   /**
