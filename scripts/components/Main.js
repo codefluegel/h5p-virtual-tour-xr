@@ -199,7 +199,14 @@ export default class Main extends React.Component {
     // Listen for zoomed in and out
     const zoomControls = this.state.threeSixty?.zoomControls;
     
-    zoomControls?.on('zoom', () => {
+    zoomControls?.on('zoomin', () => {
+      this.setState({
+        maxZoomedIn: zoomControls?.isDollyInDisabled(),
+        maxZoomedOut: zoomControls?.isDollyOutDisabled()
+      });
+    });
+
+    zoomControls?.on('zoomout', () => {
       this.setState({
         maxZoomedIn: zoomControls?.isDollyInDisabled(),
         maxZoomedOut: zoomControls?.isDollyOutDisabled()
