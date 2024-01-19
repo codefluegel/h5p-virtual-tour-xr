@@ -170,14 +170,15 @@ export default class ThreeSixtyScene extends React.Component {
         ratio: 16 / 9,
         cameraStartPosition: cameraPosition,
         segments: sceneRenderingQualityMapping[this.context.sceneRenderingQuality],
-        isPanorama: this.props.isPanorama
+        isPanorama: this.props.isPanorama,
+        enableZoom: this.props.enableZoom,
       });
       this.props.addThreeSixty(threeSixty);
     }
     else {
       // Set texture + camera pos
       threeSixty = this.props.threeSixty;
-      threeSixty.setSourceElement(this.imageElement, this.props.isPanorama);
+      threeSixty.setSourceElement(this.imageElement, this.props.isPanorama, this.props.enableZoom);
       threeSixty.setCameraPosition(cameraPosition.yaw, cameraPosition.pitch);
     }
 

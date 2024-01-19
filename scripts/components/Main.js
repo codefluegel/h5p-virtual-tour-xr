@@ -774,7 +774,7 @@ export default class Main extends React.Component {
       dialogClasses.push(interactionClass);
     }
 
-    const showZoomButtons = scene.sceneType !== SceneTypes.STATIC_SCENE;
+    const showZoomButtons = scene.enableZoom;
     const showInteractionDialog = this.state.showingInteraction &&
       this.state.currentInteraction !== null;
     const showPasswordDialog = this.state.showingPassword &&
