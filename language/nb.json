@@ -27,6 +27,10 @@
                 "description": "Vis knapp som tar brukeren tilbake til forrige scene"
               },
               {
+                "label": "Aktiver \"Zoom\"",
+                "description": "Aktiver zooming inn og ut med zoomknapper, berøringsbevegelser og hurtigtaster."
+              },
+              {
                 "label": "SceneId"
               },
               {
