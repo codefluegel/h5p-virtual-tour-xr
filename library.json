@@ -1,14 +1,13 @@
 {
   "machineName": "H5P.NDLAThreeImage",
-  "title": "NDLA Virtual Tour (360)",
-  "description": "Explore an interactive world in 3D.",
+  "title": "NDLA Escape Room 360",
+  "description": "Escape from an interactive world in 3D.",
   "license": "MIT",
   "author": "Joubel AS",
   "majorVersion": 0,
-  "minorVersion": 4,
-  "patchVersion": 106,
+  "minorVersion": 5,
+  "patchVersion": 0,
   "runnable": 1,
-  "fullscreen": 1,
   "embedTypes": [
     "iframe"
   ],
@@ -18,26 +17,31 @@
   },
   "preloadedJs": [
     {
-      "path": "dist/h5p-ndla-three-image.js"
+      "path": "dist/h5p-ndla-escape-room.js"
     }
   ],
   "preloadedCss": [
     {
-      "path": "dist/h5p-ndla-three-image.css"
+      "path": "dist/h5p-ndla-escape-room.css"
     }
   ],
   "preloadedDependencies": [
     {
       "machineName": "H5P.NDLAThreeSixty",
       "majorVersion": 0,
-      "minorVersion": 3
+      "minorVersion": 5
+    },
+    {
+      "machineName": "FontAwesome",
+      "majorVersion": 4,
+      "minorVersion": 5
     }
   ],
   "editorDependencies": [
     {
       "machineName": "H5PEditor.NDLAThreeImage",
       "majorVersion": 0,
-      "minorVersion": 4
+      "minorVersion": 5
     },
     {
       "machineName": "H5P.GoToScene",

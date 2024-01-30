@@ -18,6 +18,7 @@ $labelWidth: 9em;
     z-index: 2;
   }
   .open-content {
+    border: .25em solid transparent;
     width: $buttonSize;
     height: $buttonSize;
     padding: 0;

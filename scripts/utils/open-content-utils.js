@@ -1,12 +1,13 @@
 /**
- * @param {number} clientX
- * @param {number} clientY
- * @param {boolean} is3DScene
- * @param {boolean} isHorizontalDrag
- * @param {DOMRect} elementRect
- * @param {number} startMousePos
- * @param {number} startMidPoint
- * @returns {number}
+ * Determine new size for an element that is being resized.
+ * @param {number} clientX Current mouse x position.
+ * @param {number} clientY Current mouse y position.
+ * @param {boolean} is3DScene True if in 3D scene, false if in 2D scene.
+ * @param {boolean} isHorizontalDrag True if dragging horizontally, else false.
+ * @param {DOMRect} elementRect Position/size of element.
+ * @param {number} startMousePos Start position of mouse.
+ * @param {number} startMidPoint Start center point of element.
+ * @returns {number|undefined} New size.
  */
 export const scaleOpenContentElement = (
   clientX,
@@ -20,11 +21,11 @@ export const scaleOpenContentElement = (
   if (!elementRect) {
     return;
   }
-  /** @type {number} */
+
   let newSize;
 
   if (is3DScene) {
-    // We record the currentMouseposition for everytime the mouse moves
+    // Record current mouse position for everytime the mouse moves
     const currentMousePosition = isHorizontalDrag ? clientX : clientY;
 
     /* divStartWidth is the start mouse position subtracted by the midpoint, technically this
@@ -37,11 +38,9 @@ export const scaleOpenContentElement = (
     const { x: elementX, y: elementY } = elementRect;
 
     // We record the currentMouseposition for everytime the mouse moves
-    const currentMousePosition = isHorizontalDrag
-      ? clientX - elementX
-      : clientY - elementY;
-
-    newSize = currentMousePosition;
+    newSize = isHorizontalDrag ?
+      clientX - elementX :
+      clientY - elementY;
   }
 
   return newSize;

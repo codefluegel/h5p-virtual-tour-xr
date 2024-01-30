@@ -4,12 +4,22 @@ import FocusTrap from '../../utils/focus-trap';
 import { H5PContext } from '../../context/H5PContext';
 
 export default class Dialog extends React.Component {
+  /**
+   * @class
+   * @param {object} props React props.
+   */
   constructor(props) {
     super(props);
+    this.props = props;
 
     this.handleKeyDown = this.handleKeyDown.bind(this);
+
+    this.dialogLabelId = `h5p-dialog-label-${H5P.createUUID()}`;
   }
 
+  /**
+   * React life-cycle handler: component did mount.
+   */
   componentDidMount() {
     /*
      * Focus trap to keep focus inside dialog modal. Will focus first tabbable
@@ -22,7 +32,7 @@ export default class Dialog extends React.Component {
   }
 
   /**
-   * Handle React component will unmount.
+   * React life-cycle handler: component is about to be unmounted.
    */
   componentWillUnmount() {
     this.focusTrap.deactivate();
@@ -43,22 +53,28 @@ export default class Dialog extends React.Component {
     this.focusTrap.activate();
   }
 
-  handleDialogRef = (el) => {
-    if (el) {
-      this.el = el;
+  /**
+   * Handle dialog reference.
+   * @param {object} element Element.
+   */
+  handleDialogRef(element) {
+    if (element) {
+      this.el = element;
     }
-  };
+  }
 
-  handleResize = () => {
+  /**
+   * Handle resize.
+   */
+  handleResize() {
     if (this.el) {
       this.el.style.width = '';
-      this.el.style.height = this.el.getBoundingClientRect().height + 'px';
+      this.el.style.height = `${this.el.getBoundingClientRect().height}px`;
     }
-  };
+  }
 
   /**
    * Handle keydown on dialog.
-   *
    * @param {KeyboardEvent} event Keyboard event.
    */
   handleKeyDown(event) {
@@ -67,6 +83,10 @@ export default class Dialog extends React.Component {
     }
   }
 
+  /**
+   * React render function.
+   * @returns {object} JSX element.
+   */
   render() {
     let dialogClasses = ['h5p-text-dialog'];
     if (this.props.dialogClasses) {
@@ -75,7 +95,7 @@ export default class Dialog extends React.Component {
 
     const children = (this.props.children.type === 'div' ? this.props.children : React.Children.map(this.props.children, (child) =>
       React.cloneElement(child, {
-        onResize: this.handleResize
+        onResize: this.handleResize.bind(this)
       })
     ));
 
@@ -83,15 +103,15 @@ export default class Dialog extends React.Component {
       <div
         className='h5p-text-overlay'
         role='dialog'
-        aria-labelledby={ 'h5p-dialog-label' }
+        aria-labelledby={ this.dialogLabelId }
         aria-modal={ 'true' }
         ref={ this.overlayRef }
         onKeyDown={ this.handleKeyDown }
       >
-        <div id='h5p-dialog-label' className="h5p-dialog-label">
+        <div id={this.dialogLabelId} className="h5p-dialog-label">
           { this.props.title }
         </div>
-        <div className={dialogClasses.join(' ')} ref={ this.handleDialogRef }>
+        <div className={dialogClasses.join(' ')} ref={ this.handleDialogRef.bind(this) }>
           <div className='h5p-text-content'>
             { children }
           </div>

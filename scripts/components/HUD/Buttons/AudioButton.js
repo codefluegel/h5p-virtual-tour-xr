@@ -3,54 +3,33 @@ import React from 'react';
 import { H5PContext } from '../../../context/H5PContext';
 import {
   createAudioPlayer,
-  isInteractionAudio,
-  isPlaylistAudio,
-  isSceneAudio,
+  getAudioPlayerType,
+  AUDIO_PLAYER_TYPES,
   fadeAudioInAndOut,
 } from '../../../utils/audio-utils';
 import Button from './Button/Button';
 
-/**
- * @typedef {{
- *   sceneAudioTrack: Array<unknown>;
- *   sceneId: string;
- *   playlistId: string;
- *   onIsPlaying: (playerId: string) => void;
- *   playerId: string;
- *   isPlaying: string;
- *   isHiddenBehindOverlay: boolean;
- *   sceneWasPlaying: string;
- *   onSceneWasPlaying: (playerId: string) => void;
- *   restartAudioOnSceneStart: boolean;
- *   updateSceneAudioPlayers: (players) => void;
- *   interactionAudioPlayers: Array;
- * }} Props
- */
 export default class AudioButton extends React.Component {
   /**
-   * @param {Props} props
+   * @class
+   * @param {object} props React props.
    */
   constructor(props) {
     super(props);
-
-    /** @type {Props} */
     this.props = props;
 
     // Separate players for the different scenes
     this.players = {};
-  }
 
-  // Keep track if scene audio has been turned on or not
-  state = {
-    audioOn: false
-  };
+    // Keep track if scene audio has been turned on or not
+    this.state = { audioOn: false };
+  }
 
   /**
    * Determine player ID
-   *
-   * @return {string}
+   * @returns {string} Player id.
    */
-  getPlayerId = () => {
+  getPlayerId() {
     if (
       this.props.sceneId !== undefined &&
       this.props.sceneAudioTrack?.length &&
@@ -78,30 +57,29 @@ export default class AudioButton extends React.Component {
     }
 
     return '';
-  };
+  }
 
   /**
-   * Get track from given player ID
-   *
-   * @param {string} id
-   * @return {Array}
+   * Get tracks from given player id.
+   * @param {string} id Player id.
+   * @returns {object[]} Tracks.
    */
-  getTrack = (id) => {
+  getTrack(id) {
     return id === 'global'
       ? this.context.behavior.audio
       : this.props.sceneAudioTrack;
-  };
+  }
 
   /**
-   * Get the audio player for the current track.
-   *
-   * @param {string} id
-   * @return {HTMLAudioElement|null} or 'null' if track isn't playable.
+   * Get audio player for the current track.
+   * @param {string} id Player id.
+   * @returns {HTMLAudioElement|null} or 'null' if track isn't playable.
    */
-  getPlayer = (id) => {
+  getPlayer(id) {
     if (!id) {
       return null;
     }
+
     const playerId = this.props.playerId || this.context.contentId;
 
     // Create player if none exist
@@ -111,25 +89,33 @@ export default class AudioButton extends React.Component {
         this.getTrack(id),
         () => {
           this.props.onIsPlaying(id);
+
           if (!this.players[id].audioTrack) {
             this.players[id].audioTrack = 0;
           }
         },
         () => {
-          // Current track ended, and player is playlist with multiple tracks (else it is looped)
+          /*
+           * Current track ended, and player is playlist with multiple tracks
+           * (else it is looped)
+           */
           const currentTrackNumber = this.players[id].audioTrack
             ? this.players[id].audioTrack
             : 0;
           const trackList = this.getTrack(id);
+
           const newTrackNumber =
             trackList.length - 1 === currentTrackNumber
               ? 0
               : currentTrackNumber + 1;
+
           const newTrackPath = H5P.getPath(
             trackList[newTrackNumber].path,
             this.context.contentId
           );
+
           const currentPlayer = this.players[id];
+
           // Play next track
           currentPlayer.audioTrack = newTrackNumber;
           currentPlayer.src = newTrackPath;
@@ -149,12 +135,12 @@ export default class AudioButton extends React.Component {
     this.props.updateSceneAudioPlayers(this.players);
 
     return this.players[id];
-  };
+  }
 
   /**
    * Handle audio button clicked
    */
-  handleClick = () => {
+  handleClick() {
     // Set correct state for if scene audio is on or off
     this.setState({
       audioOn: !this.state.audioOn
@@ -163,61 +149,49 @@ export default class AudioButton extends React.Component {
     // Determine player ID
     const id = this.getPlayerId();
     const player = this.getPlayer(id);
-    if (player) {
-      if (id === this.props.isPlaying) {
-        // Reset sceneWasPlaying
-        this.props.onSceneWasPlaying(null);
 
-        // Pause and reset the player
-        fadeAudioInAndOut(player, null, false);
-      }
-      else {
-        // Find out if there is an interaction playing
-        const lastPlayer = isInteractionAudio(this.props.isPlaying)
-          ? this.props.interactionAudioPlayers[this.props.isPlaying]
-          : null;
-
-        // Pause if lastplayer, then start the playback!
-        fadeAudioInAndOut(lastPlayer, player, true);
-      }
+    if (!player) {
+      return;
     }
-  };
+
+    if (id === this.props.isPlaying) {
+      // Reset sceneWasPlaying
+      this.props.onSceneWasPlaying(null);
+
+      // Pause and reset the player
+      fadeAudioInAndOut(player, null, false);
+    }
+    else {
+      // Find out if there is an interaction playing
+      const lastPlayer =
+        getAudioPlayerType(this.props.isPlaying) === AUDIO_PLAYER_TYPES['interaction'] ?
+          this.props.interactionAudioPlayers[this.props.isPlaying] :
+          null;
+
+      // Pause if lastplayer, then start the playback!
+      fadeAudioInAndOut(lastPlayer, player, true);
+    }
+  }
 
   /**
-   * Handle audio started playing
-   */
-  handlePlay = () => {
-    this.setState({
-      isPlaying: true,
-    });
-  };
-
-  /**
-   * Handle audio stopped playing
-   */
-  handleStop = () => {
-    this.setState({
-      isPlaying: false,
-    });
-  };
-
-  /**
-   * @param {Props} prevProps
+   * React lify-cycle handler: Component did update.
+   * @param {object} prevProps React props before update.
    */
   componentDidUpdate(prevProps) {
     if (this.props.isPlaying && this.props.isPlaying !== prevProps.isPlaying) {
-      // The Audio Player has changed
+      // Audio Player has changed
 
       // If not scene audio is playing then change state for audioOn
-      if (!(isSceneAudio(this.props.isPlaying) || isPlaylistAudio(this.props.isPlaying))) {
-        this.setState({
-          audioOn: false
-        });
+      if (!(
+        [AUDIO_PLAYER_TYPES['scene'], AUDIO_PLAYER_TYPES['playlist']]
+          .includes(getAudioPlayerType(this.props.isPlaying))
+      )) {
+        this.setState({ audioOn: false });
       }
 
       if (
-        isSceneAudio(prevProps.isPlaying) ||
-        isPlaylistAudio(prevProps.isPlaying)
+        [AUDIO_PLAYER_TYPES['scene'], AUDIO_PLAYER_TYPES['playlist']]
+          .includes(getAudioPlayerType(prevProps.isPlaying))
       ) {
         // Thas last player was us, we need to stop it
 
@@ -232,27 +206,37 @@ export default class AudioButton extends React.Component {
       }
     }
 
-    if (isSceneAudio(this.props.isPlaying) || isPlaylistAudio(this.props.isPlaying) || (this.props.sceneId !== prevProps.sceneId && this.state.audioOn === true)) {
-      // We are playing something or we changed scene and scene audio is on
-
+    if (
+      [AUDIO_PLAYER_TYPES['scene'], AUDIO_PLAYER_TYPES['playlist']]
+        .includes(getAudioPlayerType(this.props.isPlaying)) ||
+      (this.props.sceneId !== prevProps.sceneId && this.state.audioOn === true)
+    ) {
+      // Playing something or we changed scene and scene audio is on
       const currentPlayerId = this.getPlayerId();
-      if (this.props.isPlaying !== currentPlayerId) {
-        // We are playing the audio track from another scene... we need to change track!
 
+      if (this.props.isPlaying !== currentPlayerId) {
+        // Playing the audio track from another scene... Need to change track!
         const isPlayer = this.getPlayer(this.props.isPlaying);
         const currentPlayer = this.getPlayer(currentPlayerId);
+
         // Pause and reset last player, and start the current player
         fadeAudioInAndOut(isPlayer, currentPlayer, false);
       }
     }
 
-    if (isSceneAudio(this.props.isPlaying) || isPlaylistAudio(this.props.isPlaying)) {
+    if (
+      [AUDIO_PLAYER_TYPES['scene'], AUDIO_PLAYER_TYPES['playlist']]
+        .includes(getAudioPlayerType(this.props.isPlaying))
+    ) {
       const isNewScene = this.props.sceneId !== prevProps.sceneId;
       if (this.props.restartAudioOnSceneStart && isNewScene) {
         const currentPlayerId = this.getPlayerId();
         const player = this.getPlayer(currentPlayerId);
 
-        if (player && isPlaylistAudio(currentPlayerId)) {
+        if (
+          player &&
+          getAudioPlayerType(currentPlayerId) === AUDIO_PLAYER_TYPES['playlist']
+        ) {
           // Pause
           player?.pause();
 
@@ -278,7 +262,8 @@ export default class AudioButton extends React.Component {
     if (
       !this.props.isPlaying &&
       this.props.sceneWasPlaying &&
-      isInteractionAudio(prevProps.isPlaying)
+      getAudioPlayerType(prevProps.isPlaying) ===
+        AUDIO_PLAYER_TYPES['interaction']
     ) {
       // An interaction audio is over and we played scene audio or global audio before that!
 
@@ -302,7 +287,8 @@ export default class AudioButton extends React.Component {
   }
 
   /**
-   * React - adds dom elements.
+   * React render function.
+   * @returns {object} JSX element.
    */
   render() {
     const id = this.getPlayerId();
@@ -314,13 +300,15 @@ export default class AudioButton extends React.Component {
     return (
       <Button
         type={type}
+        tabIndex={ this.props.tabIndex }
+        focus={ this.props.focus }
         label={
           this.props.isPlaying === id
             ? this.context.l10n.pauseAudioTrack
             : this.context.l10n.playAudioTrack
         }
         isHiddenBehindOverlay={this.props.isHiddenBehindOverlay}
-        onClick={this.handleClick}
+        onClick={this.handleClick.bind(this)}
       />
     );
   }

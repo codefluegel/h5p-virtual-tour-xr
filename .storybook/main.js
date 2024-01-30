@@ -1,5 +1,22 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const useLessLoader = require('storybook-less-loader');
+
+const useLessLoader = (config, handleLessRule) => {
+  const cssModel = config.module.rules.find(i => i.test.toString() === "/\\.css$/")
+  let lessRule = {
+    test: /\.less$/,
+    sideEffects: true,
+    use: [
+      ...cssModel.use,
+      {
+        loader: 'less-loader'
+      }
+    ]
+  }
+  if (handleLessRule) lessRule = handleLessRule(lessRule)
+  config.module.rules.push(lessRule)
+  return config
+}
+
 module.exports = {
   stories: ['../scripts/**/*.stories.mdx', '../scripts/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: ['@storybook/addon-links', '@storybook/addon-essentials'],

@@ -2,27 +2,42 @@ import React from 'react';
 import './Button.scss';
 
 export default class AudioButton extends React.Component {
+  /**
+   * @class
+   * @param {object} props React props.
+   */
   constructor(props) {
     super(props);
+    this.props = props;
   }
 
-  handleClick = () => {
+  /**
+   * Handle click.
+   */
+  handleClick() {
     if (!this.props.disabled) {
       this.props.onClick();
     }
-  };
+  }
 
   /**
-   * React - after render
+   * React life-cycle handler: Component did update.
+   * @param {object} prevProps Props before update
    */
   componentDidUpdate(prevProps) {
-    if (prevProps.nextFocus !== this.props.nextFocus && this.props.type === this.props.nextFocus) {
+    if (
+      this.props.focus || (
+        prevProps.nextFocus !== this.props.nextFocus &&
+        this.props.type === this.props.nextFocus
+      )
+    ) {
       this.element.focus();
     }
   }
 
   /**
-   * React - create DOM elements
+   * React render function.
+   * @returns {object} JSX element.
    */
   render() {
     return (
@@ -30,10 +45,13 @@ export default class AudioButton extends React.Component {
         <button
           ref={ (el) => this.element = el }
           className={ 'hud-btn ' + this.props.type }
-          onClick={ this.handleClick }
+          onClick={ this.handleClick.bind(this) }
           aria-label={ this.props.label }
           disabled={ !!this.props.disabled }
-          tabIndex={ this.props.isHiddenBehindOverlay ? '-1' : undefined }
+          tabIndex={ this.props.isHiddenBehindOverlay ?
+            '-1' :
+            this.props.tabIndex
+          }
         />
         <div className="tooltip" aria-hidden="true">
           <div className="text-wrap">{ this.props.label }</div>
