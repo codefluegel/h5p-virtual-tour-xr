@@ -51,6 +51,8 @@ export default class Main extends React.Component {
       scoreCard: {},
       maxZoomedIn: false,
       maxZoomedOut: true,
+      zoomScale: 1,
+      updateZoomScale: false,
       labelBehavior: {
         showLabel: true,
         labelPosition: 'right'
@@ -212,6 +214,14 @@ export default class Main extends React.Component {
         maxZoomedOut: zoomControls?.isDollyOutDisabled()
       });
     });
+
+    if (this.state.updateZoomScale) {
+      this.setState({
+        maxZoomedIn: this.state.zoomScale >= 2,
+        maxZoomedOut: this.state.zoomScale <= 1,
+        updateZoomScale: false
+      });
+    }
   }
 
   /**
@@ -336,6 +346,7 @@ export default class Main extends React.Component {
       focusedInteraction: null,
       maxZoomedIn: false,
       maxZoomedOut: true,
+      zoomScale: 1,
     });
 
     let nextSceneId = null;
@@ -651,12 +662,28 @@ export default class Main extends React.Component {
     });
   }
 
-  onZoomIn() {
-    this.state.threeSixty.zoomControls.dollyIn();
+  onZoomIn(sceneType) {
+    if (sceneType === SceneTypes.STATIC_SCENE && !this.state.maxZoomedIn) {
+      this.setState({
+        zoomScale: this.state.zoomScale + 0.1,
+        updateZoomScale: true
+      });
+    }
+    else {
+      this.state.threeSixty.zoomControls.dollyIn();
+    }
   }
 
-  onZoomOut() {
-    this.state.threeSixty.zoomControls.dollyOut();
+  onZoomOut(sceneType) {
+    if (sceneType === SceneTypes.STATIC_SCENE && !this.state.maxZoomedOut) {
+      this.setState({
+        zoomScale: this.state.zoomScale - 0.1,
+        updateZoomScale: true
+      });
+    }
+    else {
+      this.state.threeSixty.zoomControls.dollyOut();
+    }
   }
 
   /**
@@ -774,7 +801,7 @@ export default class Main extends React.Component {
       dialogClasses.push(interactionClass);
     }
 
-    const showZoomButtons = scene.enableZoom && scene.sceneType !== SceneTypes.STATIC_SCENE;
+    const showZoomButtons = scene.enableZoom;
     const showInteractionDialog = this.state.showingInteraction &&
       this.state.currentInteraction !== null;
     const showPasswordDialog = this.state.showingPassword &&
@@ -893,6 +920,7 @@ export default class Main extends React.Component {
                   this.reactRoots = reactRoots;
                 } }
                 getReactRoots={ () => this.reactRoots ?? [null, null] }
+                zoomScale={ this.state.zoomScale }
               />
             );
           })
@@ -918,8 +946,8 @@ export default class Main extends React.Component {
         />
         { showZoomButtons &&
           <ZoomButtons
-            onZoomIn={ this.onZoomIn.bind(this) }
-            onZoomOut={ this.onZoomOut.bind(this) }
+            onZoomIn={ this.onZoomIn.bind(this, scene.sceneType) }
+            onZoomOut={ this.onZoomOut.bind(this, scene.sceneType) }
             tabIndex={ isHiddenBehindOverlay ? '-1' : undefined }
             labelZoomIn={ this.context.l10n.buttonZoomIn }
             labelZoomOut={ this.context.l10n.buttonZoomOut }

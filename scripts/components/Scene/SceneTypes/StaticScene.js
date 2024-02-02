@@ -27,11 +27,18 @@ export default class StaticScene extends React.Component {
       isDragDelayed: true,
       draggingElement: null,
       isVerticalImage: false,
+      render: false,
     };
+
+    this.moveX = 0;
+    this.moveY = 0;
 
     this.onMove = this.onMove.bind(this);
     this.stoppedDragging = this.stoppedDragging.bind(this);
     this.resizeScene = this.resizeScene.bind(this);
+    this.startDraggingScene = this.startDraggingScene.bind(this);
+    this.moveScene = this.moveScene.bind(this);
+    this.stopDraggingScene = this.stopDraggingScene.bind(this);
   }
 
   /**
@@ -46,6 +53,9 @@ export default class StaticScene extends React.Component {
       // Let main know that scene is finished loading
       this.props.doneLoadingNextScene();
     }
+
+    // Set prev zoom scale
+    this.prevZoomScale = this.props.zoomScale;
   }
 
   /**
@@ -69,6 +79,18 @@ export default class StaticScene extends React.Component {
       && this.sceneWrapperRef.current.clientWidth !== this.imageElementRef.current.clientWidth
       && this.imageElementRef.current.clientWidth > 0) {
       this.sceneWrapperRef.current.style.width = `${this.imageElementRef.current.clientWidth}px`;
+    }
+
+    // If zoom scale changes
+    if (this.props.zoomScale !== this.prevZoomScale) {
+      this.prevZoomScale = this.props.zoomScale;
+
+      if (this.imageElementRef.current) {
+        this.move(0, 0, true);
+      } else {
+        this.moveX = 0;
+        this.moveY = 0;
+      }
     }
   }
 
@@ -312,6 +334,106 @@ export default class StaticScene extends React.Component {
     });
   }
 
+  move(xDiff, yDiff, zoomOut = false) {
+    const imgElement = this.imageElementRef.current;
+    const img = imgElement.getBoundingClientRect();
+
+    // Move within bounds
+    const bounds = {
+      left: 0,
+      right: this.overLayRef.current.clientWidth, 
+      top: 0,
+      bottom: this.overLayRef.current.clientHeight, 
+    };
+
+    // Move sideways
+    const portrait = img.width < img.height;
+    const smallerThanOverlayWidth = img.width <= this.overLayRef.current.clientWidth;
+
+    if (portrait && smallerThanOverlayWidth) {
+      this.moveX = 0;
+    } else {
+      if (img.right + xDiff >= bounds.right && img.left + xDiff <= bounds.left) {
+        this.moveX += xDiff;
+      } else if (img.right + xDiff < bounds.right && zoomOut) {
+        this.moveX += bounds.right - img.right;
+      } else if (img.left + xDiff > bounds.left && zoomOut) {
+        this.moveX += bounds.left - img.left;
+      }
+    }
+
+    // Move up and down
+    const landscape = img.width > img.height;
+    const smallerThanOverlayHeight = img.height <= this.overLayRef.current.clientHeight;
+
+    if (landscape && smallerThanOverlayHeight) {
+      this.moveY = 0;
+    } else {
+      if (img.bottom + yDiff >= bounds.bottom && img.top + yDiff <= bounds.top) {
+        this.moveY += yDiff;
+      } else if (img.bottom + yDiff < bounds.bottom && zoomOut) {
+        this.moveY += bounds.bottom - img.bottom;
+      } else if (img.top + yDiff > bounds.top && zoomOut) {
+        this.moveY += bounds.top - img.top;
+      }
+    }
+  }
+
+  startDraggingScene(event) {
+    if (event.button !== 0) {
+      return; // Not left mouse button
+    }
+
+    // Prevent other elements from moving
+    event.stopPropagation();
+
+    window.addEventListener('mousemove', this.moveScene, false);
+    window.addEventListener('mouseup', this.stopDraggingScene, false);
+  }
+
+  moveScene(event) {
+    if (this.props.zoomScale === 1) {
+      return;
+    }
+
+    let xDiff = event.movementX;
+    let yDiff = event.movementY;
+
+    if (event.movementX === undefined || event.movementY === undefined) {
+      // Diff on old values
+      if (!this.prevPosition) {
+        this.prevPosition = {
+          x: event.clientX,
+          y: event.clientY,
+        };
+      }
+      xDiff = event.clientX - this.prevPosition.x;
+      yDiff = event.clientY - this.prevPosition.y;
+
+      this.prevPosition = {
+        x: event.clientX,
+        y: event.clientY,
+      };
+    }
+
+    if (xDiff !== 0 || yDiff !== 0) {
+      this.move(xDiff, yDiff);
+    }
+
+    this.setState({
+      render: true,
+    });
+  }
+
+  stopDraggingScene() {  
+    this.setState({
+      render: false,
+    });
+
+    window.removeEventListener('mousemove', this.moveScene, false);
+    window.removeEventListener('mouseup', this.stopDraggingScene, false);
+  }
+
   /**
    * Go to previous scene.
    */
@@ -430,6 +552,7 @@ export default class StaticScene extends React.Component {
         <div
           className={imageSceneClasses.join(' ')}
           ref={this.sceneWrapperRef}
+          onMouseDown={this.startDraggingScene.bind(this)}
         >
           <img
             tabIndex={-1}
@@ -439,6 +562,13 @@ export default class StaticScene extends React.Component {
             onLoad={this.onSceneLoaded.bind(this)}
             ref={this.imageElementRef}
             draggable={false}
+            style={{
+              left: `${this.moveX}px`,
+              top: `${this.moveY}px`,
+              transform: `scale(${this.props.zoomScale})`,
+              position: 'relative',
+              touchAction: 'none',
+            }}
           />
           {
             interactions.map((interaction, index) => {

@@ -59,16 +59,7 @@
               "type": "boolean",
               "label": "Enable \"Zoom\"",
               "description": "Enable zooming in and out with zoom buttons, mouse wheel, touch gestures and keyboard shortcuts.",
-              "default": true,
-              "widget": "showWhen",
-              "showWhen": {
-                "rules": [
-                  {
-                    "field": "sceneType",
-                    "equals": ["360", "panorama"]
-                  }
-                ]
-              }
+              "default": true
             },
             {
               "name": "sceneId",

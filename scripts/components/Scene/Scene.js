@@ -86,6 +86,7 @@ export default class Scene extends React.Component {
           sceneWaitingForLoad={this.props.sceneWaitingForLoad}
           doneLoadingNextScene={this.props.doneLoadingNextScene}
           getInteractionTitle={this.getInteractionTitle.bind(this)}
+          zoomScale={this.props.zoomScale}
         />
       );
     }
