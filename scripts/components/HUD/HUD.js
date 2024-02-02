@@ -23,8 +23,6 @@ export default class HUD extends React.Component {
     this.resetButtonRef = React.createRef();
     this.goToStartButtonRef = React.createRef();
     this.scoreSummaryButtonRef = React.createRef();
-    this.zoomInButtonRef = React.createRef();
-    this.zoomOutButtonRef = React.createRef();
 
     this.buttons = {};
   }
@@ -58,12 +56,6 @@ export default class HUD extends React.Component {
     // Score summary button
     if (this.props.showScoresButton) {
       this.buttons['score-summary'] = this.scoreSummaryButtonRef;
-    }
-
-    // Zoom buttons
-    if (this.props.scene.enableZoom && this.props.scene.sceneType !== SceneTypes.STATIC_SCENE) {
-      this.buttons['zoom-in'] = this.zoomInButtonRef;
-      this.buttons['zoom-out'] = this.zoomOutButtonRef;
     }
   }
 
