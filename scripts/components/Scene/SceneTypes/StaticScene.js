@@ -32,13 +32,19 @@ export default class StaticScene extends React.Component {
 
     this.moveX = 0;
     this.moveY = 0;
+    this.prevZoomScale = this.props.zoomScale;
+    this.prevScene = null;
 
     this.onMove = this.onMove.bind(this);
     this.stoppedDragging = this.stoppedDragging.bind(this);
     this.resizeScene = this.resizeScene.bind(this);
-    this.startDraggingScene = this.startDraggingScene.bind(this);
-    this.moveScene = this.moveScene.bind(this);
-    this.stopDraggingScene = this.stopDraggingScene.bind(this);
+
+    this.handleMouseMove = this.handleMouseMove.bind(this);
+    this.handleMouseUp = this.handleMouseUp.bind(this);
+    this.handleTouchStart = this.handleTouchStart.bind(this);
+    this.handleTouchMove = this.handleTouchMove.bind(this);
+    this.handleTouchMoveZoom = this.handleTouchMoveZoom.bind(this);
+    this.handleTouchEnd = this.handleTouchEnd.bind(this);    
   }
 
   /**
@@ -54,8 +60,7 @@ export default class StaticScene extends React.Component {
       this.props.doneLoadingNextScene();
     }
 
-    // Set prev zoom scale
-    this.prevZoomScale = this.props.zoomScale;
+    this.sceneWrapperRef.current?.addEventListener('wheel', this.handleMouseWheel.bind(this), false);
   }
 
   /**
@@ -63,6 +68,7 @@ export default class StaticScene extends React.Component {
    */
   componentWillUnmount() {
     this.context.off('resize', this.resizeScene);
+    this.sceneWrapperRef.current?.removeEventListener('wheel', this.handleMouseWheel.bind(this), false);
   }
 
   /**
@@ -86,7 +92,7 @@ export default class StaticScene extends React.Component {
       this.prevZoomScale = this.props.zoomScale;
 
       if (this.imageElementRef.current) {
-        this.move(0, 0, true);
+        this.moveScene(0, 0, true);
       } else {
         this.moveX = 0;
         this.moveY = 0;
@@ -334,7 +340,13 @@ export default class StaticScene extends React.Component {
     });
   }
 
-  move(xDiff, yDiff, zoomOut = false) {
+  /**
+   * Handle movement of scene image.
+   * @param {number} xDiff 
+   * @param {number} yDiff 
+   * @param {boolean} zoomOut 
+   */
+  moveScene(xDiff, yDiff, zoomOut = false) {
     const imgElement = this.imageElementRef.current;
     const img = imgElement.getBoundingClientRect();
 
@@ -379,7 +391,11 @@ export default class StaticScene extends React.Component {
     }
   }
 
-  startDraggingScene(event) {
+  /**
+   * Handle mouse down.
+   * @param {MouseEvent} event 
+   */
+  handleMouseDown(event) {
     if (event.button !== 0) {
       return; // Not left mouse button
     }
@@ -387,11 +403,15 @@ export default class StaticScene extends React.Component {
     // Prevent other elements from moving
     event.stopPropagation();
 
-    window.addEventListener('mousemove', this.moveScene, false);
-    window.addEventListener('mouseup', this.stopDraggingScene, false);
+    window.addEventListener('mousemove', this.handleMouseMove, false);
+    window.addEventListener('mouseup', this.handleMouseUp, false);
   }
 
-  moveScene(event) {
+  /**
+   * Handle mouse move.
+   * @param {MouseEvent} event
+   */
+  handleMouseMove(event) {
     if (this.props.zoomScale === 1) {
       return;
     }
@@ -417,21 +437,213 @@ export default class StaticScene extends React.Component {
     }
 
     if (xDiff !== 0 || yDiff !== 0) {
-      this.move(xDiff, yDiff);
+      this.moveScene(xDiff, yDiff);
+
+      this.setState({
+        render: true,
+      });      
+    }
+  }
+
+  /**
+   * Handle mouse up.
+   * @param {MouseEvent} event
+   */
+  handleMouseUp() {  
+    this.setState({
+      render: false,
+    });
+
+    window.removeEventListener('mousemove', this.handleMouseMove, false);
+    window.removeEventListener('mouseup', this.handleMouseUp, false);
+  }
+
+  /**
+   * Handle touch start.
+   * @param {TouchEvent} event
+   */
+  handleTouchStart(event) {
+    // Handle move
+    if (event.touches.length !== 2) {
+      window.addEventListener('touchmove', this.handleTouchMove, false);
+      window.addEventListener('touchend', this.handleTouchEnd, false);
+      return;
+    }
+
+    // Handle zoom
+    if (!this.props.enableZoom) {
+      return;
+    }
+
+    const dx = event.touches[0].clientX - event.touches[1].clientX;
+    const dy = event.touches[0].clientY - event.touches[1].clientY;
+
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    this.startDistance.set(0, distance);
+
+    window.addEventListener('touchmove', this.handleTouchMoveZoom, false);
+    window.addEventListener('touchend', this.handleTouchEnd, false);
+  }
+
+  /**
+   * Handle touch move zoom.
+   * @param {TouchEvent} event
+   */
+  handleTouchMoveZoom(event) {
+    if (!this.props.enableZoom) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const dx = event.touches[0].clientX - event.touches[1].clientX;
+    const dy = event.touches[0].clientY - event.touches[1].clientY;
+
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    this.endDistance.set(0, distance);
+
+    const diff = this.endDistance.get(0) - this.startDistance.get(0);
+
+    if (diff > 0) {
+      this.props.zoomIn();
+    }
+    else if (diff < 0) {
+      this.props.zoomOut();
+    }
+  }
+
+  /**
+   * Handle touch move.
+   * @param {TouchEvent} event
+   */
+  handleTouchMove(event) {
+    if (event.touches.length > 1) {
+      this.handleTouchMoveZoom(event);
+      return;
+    }
+
+    if (this.props.zoomScale === 1) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!this.prevPosition) {
+      this.prevPosition = {
+        x: event.clientX,
+        y: event.clientY,
+      };
+    }
+
+    const touch = event.touches[0];
+    const xDiff = touch.clientX - this.prevPosition.x;
+    const yDiff = touch.clientY - this.prevPosition.y;
+
+    this.prevPosition = {
+      x: touch.clientX,
+      y: touch.clientY,
+    };
+
+    if (xDiff !== 0 || yDiff !== 0) {
+      this.moveScene(xDiff, yDiff);
+
+      this.setState({
+        render: true,
+      });
+    }    
+  }
+
+  /**
+   * Handle touch end.
+   * @param {TouchEvent} event
+   */
+  handleTouchEnd() {
+    this.setState({
+      render: false,
+    });
+
+    window.removeEventListener('touchmove', this.handleTouchMove, false);
+    window.removeEventListener('touchmove', this.handleTouchMoveZoom, false);
+    window.removeEventListener('touchend', this.handleTouchEnd, false);
+  }
+
+  /**
+   * Handle mouse wheel.
+   * @param {WheelEvent} event
+   */
+  handleMouseWheel(event) {
+    if (!this.props.enableZoom) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    
+
+    if (event.deltaY < 0 && !this.props.maxZoomedIn) {
+      this.props.zoomIn();
+    }
+    else if (event.deltaY > 0 && !this.props.maxZoomedOut) {
+      this.props.zoomOut();
+    }
+  }
+
+  /**
+   * Handle key down.
+   * @param {KeyboardEvent} event Keyboard event.
+   */
+  handleKeyDown(event) {
+    // Handle zooming
+    if (this.props.enableZoom) {
+      switch (event.key) {
+        case '+':
+          this.props.zoomIn();
+          break;
+        case '-':
+          this.props.zoomOut();
+          break;
+      }
+    }
+
+    // Handle move with arrow keys
+    const isArrowKey = [
+      'ArrowLeft', 'Numpad4', 'ArrowRight', 'Numpad6',
+      'ArrowUp', 'Numpad8', 'ArrowDown', 'Numpad2'
+    ].includes(event.code);
+
+    if (!isArrowKey || this.props.zoomScale === 1) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    switch (event.code) {
+      case 'ArrowLeft':
+      case 'Numpad4':
+        this.moveScene(20, 0);
+        break;
+      case 'ArrowRight':
+      case 'Numpad6':
+        this.moveScene(-20, 0);
+        break;
+      case 'ArrowUp':
+      case 'Numpad8':
+        this.moveScene(0, 20);
+        break;
+      case 'ArrowDown':
+      case 'Numpad2':
+        this.moveScene(0, -20);
+        break;
     }
 
     this.setState({
       render: true,
     });
-  }
-
-  stopDraggingScene() {  
-    this.setState({
-      render: false,
-    });
-
-    window.removeEventListener('mousemove', this.moveScene, false);
-    window.removeEventListener('mouseup', this.stopDraggingScene, false);
   }
 
   /**
@@ -552,7 +764,9 @@ export default class StaticScene extends React.Component {
         <div
           className={imageSceneClasses.join(' ')}
           ref={this.sceneWrapperRef}
-          onMouseDown={this.startDraggingScene.bind(this)}
+          onMouseDown={this.handleMouseDown.bind(this)}
+          onTouchStart={this.handleTouchStart.bind(this)}
+          onKeyDown={this.handleKeyDown.bind(this)}
         >
           <img
             tabIndex={-1}

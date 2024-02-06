@@ -663,7 +663,11 @@ export default class Main extends React.Component {
   }
 
   onZoomIn(sceneType) {
-    if (sceneType === SceneTypes.STATIC_SCENE && !this.state.maxZoomedIn) {
+    if (sceneType === SceneTypes.STATIC_SCENE) {
+      if (this.state.maxZoomedIn) {
+        return;
+      }
+
       this.setState({
         zoomScale: this.state.zoomScale + 0.1,
         updateZoomScale: true
@@ -675,7 +679,11 @@ export default class Main extends React.Component {
   }
 
   onZoomOut(sceneType) {
-    if (sceneType === SceneTypes.STATIC_SCENE && !this.state.maxZoomedOut) {
+    if (sceneType === SceneTypes.STATIC_SCENE) {
+      if (this.state.maxZoomedOut) {
+        return;
+      }
+
       this.setState({
         zoomScale: this.state.zoomScale - 0.1,
         updateZoomScale: true
@@ -921,6 +929,10 @@ export default class Main extends React.Component {
                 } }
                 getReactRoots={ () => this.reactRoots ?? [null, null] }
                 zoomScale={ this.state.zoomScale }
+                zoomIn={ this.onZoomIn.bind(this, scene.sceneType) }
+                zoomOut={ this.onZoomOut.bind(this, scene.sceneType) }
+                maxZoomedIn={ this.state.maxZoomedIn }
+                maxZoomedOut={ this.state.maxZoomedOut }
               />
             );
           })
