@@ -116,7 +116,9 @@ export const sanitizeContentTypeParameters = (params = {}) => {
       back: 'Back',
       buttonFullscreenEnter: 'Enter fullscreen mode',
       buttonFullscreenExit: 'Exit fullscreen mode',
-      noValidScenesSet: 'No valid scenes have been set.'
+      noValidScenesSet: 'No valid scenes have been set.',
+      buttonZoomIn: 'Zoom in',
+      buttonZoomOut: 'Zoom out'
     }
   }, params);
 

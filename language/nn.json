@@ -27,6 +27,10 @@
                 "description": "Vis knapp som tar brukaren tilbake til forrige scene"
               },
               {
+                "label": "Aktiver \"Zoom\"",
+                "description": "Aktiver zooming inn og ut med zoomknappar, berøringsrørsler og hurtigtastar."
+              },
+              {
                 "label": "SceneId"
               },
               {
@@ -458,6 +462,14 @@
         {
           "label": "No valid scenes set",
           "default": "No valid scenes have been set."
+        },
+        {
+          "label": "Tekst for skjermlesarar. Tittel for \"zoom inn\"-knapp",
+          "default": "Zoom inn"
+        },
+        {
+          "label": "Tekst for skjermlesarar. Tittel for \"zoom ut\"-knapp",
+          "default": "Zoom ut"
         }
       ]
     }
