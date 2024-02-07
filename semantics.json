@@ -186,7 +186,7 @@
                   {
                     "name": "passwordSettings",
                     "type": "group",
-                    "label": "Password settings",
+                    "label": "Code settings",
                     "importance": "low",
                     "fields": [
                       {
