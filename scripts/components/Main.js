@@ -10,6 +10,7 @@ import FullscreenButton from './FullscreenButton/FullscreenButton.js';
 import NoScene from './Scene/NoScene';
 import PasswordContent from './Dialog/PasswordContent';
 import ScoreSummary from './Dialog/ScoreSummary';
+import ZoomButtons from './ZoomButtons/ZoomButtons.js';
 import {
   createAudioPlayer,
   fadeAudioInAndOut,
@@ -48,6 +49,8 @@ export default class Main extends React.Component {
       updateThreeSixty: false,
       startBtnClicked: false,
       scoreCard: {},
+      maxZoomedIn: false,
+      maxZoomedOut: true,
       labelBehavior: {
         showLabel: true,
         labelPosition: 'right'
@@ -192,6 +195,23 @@ export default class Main extends React.Component {
         fadeAudioInAndOut(lastPlayer, null, true);
       }
     }
+
+    // Listen for zoomed in and out
+    const zoomControls = this.state.threeSixty?.zoomControls;
+    
+    zoomControls?.on('zoomin', () => {
+      this.setState({
+        maxZoomedIn: zoomControls?.isDollyInDisabled(),
+        maxZoomedOut: zoomControls?.isDollyOutDisabled()
+      });
+    });
+
+    zoomControls?.on('zoomout', () => {
+      this.setState({
+        maxZoomedIn: zoomControls?.isDollyInDisabled(),
+        maxZoomedOut: zoomControls?.isDollyOutDisabled()
+      });
+    });
   }
 
   /**
@@ -314,6 +334,8 @@ export default class Main extends React.Component {
     this.setState({
       sceneWaitingForLoad: this.props.currentScene,
       focusedInteraction: null,
+      maxZoomedIn: false,
+      maxZoomedOut: true,
     });
 
     let nextSceneId = null;
@@ -629,6 +651,14 @@ export default class Main extends React.Component {
     });
   }
 
+  onZoomIn() {
+    this.state.threeSixty.zoomControls.dollyIn();
+  }
+
+  onZoomOut() {
+    this.state.threeSixty.zoomControls.dollyOut();
+  }
+
   /**
    * Remove all scenes waiting to be loaded.
    */
@@ -744,6 +774,7 @@ export default class Main extends React.Component {
       dialogClasses.push(interactionClass);
     }
 
+    const showZoomButtons = scene.enableZoom && scene.sceneType !== SceneTypes.STATIC_SCENE;
     const showInteractionDialog = this.state.showingInteraction &&
       this.state.currentInteraction !== null;
     const showPasswordDialog = this.state.showingPassword &&
@@ -885,6 +916,17 @@ export default class Main extends React.Component {
           interactionAudioPlayers={ this.audioPlayers }
           ariaControls={ this.documentID }
         />
+        { showZoomButtons &&
+          <ZoomButtons
+            onZoomIn={ this.onZoomIn.bind(this) }
+            onZoomOut={ this.onZoomOut.bind(this) }
+            tabIndex={ isHiddenBehindOverlay ? '-1' : undefined }
+            labelZoomIn={ this.context.l10n.buttonZoomIn }
+            labelZoomOut={ this.context.l10n.buttonZoomOut }
+            isZoomInDisabled={ this.state.maxZoomedIn }
+            isZoomOutDisabled={ this.state.maxZoomedOut }
+          />
+        }
         <Screenreader
           readText = { this.state.readingText }
         />

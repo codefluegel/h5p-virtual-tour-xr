@@ -120,6 +120,7 @@ export default class Scene extends React.Component {
         doneLoadingNextScene={this.props.doneLoadingNextScene}
         startBtnClicked={this.props.startBtnClicked}
         isPanorama={this.props.sceneParams.sceneType === SceneTypes.PANORAMA}
+        enableZoom={this.props.sceneParams.enableZoom}
         getInteractionTitle={this.getInteractionTitle.bind(this)}
       />
     );
