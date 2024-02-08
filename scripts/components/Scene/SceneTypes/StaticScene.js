@@ -731,6 +731,28 @@ export default class StaticScene extends React.Component {
   }
 
   /**
+   * Get adjusted position after image move or zoom.
+   * @param {number} posX X-coordinate.
+   * @param {number} posY Y-coordinate.
+   * @returns {object} Position with x and y.
+   */
+  getInteractionPositionsAfterImageMove(posX, posY) {
+    const imgXDiff = (this.moveX / staticSceneWidth * 100) - (img.x / staticSceneWidth * 100);
+    const imgYDiff = (this.moveY / staticSceneHeight * 100) - (img.y / staticSceneHeight * 100);
+
+    const posMoveX = this.moveX / staticSceneWidth * 100;
+    const posMoveY = this.moveY / staticSceneHeight * 100;
+
+    posX = posX * this.props.zoomScale + posMoveX - imgXDiff;
+    posY = posY * this.props.zoomScale + posMoveY - imgYDiff;
+
+    return {
+      posX: posX,
+      posY: posY,
+    };
+  }
+
+  /**
    * React render function.
    * @returns {object} JSX element.
    */
@@ -820,6 +842,17 @@ export default class StaticScene extends React.Component {
                   posX = pos.posX;
                   posY = pos.posY;
                 }
+              }
+
+              if (this.imageElementRef?.current) {
+                // Adjust interaction position after image move or zoom
+                const pos = this.getInteractionPositionsAfterImageMove(
+                  parseFloat(posX),
+                  parseFloat(posY)
+                );
+
+                posX = pos.posX;
+                posY = pos.posY;
               }
 
               const isGoToSceneInteraction =
