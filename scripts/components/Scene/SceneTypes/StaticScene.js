@@ -737,6 +737,8 @@ export default class StaticScene extends React.Component {
    * @returns {object} Position with x and y.
    */
   getInteractionPositionsAfterImageMove(posX, posY) {
+    const img = this.imageElementRef.current.getBoundingClientRect();
+    
     const imgXDiff = (this.moveX / staticSceneWidth * 100) - (img.x / staticSceneWidth * 100);
     const imgYDiff = (this.moveY / staticSceneHeight * 100) - (img.y / staticSceneHeight * 100);
 
