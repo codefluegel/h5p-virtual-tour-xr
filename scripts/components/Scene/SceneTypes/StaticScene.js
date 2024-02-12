@@ -60,7 +60,10 @@ export default class StaticScene extends React.Component {
       this.props.doneLoadingNextScene();
     }
 
-    this.sceneWrapperRef.current?.addEventListener('wheel', this.handleMouseWheel.bind(this), false);
+    if (this.props.isActive) {
+      // Add wheel event listener for current scene
+      this.sceneWrapperRef.current?.addEventListener('wheel', this.handleMouseWheel.bind(this), false);
+    }
   }
 
   /**
@@ -68,16 +71,23 @@ export default class StaticScene extends React.Component {
    */
   componentWillUnmount() {
     this.context.off('resize', this.resizeScene);
-    this.sceneWrapperRef.current?.removeEventListener('wheel', this.handleMouseWheel.bind(this), false);
   }
 
   /**
    * React life-cycle handler: Component did update.
    */
   componentDidUpdate() {
+    // Remove wheel event listener from prev scene
+    if (!this.props.isActive && this.props.sceneId === this.props.sceneWaitingForLoad) {
+      this.sceneWrapperRef.current?.removeEventListener('wheel', this.handleMouseWheel.bind(this), false);
+    }
+
     if (this.props.isActive && this.props.sceneWaitingForLoad !== null) {
       // Let main know that scene is finished loading
       this.props.doneLoadingNextScene();
+
+      // Add wheel event listener for current scene
+      this.sceneWrapperRef.current?.addEventListener('wheel', this.handleMouseWheel.bind(this), false);
     }
 
     // Specific to Firefox - Interaction buttons are moving out of scope when image is potrait
@@ -582,7 +592,6 @@ export default class StaticScene extends React.Component {
 
     event.preventDefault();
     event.stopPropagation();
-    
 
     if (event.deltaY < 0 && !this.props.maxZoomedIn) {
       this.props.zoomIn();
@@ -738,7 +747,7 @@ export default class StaticScene extends React.Component {
    */
   getInteractionPositionsAfterImageMove(posX, posY) {
     const img = this.imageElementRef.current.getBoundingClientRect();
-    
+
     const imgXDiff = (this.moveX / staticSceneWidth * 100) - (img.x / staticSceneWidth * 100);
     const imgYDiff = (this.moveY / staticSceneHeight * 100) - (img.y / staticSceneHeight * 100);
 
