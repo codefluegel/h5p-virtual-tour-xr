@@ -475,6 +475,11 @@ export default class StaticScene extends React.Component {
   handleTouchStart(event) {
     // Handle move
     if (event.touches.length !== 2) {
+      this.startPosition = {
+        x: event.touches[0].pageX,
+        y: event.touches[0].pageY,
+      };
+
       window.addEventListener('touchmove', this.handleTouchMove, false);
       window.addEventListener('touchend', this.handleTouchEnd, false);
       return;
@@ -490,7 +495,7 @@ export default class StaticScene extends React.Component {
 
     const distance = Math.sqrt(dx * dx + dy * dy);
 
-    this.startDistance.set(0, distance);
+    this.startDistance = distance;
 
     window.addEventListener('touchmove', this.handleTouchMoveZoom, false);
     window.addEventListener('touchend', this.handleTouchEnd, false);
@@ -513,9 +518,9 @@ export default class StaticScene extends React.Component {
 
     const distance = Math.sqrt(dx * dx + dy * dy);
 
-    this.endDistance.set(0, distance);
+    this.endDistance = distance;
 
-    const diff = this.endDistance.get(0) - this.startDistance.get(0);
+    const diff = this.endDistance - this.startDistance;
 
     if (diff > 0) {
       this.props.zoomIn();
@@ -531,10 +536,10 @@ export default class StaticScene extends React.Component {
    */
   handleTouchMove(event) {
     if (event.touches.length > 1) {
-      this.handleTouchMoveZoom(event);
       return;
     }
 
+    // Prevent move if not zoomed in
     if (this.props.zoomScale === 1) {
       return;
     }
@@ -544,20 +549,19 @@ export default class StaticScene extends React.Component {
 
     if (!this.prevPosition) {
       this.prevPosition = {
-        x: event.clientX,
-        y: event.clientY,
+        x: this.startPosition.x,
+        y: this.startPosition.y,
       };
     }
 
-    const touch = event.touches[0];
-    const xDiff = touch.clientX - this.prevPosition.x;
-    const yDiff = touch.clientY - this.prevPosition.y;
+    const xDiff = event.changedTouches[0].pageX - this.prevPosition.x;
+    const yDiff = event.changedTouches[0].pageY - this.prevPosition.y;
 
     this.prevPosition = {
-      x: touch.clientX,
-      y: touch.clientY,
+      x: event.changedTouches[0].pageX,
+      y: event.changedTouches[0].pageY,
     };
-
+    
     if (xDiff !== 0 || yDiff !== 0) {
       this.moveScene(xDiff, yDiff);
 
@@ -572,6 +576,8 @@ export default class StaticScene extends React.Component {
    * @param {TouchEvent} event
    */
   handleTouchEnd() {
+    this.prevPosition = null;
+
     this.setState({
       render: false,
     });
