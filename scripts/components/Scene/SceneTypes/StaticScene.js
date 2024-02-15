@@ -94,12 +94,14 @@ export default class StaticScene extends React.Component {
     if (this.sceneWrapperRef.current !== null
       && this.sceneWrapperRef.current.clientWidth !== this.imageElementRef.current.clientWidth
       && this.imageElementRef.current.clientWidth > 0) {
-      this.sceneWrapperRef.current.style.width = `${this.imageElementRef.current.clientWidth}px`;
+      this.updateWrapperSize();
     }
 
     // If zoom scale changes
     if (this.props.zoomScale !== this.prevZoomScale) {
       this.prevZoomScale = this.props.zoomScale;
+
+      this.updateWrapperSize();
 
       if (this.imageElementRef.current) {
         this.moveScene(0, 0, true);
@@ -128,7 +130,7 @@ export default class StaticScene extends React.Component {
 
     // Specific to Firefox - Interaction buttons are moving out of scope when image is potrait
     if (this.imageElementRef.current.clientWidth > 0) {
-      this.sceneWrapperRef.current.style.width = `${this.imageElementRef.current.clientWidth}px`;
+      this.updateWrapperSize();
     }
 
     // Only make icons smaller if necessary
@@ -160,6 +162,23 @@ export default class StaticScene extends React.Component {
     let wrapper = this.sceneWrapperRef.current;
     if (wrapper) {
       return isVertical ? wrapper.clientHeight : wrapper.clientWidth;
+    }
+  }
+
+  /**
+   * Update wrapper size based on image.
+   */
+  updateWrapperSize() {
+    const wrapper = this.sceneWrapperRef.current;
+    const overlay = this.overLayRef.current;
+    const image = this.imageElementRef.current?.getBoundingClientRect();
+
+    if (wrapper && overlay && image) {
+      const newWidth = Math.min(image.width, overlay.clientWidth);
+      const newHeight = Math.min(image.height, overlay.clientHeight);
+
+      wrapper.style.width = `${newWidth}px`;
+      wrapper.style.height = `${newHeight}px`;
     }
   }
 
@@ -693,9 +712,10 @@ export default class StaticScene extends React.Component {
     }
 
     const ratio = imageElement.naturalWidth / imageElement.naturalHeight;
+    const imageElementBounds = imageElement.getBoundingClientRect();
 
-    staticSceneWidth = imageElement.clientWidth;
-    staticSceneHeight = imageElement.clientHeight;
+    staticSceneWidth = imageElementBounds.width;
+    staticSceneHeight = imageElementBounds.height;
 
     this.setState({
       isVerticalImage: ratio < this.context.getRatio(),
@@ -753,15 +773,49 @@ export default class StaticScene extends React.Component {
    */
   getInteractionPositionsAfterImageMove(posX, posY) {
     const img = this.imageElementRef.current.getBoundingClientRect();
+    const wrapper = this.sceneWrapperRef?.current?.getBoundingClientRect();
 
-    const imgXDiff = (this.moveX / staticSceneWidth * 100) - (img.x / staticSceneWidth * 100);
-    const imgYDiff = (this.moveY / staticSceneHeight * 100) - (img.y / staticSceneHeight * 100);
+    const overlay = { 
+      width: this.overLayRef.current.clientWidth, 
+      height: this.overLayRef.current.clientHeight
+    };
 
-    const posMoveX = this.moveX / staticSceneWidth * 100;
-    const posMoveY = this.moveY / staticSceneHeight * 100;
+    if (!wrapper || !img || !overlay) {
+      return {
+        posX: posX,
+        posY: posY,
+      }
+    }
 
-    posX = posX * this.props.zoomScale + posMoveX - imgXDiff;
-    posY = posY * this.props.zoomScale + posMoveY - imgYDiff;
+    // Adjust position according to how much the image is scaled (zoomed)
+    if (this.props.zoomScale !== 1) {
+      if (img.width > overlay.width) {
+        const newPosXpercentage = posX * img.width / 100;
+        const newPosX = newPosXpercentage * 100 / overlay.width;
+        const imageXDiff = ((img.width - overlay.width) / overlay.width * 100) / 2;
+
+        posX = newPosX - imageXDiff;
+      }
+
+      if (img.height > overlay.height) {
+        const newPosYpercentage = posY * img.height / 100;
+        const newPosY = newPosYpercentage * 100 / overlay.height;
+        const imageYDiff = ((img.height - overlay.height) / overlay.height * 100) / 2;
+
+        posY = newPosY - imageYDiff;
+      }
+    }
+
+    // Adjust position according to how much the image has been moved
+    if (this.moveX !== 0) {
+      const moveXpercentage = this.moveX / wrapper.width * 100;
+      posX = posX + moveXpercentage;
+    }
+
+    if (this.moveY !== 0) {
+      const moveYpercentage = this.moveY / wrapper.height * 100;
+      posY = posY + moveYpercentage;
+    }
 
     return {
       posX: posX,
