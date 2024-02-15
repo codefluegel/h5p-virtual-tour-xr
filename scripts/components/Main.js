@@ -217,7 +217,7 @@ export default class Main extends React.Component {
 
     if (this.state.updateZoomScale) {
       this.setState({
-        maxZoomedIn: this.state.zoomScale >= 2,
+        maxZoomedIn: this.state.zoomScale >= 4,
         maxZoomedOut: this.state.zoomScale <= 1,
         updateZoomScale: false
       });
