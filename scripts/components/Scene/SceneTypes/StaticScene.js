@@ -39,12 +39,13 @@ export default class StaticScene extends React.Component {
     this.stoppedDragging = this.stoppedDragging.bind(this);
     this.resizeScene = this.resizeScene.bind(this);
 
+    this.handleMouseWheel = this.handleMouseWheel.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.handleTouchStart = this.handleTouchStart.bind(this);
     this.handleTouchMove = this.handleTouchMove.bind(this);
     this.handleTouchMoveZoom = this.handleTouchMoveZoom.bind(this);
-    this.handleTouchEnd = this.handleTouchEnd.bind(this);    
+    this.handleTouchEnd = this.handleTouchEnd.bind(this);
   }
 
   /**
@@ -62,7 +63,7 @@ export default class StaticScene extends React.Component {
 
     if (this.props.isActive) {
       // Add wheel event listener for current scene
-      this.sceneWrapperRef.current?.addEventListener('wheel', this.handleMouseWheel.bind(this), false);
+      this.sceneWrapperRef.current?.addEventListener('wheel', this.handleMouseWheel, false);
     }
   }
 
@@ -79,7 +80,7 @@ export default class StaticScene extends React.Component {
   componentDidUpdate() {
     // Remove wheel event listener from prev scene
     if (!this.props.isActive && this.props.sceneId === this.props.sceneWaitingForLoad) {
-      this.sceneWrapperRef.current?.removeEventListener('wheel', this.handleMouseWheel.bind(this), false);
+      this.sceneWrapperRef.current?.removeEventListener('wheel', this.handleMouseWheel, false);
     }
 
     if (this.props.isActive && this.props.sceneWaitingForLoad !== null) {
@@ -87,7 +88,7 @@ export default class StaticScene extends React.Component {
       this.props.doneLoadingNextScene();
 
       // Add wheel event listener for current scene
-      this.sceneWrapperRef.current?.addEventListener('wheel', this.handleMouseWheel.bind(this), false);
+      this.sceneWrapperRef.current?.addEventListener('wheel', this.handleMouseWheel, false);
     }
 
     // Specific to Firefox - Interaction buttons are moving out of scope when image is potrait
