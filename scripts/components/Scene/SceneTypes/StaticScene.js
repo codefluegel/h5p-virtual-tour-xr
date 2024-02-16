@@ -183,9 +183,12 @@ export default class StaticScene extends React.Component {
       const newWidth = Math.min(image.width, overlayElement.clientWidth);
       wrapperElement.style.width = `${newWidth}px`;
 
-      if (this.context.extras.isEditor) {
-        const newHeight = Math.min(image.height, overlayElement.clientHeight);
-        wrapperElement.style.height = `${newHeight}px`;
+      if (this.context.extras.isEditor && this.state.isVerticalImage) {
+        // TODO: Setting the height of the wrapper makes the image not centered anymore.
+        // Need to find a way to center the image within the wrapper when height is set.     
+
+        //const newHeight = Math.min(image.height, overlayElement.clientHeight);
+        //wrapperElement.style.height = `${newHeight}px`;
       }
     }
   }
@@ -385,19 +388,26 @@ export default class StaticScene extends React.Component {
    */
   moveScene(xDiff, yDiff, zoomOut = false) {
     const imgElement = this.imageElementRef.current;
+    const overlayElement = this.overLayRef.current;
+
+    if (!imgElement || !overlayElement) {
+      return;
+    }
+
     const img = imgElement.getBoundingClientRect();
+    const overlay = overlayElement.getBoundingClientRect();
 
     // Move within bounds
     const bounds = {
-      left: 0,
-      right: this.overLayRef.current.clientWidth, 
-      top: 0,
-      bottom: this.overLayRef.current.clientHeight, 
+      left: overlay.left,
+      right: overlay.right, 
+      top: overlay.top,
+      bottom: overlay.bottom, 
     };
 
     // Move sideways
     const portrait = img.width < img.height;
-    const smallerThanOverlayWidth = img.width <= this.overLayRef.current.clientWidth;
+    const smallerThanOverlayWidth = img.width <= overlayElement.clientWidth;
 
     if (portrait && smallerThanOverlayWidth) {
       this.moveX = 0;
@@ -413,7 +423,7 @@ export default class StaticScene extends React.Component {
 
     // Move up and down
     const landscape = img.width > img.height;
-    const smallerThanOverlayHeight = img.height <= this.overLayRef.current.clientHeight;
+    const smallerThanOverlayHeight = img.height <= overlayElement.clientHeight;
 
     if (landscape && smallerThanOverlayHeight) {
       this.moveY = 0;
