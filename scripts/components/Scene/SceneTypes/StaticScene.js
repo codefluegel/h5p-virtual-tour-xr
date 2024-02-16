@@ -99,16 +99,20 @@ export default class StaticScene extends React.Component {
 
     // If zoom scale changes
     if (this.props.zoomScale !== this.prevZoomScale) {
-      this.prevZoomScale = this.props.zoomScale;
-
       this.updateWrapperSize();
 
       if (this.imageElementRef.current) {
-        this.moveScene(0, 0, true);
+        if (this.props.zoomScale < this.prevZoomScale) {
+          this.moveScene(0, 0, true);
+        } else {
+          this.moveScene(0, 0);
+        }
       } else {
         this.moveX = 0;
         this.moveY = 0;
       }
+
+      this.prevZoomScale = this.props.zoomScale;
     }
   }
 
@@ -169,16 +173,20 @@ export default class StaticScene extends React.Component {
    * Update wrapper size based on image.
    */
   updateWrapperSize() {
-    const wrapper = this.sceneWrapperRef.current;
-    const overlay = this.overLayRef.current;
-    const image = this.imageElementRef.current?.getBoundingClientRect();
+    const wrapperElement = this.sceneWrapperRef.current;
+    const overlayElement = this.overLayRef.current;
+    const imageElement = this.imageElementRef.current;
 
-    if (wrapper && overlay && image) {
-      const newWidth = Math.min(image.width, overlay.clientWidth);
-      const newHeight = Math.min(image.height, overlay.clientHeight);
+    if (wrapperElement && overlayElement && imageElement) {
+      const image = imageElement.getBoundingClientRect();
 
-      wrapper.style.width = `${newWidth}px`;
-      wrapper.style.height = `${newHeight}px`;
+      const newWidth = Math.min(image.width, overlayElement.clientWidth);
+      wrapperElement.style.width = `${newWidth}px`;
+
+      if (this.context.extras.isEditor) {
+        const newHeight = Math.min(image.height, overlayElement.clientHeight);
+        wrapperElement.style.height = `${newHeight}px`;
+      }
     }
   }
 
@@ -775,12 +783,7 @@ export default class StaticScene extends React.Component {
     const img = this.imageElementRef.current.getBoundingClientRect();
     const wrapper = this.sceneWrapperRef?.current?.getBoundingClientRect();
 
-    const overlay = { 
-      width: this.overLayRef.current.clientWidth, 
-      height: this.overLayRef.current.clientHeight
-    };
-
-    if (!wrapper || !img || !overlay) {
+    if (!wrapper || !img) {
       return {
         posX: posX,
         posY: posY,
@@ -789,21 +792,19 @@ export default class StaticScene extends React.Component {
 
     // Adjust position according to how much the image is scaled (zoomed)
     if (this.props.zoomScale !== 1) {
-      if (img.width > overlay.width) {
-        const newPosXpercentage = posX * img.width / 100;
-        const newPosX = newPosXpercentage * 100 / overlay.width;
-        const imageXDiff = ((img.width - overlay.width) / overlay.width * 100) / 2;
+      // Adjust x position
+      const newPosXpercentage = posX * img.width / 100;
+      const newPosX = newPosXpercentage * 100 / wrapper.width;
+      const imageXDiff = ((img.width - wrapper.width) / wrapper.width * 100) / 2;
 
-        posX = newPosX - imageXDiff;
-      }
+      posX = newPosX - imageXDiff;
 
-      if (img.height > overlay.height) {
-        const newPosYpercentage = posY * img.height / 100;
-        const newPosY = newPosYpercentage * 100 / overlay.height;
-        const imageYDiff = ((img.height - overlay.height) / overlay.height * 100) / 2;
+      // Adjust y position
+      const newPosYpercentage = posY * img.height / 100;
+      const newPosY = newPosYpercentage * 100 / wrapper.height;
+      const imageYDiff = ((img.height - wrapper.height) / wrapper.height * 100) / 2;
 
-        posY = newPosY - imageYDiff;
-      }
+      posY = newPosY - imageYDiff;
     }
 
     // Adjust position according to how much the image has been moved
