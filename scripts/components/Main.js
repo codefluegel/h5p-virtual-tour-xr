@@ -52,7 +52,7 @@ export default class Main extends React.Component {
       maxZoomedIn: false,
       maxZoomedOut: true,
       zoomScale: 1,
-      updateZoomScale: false,
+      updateStaticSceneZoom: false,
       labelBehavior: {
         showLabel: true,
         labelPosition: 'right'
@@ -215,11 +215,11 @@ export default class Main extends React.Component {
       });
     });
 
-    if (this.state.updateZoomScale) {
+    if (this.state.updateStaticSceneZoom) {
       this.setState({
         maxZoomedIn: this.state.zoomScale >= 4,
         maxZoomedOut: this.state.zoomScale <= 1,
-        updateZoomScale: false
+        updateStaticSceneZoom: false
       });
     }
   }
@@ -670,7 +670,7 @@ export default class Main extends React.Component {
 
       this.setState({
         zoomScale: this.state.zoomScale + 0.1,
-        updateZoomScale: true
+        updateStaticSceneZoom: true
       });
     }
     else {
@@ -686,7 +686,7 @@ export default class Main extends React.Component {
 
       this.setState({
         zoomScale: this.state.zoomScale - 0.1,
-        updateZoomScale: true
+        updateStaticSceneZoom: true
       });
     }
     else {

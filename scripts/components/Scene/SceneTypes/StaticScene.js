@@ -33,7 +33,6 @@ export default class StaticScene extends React.Component {
     this.moveX = 0;
     this.moveY = 0;
     this.prevZoomScale = this.props.zoomScale;
-    this.prevScene = null;
 
     this.onMove = this.onMove.bind(this);
     this.stoppedDragging = this.stoppedDragging.bind(this);
@@ -444,8 +443,9 @@ export default class StaticScene extends React.Component {
    * @param {MouseEvent} event 
    */
   handleMouseDown(event) {
-    if (event.button !== 0) {
-      return; // Not left mouse button
+    const isLeftMouseButton = event.button === 0;
+    if (!isLeftMouseButton) {
+      return;
     }
 
     // Prevent other elements from moving
@@ -788,7 +788,7 @@ export default class StaticScene extends React.Component {
    * Get adjusted position after image move or zoom.
    * @param {number} posX X-coordinate.
    * @param {number} posY Y-coordinate.
-   * @returns {object} Position with x and y.
+   * @returns {{posX: number; posY: number}} Position with x and y.
    */
   getInteractionPositionsAfterImageMove(posX, posY) {
     const img = this.imageElementRef.current.getBoundingClientRect();
