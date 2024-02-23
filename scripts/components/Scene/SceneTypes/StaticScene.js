@@ -104,8 +104,6 @@ export default class StaticScene extends React.Component {
       if (this.imageElementRef.current) {
         if (this.props.zoomScale < this.prevZoomScale) {
           this.moveScene(0, 0, true);
-        } else {
-          this.moveScene(0, 0);
         }
       } else {
         this.moveX = 0;
@@ -387,53 +385,71 @@ export default class StaticScene extends React.Component {
    * @param {boolean} zoomOut 
    */
   moveScene(xDiff, yDiff, zoomOut = false) {
-    const imgElement = this.imageElementRef.current;
-    const overlayElement = this.overLayRef.current;
+    const imageElement = this.imageElementRef.current;
+    const boundsElement = this.overLayRef.current;
 
-    if (!imgElement || !overlayElement) {
+    if (!imageElement || !boundsElement) {
       return;
     }
 
-    const img = imgElement.getBoundingClientRect();
-    const overlay = overlayElement.getBoundingClientRect();
+    const image = imageElement.getBoundingClientRect();
+    const bounds = boundsElement.getBoundingClientRect();
 
-    // Move within bounds
-    const bounds = {
-      left: overlay.left,
-      right: overlay.right, 
-      top: overlay.top,
-      bottom: overlay.bottom, 
-    };
+    // Handle moving scene sideways
+    const portrait = image.width < image.height;
+    const imageWidthIsSmallerThanBounds = image.width <= boundsElement.clientWidth;
 
-    // Move sideways
-    const portrait = img.width < img.height;
-    const smallerThanOverlayWidth = img.width <= overlayElement.clientWidth;
-
-    if (portrait && smallerThanOverlayWidth) {
+    if (portrait && imageWidthIsSmallerThanBounds) {
       this.moveX = 0;
     } else {
-      if (img.right + xDiff >= bounds.right && img.left + xDiff <= bounds.left) {
+      const newImageRight = image.right + xDiff;
+      const newImageLeft = image.left + xDiff;
+      const imageRightIsOutsideBounds = newImageRight >= bounds.right;
+      const imageLeftIsOutsideBounds = newImageLeft <= bounds.left;
+      const imageIsBiggerThanBounds = imageRightIsOutsideBounds && imageLeftIsOutsideBounds;
+
+      // Only move scene sideways if image is bigger than bounds
+      if (imageIsBiggerThanBounds && !zoomOut) {
         this.moveX += xDiff;
-      } else if (img.right + xDiff < bounds.right && zoomOut) {
-        this.moveX += bounds.right - img.right;
-      } else if (img.left + xDiff > bounds.left && zoomOut) {
-        this.moveX += bounds.left - img.left;
+      }
+      
+      if (zoomOut) {
+        // Keep image edges within bounds
+        if (!imageRightIsOutsideBounds) {
+          this.moveX += bounds.right - image.right;
+        }
+        else if (!imageLeftIsOutsideBounds) {
+          this.moveX += bounds.left - image.left;
+        }
       }
     }
 
-    // Move up and down
-    const landscape = img.width > img.height;
-    const smallerThanOverlayHeight = img.height <= overlayElement.clientHeight;
+    // Handle moving scene up and down
+    const landscape = image.width > image.height;
+    const imageHeightSmallerThanBounds = image.height <= boundsElement.clientHeight;
 
-    if (landscape && smallerThanOverlayHeight) {
+    if (landscape && imageHeightSmallerThanBounds) {
       this.moveY = 0;
     } else {
-      if (img.bottom + yDiff >= bounds.bottom && img.top + yDiff <= bounds.top) {
+      const newImageBottom = image.bottom + yDiff;
+      const newImageTop = image.top + yDiff;
+      const imageBottomIsOutsideBounds = newImageBottom >= bounds.bottom;
+      const imageTopIsOutsideBounds = newImageTop <= bounds.top;
+      const imageIsBiggerThanBounds = imageBottomIsOutsideBounds && imageTopIsOutsideBounds;
+
+      // Only move scene up and down if image is bigger than bounds
+      if (imageIsBiggerThanBounds && !zoomOut) {
         this.moveY += yDiff;
-      } else if (img.bottom + yDiff < bounds.bottom && zoomOut) {
-        this.moveY += bounds.bottom - img.bottom;
-      } else if (img.top + yDiff > bounds.top && zoomOut) {
-        this.moveY += bounds.top - img.top;
+      } 
+      
+      if (zoomOut) {
+        // Keep image edges within bounds
+        if (!imageBottomIsOutsideBounds) {
+          this.moveY += bounds.bottom - image.bottom;
+        }
+        else if (!imageTopIsOutsideBounds) {
+          this.moveY += bounds.top - image.top;
+        }
       }
     }
   }
