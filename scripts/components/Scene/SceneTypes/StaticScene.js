@@ -414,7 +414,7 @@ export default class StaticScene extends React.Component {
       }
       
       if (zoomOut) {
-        // Keep image edges within bounds
+        // Keep image edges at bounds
         if (!imageRightIsOutsideBounds) {
           this.moveX += bounds.right - image.right;
         }
@@ -443,7 +443,7 @@ export default class StaticScene extends React.Component {
       } 
       
       if (zoomOut) {
-        // Keep image edges within bounds
+        // Keep image edges at bounds
         if (!imageBottomIsOutsideBounds) {
           this.moveY += bounds.bottom - image.bottom;
         }
@@ -807,42 +807,51 @@ export default class StaticScene extends React.Component {
    * @returns {{posX: number; posY: number}} Position with x and y.
    */
   getInteractionPositionsAfterImageMove(posX, posY) {
-    const img = this.imageElementRef.current.getBoundingClientRect();
-    const wrapper = this.sceneWrapperRef?.current?.getBoundingClientRect();
+    const imageElement = this.imageElementRef.current;
+    const wrapperElement = this.sceneWrapperRef.current;
 
-    if (!wrapper || !img) {
+    const elementsExist = imageElement && wrapperElement;
+    const isZoomed = this.props.zoomScale !== 1;
+    const isMoved = this.moveX !== 0 || this.moveY !== 0;
+
+    if (!elementsExist || (!isZoomed && !isMoved)) {
       return {
         posX: posX,
         posY: posY,
-      }
+      };
     }
+
+    const image = this.imageElementRef.current.getBoundingClientRect();
+    const wrapper = this.sceneWrapperRef.current.getBoundingClientRect();
 
     // Adjust position according to how much the image is scaled (zoomed)
     if (this.props.zoomScale !== 1) {
       // Adjust x position
-      const newPosXpercentage = posX * img.width / 100;
-      const newPosX = newPosXpercentage * 100 / wrapper.width;
-      const imageXDiff = ((img.width - wrapper.width) / wrapper.width * 100) / 2;
+      const xPositionBasedOnImageWidth = posX * image.width / 100;
+      const xPositionInPercentage = xPositionBasedOnImageWidth * 100 / wrapper.width;
+      const imageWidthOverflowInPercentage = ((image.width - wrapper.width) / wrapper.width * 100) / 2;
 
-      posX = newPosX - imageXDiff;
+      posX = xPositionInPercentage - imageWidthOverflowInPercentage;
 
       // Adjust y position
-      const newPosYpercentage = posY * img.height / 100;
-      const newPosY = newPosYpercentage * 100 / wrapper.height;
-      const imageYDiff = ((img.height - wrapper.height) / wrapper.height * 100) / 2;
+      const yPositionBasedOnImageHeight = posY * image.height / 100;
+      const yPositionInPercentage = yPositionBasedOnImageHeight * 100 / wrapper.height;
+      const imageHeightOverflowInPercentage = ((image.height - wrapper.height) / wrapper.height * 100) / 2;
 
-      posY = newPosY - imageYDiff;
+      posY = yPositionInPercentage - imageHeightOverflowInPercentage;
     }
 
-    // Adjust position according to how much the image has been moved
+    // Adjust position according to how much the image has been moved.
+    // Since movement is detected on the wrapper, we need to find the percentage of the
+    // movement based on the wrapper size.
     if (this.moveX !== 0) {
-      const moveXpercentage = this.moveX / wrapper.width * 100;
-      posX = posX + moveXpercentage;
+      const moveXInPercentage = this.moveX / wrapper.width * 100;
+      posX += moveXInPercentage;
     }
 
     if (this.moveY !== 0) {
-      const moveYpercentage = this.moveY / wrapper.height * 100;
-      posY = posY + moveYpercentage;
+      const moveYInPercentage = this.moveY / wrapper.height * 100;
+      posY += moveYInPercentage;
     }
 
     return {
