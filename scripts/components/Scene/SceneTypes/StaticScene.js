@@ -829,14 +829,16 @@ export default class StaticScene extends React.Component {
       // Adjust x position
       const xPositionBasedOnImageWidth = posX * image.width / 100;
       const xPositionInPercentage = xPositionBasedOnImageWidth * 100 / wrapper.width;
-      const imageWidthOverflowInPercentage = ((image.width - wrapper.width) / wrapper.width * 100) / 2;
+      const imageWidthOverflow = (image.width - wrapper.width) / 2;
+      const imageWidthOverflowInPercentage = imageWidthOverflow / wrapper.width * 100;
 
       posX = xPositionInPercentage - imageWidthOverflowInPercentage;
 
       // Adjust y position
       const yPositionBasedOnImageHeight = posY * image.height / 100;
       const yPositionInPercentage = yPositionBasedOnImageHeight * 100 / wrapper.height;
-      const imageHeightOverflowInPercentage = ((image.height - wrapper.height) / wrapper.height * 100) / 2;
+      const imageHeightOverflow = (image.height - wrapper.height) / 2;
+      const imageHeightOverflowInPercentage = imageHeightOverflow / wrapper.height * 100;
 
       posY = yPositionInPercentage - imageHeightOverflowInPercentage;
     }
