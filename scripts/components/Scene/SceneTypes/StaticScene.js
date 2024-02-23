@@ -811,10 +811,10 @@ export default class StaticScene extends React.Component {
     const wrapperElement = this.sceneWrapperRef.current;
 
     const elementsExist = imageElement && wrapperElement;
-    const isZoomed = this.props.zoomScale !== 1;
-    const isMoved = this.moveX !== 0 || this.moveY !== 0;
+    const hasZoomed = this.props.zoomScale !== 1;
+    const hasMoved = this.moveX !== 0 || this.moveY !== 0;
 
-    if (!elementsExist || (!isZoomed && !isMoved)) {
+    if (!elementsExist || (!hasZoomed && !hasMoved)) {
       return {
         posX: posX,
         posY: posY,
@@ -828,7 +828,7 @@ export default class StaticScene extends React.Component {
     if (this.props.zoomScale !== 1) {
       // Adjust x position
       const xPositionBasedOnImageWidth = posX * image.width / 100;
-      const xPositionInPercentage = xPositionBasedOnImageWidth * 100 / wrapper.width;
+      const xPositionInPercentage = xPositionBasedOnImageWidth / wrapper.width * 100;
       const imageWidthOverflow = (image.width - wrapper.width) / 2;
       const imageWidthOverflowInPercentage = imageWidthOverflow / wrapper.width * 100;
 
@@ -836,7 +836,7 @@ export default class StaticScene extends React.Component {
 
       // Adjust y position
       const yPositionBasedOnImageHeight = posY * image.height / 100;
-      const yPositionInPercentage = yPositionBasedOnImageHeight * 100 / wrapper.height;
+      const yPositionInPercentage = yPositionBasedOnImageHeight / wrapper.height * 100;
       const imageHeightOverflow = (image.height - wrapper.height) / 2;
       const imageHeightOverflowInPercentage = imageHeightOverflow / wrapper.height * 100;
 
