@@ -385,6 +385,11 @@ export default class StaticScene extends React.Component {
    * @param {boolean} zoomOut 
    */
   moveScene(xDiff, yDiff, zoomOut = false) {
+    // Prevent moving scene when moving interaction
+    if (this.state.draggingInteractionIndex !== null) {
+      return;
+    }
+
     const imageElement = this.imageElementRef.current;
     const boundsElement = this.overLayRef.current;
 
@@ -459,6 +464,11 @@ export default class StaticScene extends React.Component {
    * @param {MouseEvent} event 
    */
   handleMouseDown(event) {
+    // Prevent moving scene when moving interaction
+    if (this.state.draggingInteractionIndex !== null) {
+      return;
+    }
+
     const isLeftMouseButton = event.button === 0;
     if (!isLeftMouseButton) {
       return;
@@ -527,6 +537,11 @@ export default class StaticScene extends React.Component {
    * @param {TouchEvent} event
    */
   handleTouchStart(event) {
+    // Prevent moving scene when moving interaction
+    if (this.state.draggingInteractionIndex !== null) {
+      return;
+    }
+
     // Handle move
     if (event.touches.length !== 2) {
       this.startPosition = {
@@ -646,6 +661,11 @@ export default class StaticScene extends React.Component {
    * @param {WheelEvent} event
    */
   handleMouseWheel(event) {
+    // Prevent moving scene when moving interaction
+    if (this.state.draggingInteractionIndex !== null) {
+      return;
+    }
+
     if (!this.props.enableZoom) {
       return;
     }
@@ -666,6 +686,11 @@ export default class StaticScene extends React.Component {
    * @param {KeyboardEvent} event Keyboard event.
    */
   handleKeyDown(event) {
+    // Prevent moving scene when moving interaction
+    if (this.state.draggingInteractionIndex !== null) {
+      return;
+    }
+
     // Handle zooming
     if (this.props.enableZoom) {
       switch (event.key) {
