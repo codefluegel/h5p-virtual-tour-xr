@@ -355,6 +355,14 @@ export default class OpenContent extends React.Component {
   render() {
     const wrapperClasses = ['open-content-wrapper'];
 
+    let width = this.state.sizeWidth;
+    let height = this.state.sizeHeight;
+
+    if (this.props.zoomScale && this.props.staticScene) {
+      width *= this.props.zoomScale;
+      height *= this.props.zoomScale;
+    }
+
     if (this.state.isMouseOver) {
       wrapperClasses.push('hover');
     }
@@ -436,8 +444,8 @@ export default class OpenContent extends React.Component {
           ref={this.openContent}
           aria-label={this.props.ariaLabel}
           style={{
-            width: `${this.state.sizeWidth * this.props.zoomScale}px`,
-            height: `${this.state.sizeHeight * this.props.zoomScale}px`,
+            width: `${width}px`,
+            height: `${height}px`,
           }}
           onDoubleClick={this.onDoubleClick.bind(this)}
           onMouseDown={this.onMouseDown.bind(this)}
