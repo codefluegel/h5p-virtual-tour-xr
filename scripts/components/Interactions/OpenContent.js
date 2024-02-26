@@ -436,8 +436,8 @@ export default class OpenContent extends React.Component {
           ref={this.openContent}
           aria-label={this.props.ariaLabel}
           style={{
-            width: `${this.state.sizeWidth}px`,
-            height: `${this.state.sizeHeight}px`,
+            width: `${this.state.sizeWidth * this.props.zoomScale}px`,
+            height: `${this.state.sizeHeight * this.props.zoomScale}px`,
           }}
           onDoubleClick={this.onDoubleClick.bind(this)}
           onMouseDown={this.onMouseDown.bind(this)}

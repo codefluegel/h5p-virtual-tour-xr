@@ -1015,6 +1015,7 @@ export default class StaticScene extends React.Component {
                     isFocused={this.props.focusedInteraction === index}
                     onBlur={this.props.onBlurInteraction}
                     is3DScene={false}
+                    zoomScale={this.props.zoomScale}
                   >
                     {
                       this.context.extras.isEditor &&
@@ -1052,6 +1053,7 @@ export default class StaticScene extends React.Component {
                     interactionIndex = {index}
                     isHotspotTabbable={interaction.hotspotSettings?.isHotspotTabbable}
                     showHotspotOnHover={interaction.hotspotSettings?.showHotspotOnHover}
+                    zoomScale={this.props.zoomScale}
                   >
                     {
                       this.context.extras.isEditor &&
