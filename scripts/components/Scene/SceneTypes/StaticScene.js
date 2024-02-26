@@ -255,10 +255,11 @@ export default class StaticScene extends React.Component {
   getNewInteractionPosition(initialPos, event, element, isVertical = false) {
     let position = isVertical ? initialPos.y : initialPos.x;
     let mouseMoved = this.getMouseMovedPercentages(event, isVertical);
+    let mouseMovedWhenZoomed = mouseMoved / this.props.zoomScale;
     let wrapperSize = this.getWrapperSize(isVertical);
 
     position = this.removePercentageDenotationFromPosition(position);
-    const movedTo = position - mouseMoved;
+    const movedTo = position - mouseMovedWhenZoomed;
 
     if (movedTo < 0) {
       return 0;
