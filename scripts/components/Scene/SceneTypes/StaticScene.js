@@ -181,12 +181,10 @@ export default class StaticScene extends React.Component {
       const newWidth = Math.min(image.width, overlayElement.clientWidth);
       wrapperElement.style.width = `${newWidth}px`;
 
-      if (this.context.extras.isEditor && this.state.isVerticalImage) {
-        // TODO: Setting the height of the wrapper makes the image not centered anymore.
-        // Need to find a way to center the image within the wrapper when height is set.     
-
-        //const newHeight = Math.min(image.height, overlayElement.clientHeight);
-        //wrapperElement.style.height = `${newHeight}px`;
+      // Adjust height in editor to be able to place interactions
+      if (this.context.extras.isEditor && !this.state.isVerticalImage) {
+        const newHeight = Math.min(image.height, overlayElement.clientHeight);
+        wrapperElement.style.height = `${newHeight}px`;
       }
     }
   }

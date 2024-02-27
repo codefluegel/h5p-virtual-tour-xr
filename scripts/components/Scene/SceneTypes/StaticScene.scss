@@ -15,6 +15,11 @@
     width: 100%;
   }
 
+  /* Make sure image is centered in the scene */
+  .image-scene-wrapper:not(.vertical) {
+    display: flex;
+  }
+
   .image-scene-wrapper.vertical {
     height: 100%;
     
