@@ -62,7 +62,7 @@ export default class StaticScene extends React.Component {
 
     if (this.props.isActive) {
       // Add wheel event listener for current scene
-      this.sceneWrapperRef.current?.addEventListener('wheel', this.handleMouseWheel, false);
+      this.sceneWrapperRef.current?.addEventListener('wheel', this.handleMouseWheel, { passive: false });
     }
   }
 
@@ -75,19 +75,22 @@ export default class StaticScene extends React.Component {
 
   /**
    * React life-cycle handler: Component did update.
+   * @param {object} prevProps Previous properties.
    */
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     // Remove wheel event listener from prev scene
-    if (!this.props.isActive && this.props.sceneId === this.props.sceneWaitingForLoad) {
-      this.sceneWrapperRef.current?.removeEventListener('wheel', this.handleMouseWheel, false);
+    if (!this.props.isActive && prevProps.isActive) {
+      this.sceneWrapperRef.current?.removeEventListener('wheel', this.handleMouseWheel, { passive: false });
+    }
+
+    // Add wheel event listener for current scene
+    if (this.props.isActive && !prevProps.isActive) {
+      this.sceneWrapperRef.current?.addEventListener('wheel', this.handleMouseWheel, { passive: false });
     }
 
     if (this.props.isActive && this.props.sceneWaitingForLoad !== null) {
       // Let main know that scene is finished loading
       this.props.doneLoadingNextScene();
-
-      // Add wheel event listener for current scene
-      this.sceneWrapperRef.current?.addEventListener('wheel', this.handleMouseWheel, false);
     }
 
     // Specific to Firefox - Interaction buttons are moving out of scope when image is potrait
