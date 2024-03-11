@@ -399,14 +399,14 @@ export default class StaticScene extends React.Component {
       return;
     }
 
+    const vertical = this.state.isVerticalImage
     const image = imageElement.getBoundingClientRect();
     const bounds = boundsElement.getBoundingClientRect();
 
     // Handle moving scene sideways
-    const portrait = image.width < image.height;
-    const imageWidthIsSmallerThanBounds = image.width <= boundsElement.clientWidth;
+    const imageWidthIsSmallerThanBounds = image.width <= bounds.width;
 
-    if (portrait && imageWidthIsSmallerThanBounds) {
+    if (vertical && imageWidthIsSmallerThanBounds) {
       this.moveX = 0;
     } else {
       const newImageRight = image.right + xDiff;
@@ -432,10 +432,9 @@ export default class StaticScene extends React.Component {
     }
 
     // Handle moving scene up and down
-    const landscape = image.width > image.height;
-    const imageHeightSmallerThanBounds = image.height <= boundsElement.clientHeight;
+    const imageHeightSmallerThanBounds = image.height <= bounds.height;
 
-    if (landscape && imageHeightSmallerThanBounds) {
+    if (!vertical && imageHeightSmallerThanBounds) {
       this.moveY = 0;
     } else {
       const newImageBottom = image.bottom + yDiff;
