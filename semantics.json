@@ -896,6 +896,13 @@
         "label": "Text for screenreaders. Title for zoom out button",
         "importance": "low",
         "default": "Zoom out"
+      },
+      {
+        "name": "zoomToolbar",
+        "type": "text",
+        "label": "Zoom toolbar",
+        "importance": "low",
+        "default": "Zoom toolbar"
       }
     ]
   }

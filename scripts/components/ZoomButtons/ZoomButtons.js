@@ -1,4 +1,5 @@
 import React from 'react';
+import { H5PContext } from '../../context/H5PContext';
 import './ZoomButtons.scss';
 
 export default class ZoomButtons extends React.Component {
@@ -176,7 +177,7 @@ export default class ZoomButtons extends React.Component {
       <div
         className='h5p-ndla-virtual-tour-zoom-buttons'
         role='toolbar'
-        aria-label={ "zoom toolbar" } // TODO: this.context.l10n.zoomToolbar
+        aria-label={ this.context.l10n.zoomToolbar }
         aria-controls={ this.props.ariaControls }
         onFocus={ () => this.handleFocus() }
         onBlur={ () => this.handleBlur() }
@@ -186,7 +187,7 @@ export default class ZoomButtons extends React.Component {
           <button
             className='h5p-ndla-virtual-tour-zoom-button zoom-in'
             ref={ this.zoomInButtonRef }
-            aria-label={ this.props.labelZoomIn }
+            aria-label={ this.context.l10n.buttonZoomIn }
             onClick={ this.props.onZoomIn }
             tabIndex={ this.getTabIndex('zoomIn') }
             disabled={ this.props.isZoomInDisabled }
@@ -199,7 +200,7 @@ export default class ZoomButtons extends React.Component {
           <button
             className='h5p-ndla-virtual-tour-zoom-button zoom-out'
             ref={ this.zoomOutButtonRef }
-            aria-label={ this.props.labelZoomOut }
+            aria-label={ this.context.l10n.buttonZoomOut }
             onClick={ this.props.onZoomOut }
             tabIndex={ this.getTabIndex('zoomOut') }
             disabled={ this.props.isZoomOutDisabled }
@@ -212,3 +213,5 @@ export default class ZoomButtons extends React.Component {
     );
   }
 }
+
+ZoomButtons.contextType = H5PContext;

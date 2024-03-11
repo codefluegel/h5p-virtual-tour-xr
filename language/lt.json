@@ -458,6 +458,10 @@
         {
           "label": "No valid scenes set",
           "default": "No valid scenes have been set."
+        },
+        {
+          "label": "Zoom toolbar",
+          "default": "Zoom toolbar"
         }
       ]
     }
