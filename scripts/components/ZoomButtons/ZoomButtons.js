@@ -193,7 +193,7 @@ export default class ZoomButtons extends React.Component {
             disabled={ this.props.isZoomInDisabled }
           />
           <div className='tooltip' aria-hidden='true'>
-            <div className='text-wrap'>{ this.props.labelZoomIn }</div>
+            <div className='text-wrap'>{ this.context.l10n.buttonZoomIn }</div>
           </div>
         </div>
         <div className='h5p-ndla-virtual-tour-zoom-button-wrapper'>
@@ -206,7 +206,7 @@ export default class ZoomButtons extends React.Component {
             disabled={ this.props.isZoomOutDisabled }
           />
           <div className='tooltip' aria-hidden='true'>
-            <div className='text-wrap'>{ this.props.labelZoomOut }</div>
+            <div className='text-wrap'>{ this.context.l10n.buttonZoomOut }</div>
           </div>
         </div>
       </div>
