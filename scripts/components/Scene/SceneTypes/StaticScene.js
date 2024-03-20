@@ -27,11 +27,24 @@ export default class StaticScene extends React.Component {
       isDragDelayed: true,
       draggingElement: null,
       isVerticalImage: false,
+      render: false,
     };
+
+    this.moveX = 0;
+    this.moveY = 0;
+    this.prevZoomScale = this.props.zoomScale;
 
     this.onMove = this.onMove.bind(this);
     this.stoppedDragging = this.stoppedDragging.bind(this);
     this.resizeScene = this.resizeScene.bind(this);
+
+    this.handleMouseWheel = this.handleMouseWheel.bind(this);
+    this.handleMouseMove = this.handleMouseMove.bind(this);
+    this.handleMouseUp = this.handleMouseUp.bind(this);
+    this.handleTouchStart = this.handleTouchStart.bind(this);
+    this.handleTouchMove = this.handleTouchMove.bind(this);
+    this.handleTouchMoveZoom = this.handleTouchMoveZoom.bind(this);
+    this.handleTouchEnd = this.handleTouchEnd.bind(this);
   }
 
   /**
@@ -46,6 +59,11 @@ export default class StaticScene extends React.Component {
       // Let main know that scene is finished loading
       this.props.doneLoadingNextScene();
     }
+
+    if (this.props.isActive) {
+      // Add wheel event listener for current scene
+      this.sceneWrapperRef.current?.addEventListener('wheel', this.handleMouseWheel, { passive: false });
+    }
   }
 
   /**
@@ -57,8 +75,19 @@ export default class StaticScene extends React.Component {
 
   /**
    * React life-cycle handler: Component did update.
+   * @param {object} prevProps Previous properties.
    */
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    // Remove wheel event listener from prev scene
+    if (!this.props.isActive && prevProps.isActive) {
+      this.sceneWrapperRef.current?.removeEventListener('wheel', this.handleMouseWheel, { passive: false });
+    }
+
+    // Add wheel event listener for current scene
+    if (this.props.isActive && !prevProps.isActive) {
+      this.sceneWrapperRef.current?.addEventListener('wheel', this.handleMouseWheel, { passive: false });
+    }
+
     if (this.props.isActive && this.props.sceneWaitingForLoad !== null) {
       // Let main know that scene is finished loading
       this.props.doneLoadingNextScene();
@@ -68,7 +97,23 @@ export default class StaticScene extends React.Component {
     if (this.sceneWrapperRef.current !== null
       && this.sceneWrapperRef.current.clientWidth !== this.imageElementRef.current.clientWidth
       && this.imageElementRef.current.clientWidth > 0) {
-      this.sceneWrapperRef.current.style.width = `${this.imageElementRef.current.clientWidth}px`;
+      this.updateWrapperSize();
+    }
+
+    // If zoom scale changes
+    if (this.props.zoomScale !== this.prevZoomScale) {
+      this.updateWrapperSize();
+
+      if (this.imageElementRef.current) {
+        if (this.props.zoomScale < this.prevZoomScale) {
+          this.moveScene(0, 0, true);
+        }
+      } else {
+        this.moveX = 0;
+        this.moveY = 0;
+      }
+
+      this.prevZoomScale = this.props.zoomScale;
     }
   }
 
@@ -90,7 +135,7 @@ export default class StaticScene extends React.Component {
 
     // Specific to Firefox - Interaction buttons are moving out of scope when image is potrait
     if (this.imageElementRef.current.clientWidth > 0) {
-      this.sceneWrapperRef.current.style.width = `${this.imageElementRef.current.clientWidth}px`;
+      this.updateWrapperSize();
     }
 
     // Only make icons smaller if necessary
@@ -122,6 +167,28 @@ export default class StaticScene extends React.Component {
     let wrapper = this.sceneWrapperRef.current;
     if (wrapper) {
       return isVertical ? wrapper.clientHeight : wrapper.clientWidth;
+    }
+  }
+
+  /**
+   * Update wrapper size based on image.
+   */
+  updateWrapperSize() {
+    const wrapperElement = this.sceneWrapperRef.current;
+    const overlayElement = this.overLayRef.current;
+    const imageElement = this.imageElementRef.current;
+
+    if (wrapperElement && overlayElement && imageElement) {
+      const image = imageElement.getBoundingClientRect();
+
+      const newWidth = Math.min(image.width, overlayElement.clientWidth);
+      wrapperElement.style.width = `${newWidth}px`;
+
+      // Adjust height in editor to be able to place interactions
+      if (this.context.extras.isEditor && !this.state.isVerticalImage) {
+        const newHeight = Math.min(image.height, overlayElement.clientHeight);
+        wrapperElement.style.height = `${newHeight}px`;
+      }
     }
   }
 
@@ -189,10 +256,11 @@ export default class StaticScene extends React.Component {
   getNewInteractionPosition(initialPos, event, element, isVertical = false) {
     let position = isVertical ? initialPos.y : initialPos.x;
     let mouseMoved = this.getMouseMovedPercentages(event, isVertical);
+    let mouseMovedWhenZoomed = mouseMoved / this.props.zoomScale;
     let wrapperSize = this.getWrapperSize(isVertical);
 
     position = this.removePercentageDenotationFromPosition(position);
-    const movedTo = position - mouseMoved;
+    const movedTo = position - mouseMovedWhenZoomed;
 
     if (movedTo < 0) {
       return 0;
@@ -313,6 +381,367 @@ export default class StaticScene extends React.Component {
   }
 
   /**
+   * Handle movement of scene image.
+   * @param {number} xDiff 
+   * @param {number} yDiff 
+   * @param {boolean} zoomOut 
+   */
+  moveScene(xDiff, yDiff, zoomOut = false) {
+    // Prevent moving scene when moving interaction
+    if (this.state.draggingInteractionIndex !== null) {
+      return;
+    }
+
+    const imageElement = this.imageElementRef.current;
+    const boundsElement = this.overLayRef.current;
+
+    if (!imageElement || !boundsElement) {
+      return;
+    }
+
+    const vertical = this.state.isVerticalImage
+    const image = imageElement.getBoundingClientRect();
+    const bounds = boundsElement.getBoundingClientRect();
+
+    // Handle moving scene sideways
+    const imageWidthIsSmallerThanBounds = image.width <= bounds.width;
+
+    if (vertical && imageWidthIsSmallerThanBounds) {
+      this.moveX = 0;
+    } else {
+      const newImageRight = image.right + xDiff;
+      const newImageLeft = image.left + xDiff;
+      const imageRightIsOutsideBounds = newImageRight >= bounds.right;
+      const imageLeftIsOutsideBounds = newImageLeft <= bounds.left;
+      const imageIsBiggerThanBounds = imageRightIsOutsideBounds && imageLeftIsOutsideBounds;
+
+      // Only move scene sideways if image is bigger than bounds
+      if (imageIsBiggerThanBounds && !zoomOut) {
+        this.moveX += xDiff;
+      }
+      
+      if (zoomOut) {
+        // Keep image edges at bounds
+        if (!imageRightIsOutsideBounds) {
+          this.moveX += bounds.right - image.right;
+        }
+        else if (!imageLeftIsOutsideBounds) {
+          this.moveX += bounds.left - image.left;
+        }
+      }
+    }
+
+    // Handle moving scene up and down
+    const imageHeightSmallerThanBounds = image.height <= bounds.height;
+
+    if (!vertical && imageHeightSmallerThanBounds) {
+      this.moveY = 0;
+    } else {
+      const newImageBottom = image.bottom + yDiff;
+      const newImageTop = image.top + yDiff;
+      const imageBottomIsOutsideBounds = newImageBottom >= bounds.bottom;
+      const imageTopIsOutsideBounds = newImageTop <= bounds.top;
+      const imageIsBiggerThanBounds = imageBottomIsOutsideBounds && imageTopIsOutsideBounds;
+
+      // Only move scene up and down if image is bigger than bounds
+      if (imageIsBiggerThanBounds && !zoomOut) {
+        this.moveY += yDiff;
+      } 
+      
+      if (zoomOut) {
+        // Keep image edges at bounds
+        if (!imageBottomIsOutsideBounds) {
+          this.moveY += bounds.bottom - image.bottom;
+        }
+        else if (!imageTopIsOutsideBounds) {
+          this.moveY += bounds.top - image.top;
+        }
+      }
+    }
+  }
+
+  /**
+   * Handle mouse down.
+   * @param {MouseEvent} event 
+   */
+  handleMouseDown(event) {
+    // Prevent moving scene when moving interaction
+    if (this.state.draggingInteractionIndex !== null) {
+      return;
+    }
+
+    const isLeftMouseButton = event.button === 0;
+    if (!isLeftMouseButton) {
+      return;
+    }
+
+    // Prevent other elements from moving
+    event.stopPropagation();
+
+    window.addEventListener('mousemove', this.handleMouseMove, false);
+    window.addEventListener('mouseup', this.handleMouseUp, false);
+  }
+
+  /**
+   * Handle mouse move.
+   * @param {MouseEvent} event
+   */
+  handleMouseMove(event) {
+    if (this.props.zoomScale === 1) {
+      return;
+    }
+
+    let xDiff = event.movementX;
+    let yDiff = event.movementY;
+
+    if (event.movementX === undefined || event.movementY === undefined) {
+      // Diff on old values
+      if (!this.prevPosition) {
+        this.prevPosition = {
+          x: event.clientX,
+          y: event.clientY,
+        };
+      }
+      xDiff = event.clientX - this.prevPosition.x;
+      yDiff = event.clientY - this.prevPosition.y;
+
+      this.prevPosition = {
+        x: event.clientX,
+        y: event.clientY,
+      };
+    }
+
+    if (xDiff !== 0 || yDiff !== 0) {
+      this.moveScene(xDiff, yDiff);
+
+      this.setState({
+        render: true,
+      });      
+    }
+  }
+
+  /**
+   * Handle mouse up.
+   * @param {MouseEvent} event
+   */
+  handleMouseUp() {  
+    this.setState({
+      render: false,
+    });
+
+    window.removeEventListener('mousemove', this.handleMouseMove, false);
+    window.removeEventListener('mouseup', this.handleMouseUp, false);
+  }
+
+  /**
+   * Handle touch start.
+   * @param {TouchEvent} event
+   */
+  handleTouchStart(event) {
+    // Prevent moving scene when moving interaction
+    if (this.state.draggingInteractionIndex !== null) {
+      return;
+    }
+
+    // Handle move
+    if (event.touches.length !== 2) {
+      this.startPosition = {
+        x: event.touches[0].pageX,
+        y: event.touches[0].pageY,
+      };
+
+      window.addEventListener('touchmove', this.handleTouchMove, false);
+      window.addEventListener('touchend', this.handleTouchEnd, false);
+      return;
+    }
+
+    // Handle zoom
+    if (!this.props.enableZoom) {
+      return;
+    }
+
+    const dx = event.touches[0].clientX - event.touches[1].clientX;
+    const dy = event.touches[0].clientY - event.touches[1].clientY;
+
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    this.startDistance = distance;
+
+    window.addEventListener('touchmove', this.handleTouchMoveZoom, false);
+    window.addEventListener('touchend', this.handleTouchEnd, false);
+  }
+
+  /**
+   * Handle touch move zoom.
+   * @param {TouchEvent} event
+   */
+  handleTouchMoveZoom(event) {
+    if (!this.props.enableZoom) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const dx = event.touches[0].clientX - event.touches[1].clientX;
+    const dy = event.touches[0].clientY - event.touches[1].clientY;
+
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    this.endDistance = distance;
+
+    const diff = this.endDistance - this.startDistance;
+
+    if (diff > 0) {
+      this.props.zoomIn();
+    }
+    else if (diff < 0) {
+      this.props.zoomOut();
+    }
+  }
+
+  /**
+   * Handle touch move.
+   * @param {TouchEvent} event
+   */
+  handleTouchMove(event) {
+    if (event.touches.length > 1) {
+      return;
+    }
+
+    // Prevent move if not zoomed in
+    if (this.props.zoomScale === 1) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!this.prevPosition) {
+      this.prevPosition = {
+        x: this.startPosition.x,
+        y: this.startPosition.y,
+      };
+    }
+
+    const xDiff = event.changedTouches[0].pageX - this.prevPosition.x;
+    const yDiff = event.changedTouches[0].pageY - this.prevPosition.y;
+
+    this.prevPosition = {
+      x: event.changedTouches[0].pageX,
+      y: event.changedTouches[0].pageY,
+    };
+    
+    if (xDiff !== 0 || yDiff !== 0) {
+      this.moveScene(xDiff, yDiff);
+
+      this.setState({
+        render: true,
+      });
+    }    
+  }
+
+  /**
+   * Handle touch end.
+   * @param {TouchEvent} event
+   */
+  handleTouchEnd() {
+    this.prevPosition = null;
+
+    this.setState({
+      render: false,
+    });
+
+    window.removeEventListener('touchmove', this.handleTouchMove, false);
+    window.removeEventListener('touchmove', this.handleTouchMoveZoom, false);
+    window.removeEventListener('touchend', this.handleTouchEnd, false);
+  }
+
+  /**
+   * Handle mouse wheel.
+   * @param {WheelEvent} event
+   */
+  handleMouseWheel(event) {
+    // Prevent moving scene when moving interaction
+    if (this.state.draggingInteractionIndex !== null) {
+      return;
+    }
+
+    if (!this.props.enableZoom) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (event.deltaY < 0 && !this.props.maxZoomedIn) {
+      this.props.zoomIn();
+    }
+    else if (event.deltaY > 0 && !this.props.maxZoomedOut) {
+      this.props.zoomOut();
+    }
+  }
+
+  /**
+   * Handle key down.
+   * @param {KeyboardEvent} event Keyboard event.
+   */
+  handleKeyDown(event) {
+    // Prevent moving scene when moving interaction
+    if (this.state.draggingInteractionIndex !== null) {
+      return;
+    }
+
+    // Handle zooming
+    if (this.props.enableZoom) {
+      switch (event.key) {
+        case '+':
+          this.props.zoomIn();
+          break;
+        case '-':
+          this.props.zoomOut();
+          break;
+      }
+    }
+
+    // Handle move with arrow keys
+    const isArrowKey = [
+      'ArrowLeft', 'Numpad4', 'ArrowRight', 'Numpad6',
+      'ArrowUp', 'Numpad8', 'ArrowDown', 'Numpad2'
+    ].includes(event.code);
+
+    if (!isArrowKey || this.props.zoomScale === 1) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    switch (event.code) {
+      case 'ArrowLeft':
+      case 'Numpad4':
+        this.moveScene(20, 0);
+        break;
+      case 'ArrowRight':
+      case 'Numpad6':
+        this.moveScene(-20, 0);
+        break;
+      case 'ArrowUp':
+      case 'Numpad8':
+        this.moveScene(0, 20);
+        break;
+      case 'ArrowDown':
+      case 'Numpad2':
+        this.moveScene(0, -20);
+        break;
+    }
+
+    this.setState({
+      render: true,
+    });
+  }
+
+  /**
    * Go to previous scene.
    */
   goToPreviousScene() {
@@ -344,9 +773,10 @@ export default class StaticScene extends React.Component {
     }
 
     const ratio = imageElement.naturalWidth / imageElement.naturalHeight;
+    const imageElementBounds = imageElement.getBoundingClientRect();
 
-    staticSceneWidth = imageElement.clientWidth;
-    staticSceneHeight = imageElement.clientHeight;
+    staticSceneWidth = imageElementBounds.width;
+    staticSceneHeight = imageElementBounds.height;
 
     this.setState({
       isVerticalImage: ratio < this.context.getRatio(),
@@ -397,6 +827,68 @@ export default class StaticScene extends React.Component {
   }
 
   /**
+   * Get adjusted position after image move or zoom.
+   * @param {number} posX X-coordinate.
+   * @param {number} posY Y-coordinate.
+   * @returns {{posX: number; posY: number}} Position with x and y.
+   */
+  getInteractionPositionsAfterImageMove(posX, posY) {
+    const imageElement = this.imageElementRef.current;
+    const wrapperElement = this.sceneWrapperRef.current;
+
+    const elementsExist = imageElement && wrapperElement;
+    const hasZoomed = this.props.zoomScale !== 1;
+    const hasMoved = this.moveX !== 0 || this.moveY !== 0;
+
+    if (!elementsExist || (!hasZoomed && !hasMoved)) {
+      return {
+        posX: posX,
+        posY: posY,
+      };
+    }
+
+    const image = this.imageElementRef.current.getBoundingClientRect();
+    const wrapper = this.sceneWrapperRef.current.getBoundingClientRect();
+
+    // Adjust position according to how much the image is scaled (zoomed)
+    if (this.props.zoomScale !== 1) {
+      // Adjust x position
+      const xPositionBasedOnImageWidth = posX * image.width / 100;
+      const xPositionInPercentage = xPositionBasedOnImageWidth / wrapper.width * 100;
+      const imageWidthOverflow = (image.width - wrapper.width) / 2;
+      const imageWidthOverflowInPercentage = imageWidthOverflow / wrapper.width * 100;
+
+      posX = xPositionInPercentage - imageWidthOverflowInPercentage;
+
+      // Adjust y position
+      const yPositionBasedOnImageHeight = posY * image.height / 100;
+      const yPositionInPercentage = yPositionBasedOnImageHeight / wrapper.height * 100;
+      const imageHeightOverflow = (image.height - wrapper.height) / 2;
+      const imageHeightOverflowInPercentage = imageHeightOverflow / wrapper.height * 100;
+
+      posY = yPositionInPercentage - imageHeightOverflowInPercentage;
+    }
+
+    // Adjust position according to how much the image has been moved.
+    // Since movement is detected on the wrapper, we need to find the percentage of the
+    // movement based on the wrapper size.
+    if (this.moveX !== 0) {
+      const moveXInPercentage = this.moveX / wrapper.width * 100;
+      posX += moveXInPercentage;
+    }
+
+    if (this.moveY !== 0) {
+      const moveYInPercentage = this.moveY / wrapper.height * 100;
+      posY += moveYInPercentage;
+    }
+
+    return {
+      posX: posX,
+      posY: posY,
+    };
+  }
+
+  /**
    * React render function.
    * @returns {object} JSX element.
    */
@@ -430,6 +922,9 @@ export default class StaticScene extends React.Component {
         <div
           className={imageSceneClasses.join(' ')}
           ref={this.sceneWrapperRef}
+          onMouseDown={this.handleMouseDown.bind(this)}
+          onTouchStart={this.handleTouchStart.bind(this)}
+          onKeyDown={this.handleKeyDown.bind(this)}
         >
           <img
             tabIndex={-1}
@@ -439,6 +934,13 @@ export default class StaticScene extends React.Component {
             onLoad={this.onSceneLoaded.bind(this)}
             ref={this.imageElementRef}
             draggable={false}
+            style={{
+              left: `${this.moveX}px`,
+              top: `${this.moveY}px`,
+              transform: `scale(${this.props.zoomScale})`,
+              position: 'relative',
+              touchAction: 'none',
+            }}
           />
           {
             interactions.map((interaction, index) => {
@@ -478,6 +980,17 @@ export default class StaticScene extends React.Component {
                 }
               }
 
+              if (this.imageElementRef?.current) {
+                // Adjust interaction position after image move or zoom
+                const pos = this.getInteractionPositionsAfterImageMove(
+                  parseFloat(posX),
+                  parseFloat(posY)
+                );
+
+                posX = pos.posX;
+                posY = pos.posY;
+              }
+
               const isGoToSceneInteraction =
                 H5P.libraryFromString(interaction.action.library)?.machineName === 'H5P.GoToScene';
 
@@ -502,6 +1015,7 @@ export default class StaticScene extends React.Component {
                     isFocused={this.props.focusedInteraction === index}
                     onBlur={this.props.onBlurInteraction}
                     is3DScene={false}
+                    zoomScale={this.props.zoomScale}
                   >
                     {
                       this.context.extras.isEditor &&
@@ -539,6 +1053,7 @@ export default class StaticScene extends React.Component {
                     interactionIndex = {index}
                     isHotspotTabbable={interaction.hotspotSettings?.isHotspotTabbable}
                     showHotspotOnHover={interaction.hotspotSettings?.showHotspotOnHover}
+                    zoomScale={this.props.zoomScale}
                   >
                     {
                       this.context.extras.isEditor &&

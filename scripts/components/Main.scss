@@ -30,6 +30,11 @@
   z-index: 4;
 }
 
+/* Hide overflow of static image in scene container when zooming in */
+.h5p-editor-three-image-wrapper .h5p-three-image.scene-container {
+  overflow: hidden;
+}
+
 .do-not-display {
   display: none;
 }
