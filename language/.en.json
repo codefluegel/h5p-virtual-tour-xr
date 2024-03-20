@@ -106,7 +106,7 @@
                       ]
                     },
                     {
-                      "label": "Password settings",
+                      "label": "Code settings",
                       "fields": [
                         {
                           "label": "Code for the interaction",
