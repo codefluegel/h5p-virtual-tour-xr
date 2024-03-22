@@ -118,7 +118,8 @@ export const sanitizeContentTypeParameters = (params = {}) => {
       buttonFullscreenExit: 'Exit fullscreen mode',
       noValidScenesSet: 'No valid scenes have been set.',
       buttonZoomIn: 'Zoom in',
-      buttonZoomOut: 'Zoom out'
+      buttonZoomOut: 'Zoom out',
+      zoomToolbar: 'Zoom toolbar',
     }
   }, params);
 
