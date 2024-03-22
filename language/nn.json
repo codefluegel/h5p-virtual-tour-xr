@@ -470,6 +470,10 @@
         {
           "label": "Tekst for skjermlesarar. Tittel for \"zoom ut\"-knapp",
           "default": "Zoom ut"
+        },
+        {
+          "label": "Zoom toolbar",
+          "default": "Zoom toolbar"
         }
       ]
     }

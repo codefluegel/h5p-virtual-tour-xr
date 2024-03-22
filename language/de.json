@@ -470,6 +470,10 @@
         {
           "label": "Text for screenreaders. Title for zoom out button",
           "default": "Zoom out"
+        },
+        {
+          "label": "Zoom toolbar",
+          "default": "Zoom toolbar"
         }
       ]
     }

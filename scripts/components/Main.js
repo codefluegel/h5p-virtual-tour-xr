@@ -960,11 +960,10 @@ export default class Main extends React.Component {
           <ZoomButtons
             onZoomIn={ this.onZoomIn.bind(this, scene.sceneType) }
             onZoomOut={ this.onZoomOut.bind(this, scene.sceneType) }
-            tabIndex={ isHiddenBehindOverlay ? '-1' : undefined }
-            labelZoomIn={ this.context.l10n.buttonZoomIn }
-            labelZoomOut={ this.context.l10n.buttonZoomOut }
+            isHiddenBehindOverlay={ isHiddenBehindOverlay }
             isZoomInDisabled={ this.state.maxZoomedIn }
             isZoomOutDisabled={ this.state.maxZoomedOut }
+            ariaControls={ this.documentID }
           />
         }
         <Screenreader
