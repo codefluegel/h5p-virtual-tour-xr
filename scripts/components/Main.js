@@ -217,8 +217,8 @@ export default class Main extends React.Component {
 
     if (this.state.updateStaticSceneZoom) {
       this.setState({
-        maxZoomedIn: this.state.zoomScale >= 4,
-        maxZoomedOut: this.state.zoomScale <= 1,
+        maxZoomedIn: this.state.zoomScale >= Main.MAX_ZOOM,
+        maxZoomedOut: this.state.zoomScale <= Main.MIN_ZOOM,
         updateStaticSceneZoom: false
       });
     }
@@ -662,6 +662,10 @@ export default class Main extends React.Component {
     });
   }
 
+  /**
+   * Zoom in.
+   * @param {SceneTypes} sceneType Scene type.
+   */
   onZoomIn(sceneType) {
     if (sceneType === SceneTypes.STATIC_SCENE) {
       if (this.state.maxZoomedIn) {
@@ -669,7 +673,7 @@ export default class Main extends React.Component {
       }
 
       this.setState({
-        zoomScale: this.state.zoomScale + 0.1,
+        zoomScale: Math.min(this.state.zoomScale + Main.ZOOM_FACTOR, Main.MAX_ZOOM),
         updateStaticSceneZoom: true
       });
     }
@@ -678,6 +682,10 @@ export default class Main extends React.Component {
     }
   }
 
+  /**
+   * Zoom out.
+   * @param {SceneTypes} sceneType Scene type.
+   */
   onZoomOut(sceneType) {
     if (sceneType === SceneTypes.STATIC_SCENE) {
       if (this.state.maxZoomedOut) {
@@ -685,7 +693,7 @@ export default class Main extends React.Component {
       }
 
       this.setState({
-        zoomScale: this.state.zoomScale - 0.1,
+        zoomScale: Math.max(this.state.zoomScale - Main.ZOOM_FACTOR, Main.MIN_ZOOM),
         updateStaticSceneZoom: true
       });
     }
@@ -976,3 +984,12 @@ export default class Main extends React.Component {
 }
 
 Main.contextType = H5PContext;
+
+/** @constant {number} ZOOM_FACTOR Zoom factor for static scene */
+Main.ZOOM_FACTOR = 0.3;
+
+/** @constant {number} MAX_ZOOM Maximum zoom level for statcic scene */
+Main.MAX_ZOOM = 4;
+
+/** @constant {number} MIN_ZOOM Minimum zoom level for static scene */
+Main.MIN_ZOOM = 1;
