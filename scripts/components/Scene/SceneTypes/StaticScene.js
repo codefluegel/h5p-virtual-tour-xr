@@ -27,6 +27,7 @@ export default class StaticScene extends React.Component {
       isDragDelayed: true,
       draggingElement: null,
       isVerticalImage: false,
+      isDraggingScene: false,
       render: false,
     };
 
@@ -475,11 +476,19 @@ export default class StaticScene extends React.Component {
       return;
     }
 
+    if (this.props.zoomScale === 1 || !this.props.enableZoom) {
+      return;
+    }
+
     // Prevent other elements from moving
     event.stopPropagation();
 
     window.addEventListener('mousemove', this.handleMouseMove, false);
     window.addEventListener('mouseup', this.handleMouseUp, false);
+
+    this.setState({
+      isDraggingScene: true,
+    });
   }
 
   /**
@@ -487,10 +496,6 @@ export default class StaticScene extends React.Component {
    * @param {MouseEvent} event
    */
   handleMouseMove(event) {
-    if (this.props.zoomScale === 1) {
-      return;
-    }
-
     let xDiff = event.movementX;
     let yDiff = event.movementY;
 
@@ -526,6 +531,7 @@ export default class StaticScene extends React.Component {
    */
   handleMouseUp() {  
     this.setState({
+      isDraggingScene: false,
       render: false,
     });
 
@@ -911,6 +917,12 @@ export default class StaticScene extends React.Component {
     const imageSceneClasses = ['image-scene-wrapper', 'static-scene'];
     if (this.state.isVerticalImage) {
       imageSceneClasses.push('vertical');
+    }
+    if (this.props.zoomScale !== 1) {
+      imageSceneClasses.push('grab-cursor');
+    }
+    if (this.state.isDraggingScene) {
+      imageSceneClasses.push('dragging');
     }
 
     return (
