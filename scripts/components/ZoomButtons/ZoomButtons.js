@@ -154,12 +154,15 @@ export default class ZoomButtons extends React.Component {
         break;
       case 'Home':
         this.setState({
-          currentButtonIndex: 0
+          currentButtonIndex: 0,
+          focusButton: 0
         });
         break;
       case 'End':
+        const lastIndex = Object.keys(this.buttons).length - 1;
         this.setState({
-          currentButtonIndex: Object.keys(this.buttons).length - 1
+          currentButtonIndex: lastIndex,
+          focusButton: lastIndex
         });
         break;
       default:
