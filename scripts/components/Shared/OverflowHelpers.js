@@ -56,7 +56,11 @@ export const willOverflow = (position, height, top, left, wrapperHeight) => {
     case 'left':
       // Intentional fallthrough
     case 'right':
-      // Intentional fallthrough
+      if (overflowHelper.overflowsBottom()) {
+        expandDirection = 'up';
+      }
+      break;
+
     case 'top':
       if (overflowHelper.overflowsTop()) {
         alignment = 'bottom';

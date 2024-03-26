@@ -320,7 +320,7 @@ export default class NavigationButtonLabel extends React.Component {
     const isExpanded = this.state.isExpanded ? 'is-expanded' : '';
     const canExpand = this.state.expandable ? 'can-expand' : '';
     const isMultline = (this.state.divHeight !== '1.5em') ? 'is-multiline' : '';
-    const expandDirection = this.state.expandDirection ?
+    const expandDirection = this.state.expandDirection && canExpand ?
       'expand-' + this.state.expandDirection :
       '';
     const alignment = this.state.alignment || this.props.labelPos;
