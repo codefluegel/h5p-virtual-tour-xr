@@ -506,6 +506,7 @@ export default class NavigationButton extends React.Component {
               setHotspotValues={this.setHotspotValues.bind(this)}
               getHotspotValues={this.getHotspotValues.bind(this)}
               staticScene={this.props.staticScene}
+              isPanorama={this.context.extras.isPanorama}
               showHotspotOnHover={this.props.showHotspotOnHover}
               isHotspotTabbable={this.props.isHotspotTabbable}
             />

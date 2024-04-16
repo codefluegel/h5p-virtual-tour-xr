@@ -40,6 +40,21 @@ export default class HotspotNavButton extends React.Component {
   }
 
   /**
+   * React life-cycle handler: Component did update.
+   * @param {object} prevProps Previous props.
+   */
+  componentDidUpdate(prevProps) {
+    // If changed to panorama, make sure the height does not exceed maximum
+    if (this.props.isPanorama && !prevProps.isPanorama && this.context.isEditor) {
+      if (this.state.sizeHeight > HotspotNavButton.MAX_HEIGHT_PANORAMA) {
+        this.setState({
+          sizeHeight: HotspotNavButton.MAX_HEIGHT_PANORAMA
+        });
+      }
+    }
+  }
+
+  /**
    * Toggle drag state.
    */
   toggleDrag() {
@@ -122,9 +137,12 @@ export default class HotspotNavButton extends React.Component {
           this.setState({ sizeHeight: (newSize / staticSceneHeight) * 100 });
       }
       else {
+        const isPanorma = this.props.isPanorama;
+        const newSizePanorama = Math.min(newSize, HotspotNavButton.MAX_HEIGHT_PANORAMA);
+
         isHorizontalDrag ?
           this.setState({ sizeWidth: newSize }) :
-          this.setState({ sizeHeight: newSize });
+          this.setState({ sizeHeight: isPanorma ? newSizePanorama : newSize });
       }
 
       this.props.resizeOnDrag(this.state.sizeWidth, this.state.sizeHeight);
@@ -254,3 +272,6 @@ HotspotNavButton.SIZE_MIN = 20;
 
 /** @constant {number} SIZE_MAX Maximum size of 3D hotspot */
 HotspotNavButton.SIZE_MAX = 2000;
+
+/** @constant {number} MAX_HEIGHT_PANORAMA Maximum hotspot height in Panorama */
+HotspotNavButton.MAX_HEIGHT_PANORAMA = 800;
