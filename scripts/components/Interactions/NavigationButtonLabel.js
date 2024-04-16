@@ -214,6 +214,14 @@ export default class NavigationButtonLabel extends React.Component {
    * Set expand properties.
    */
   setExpandProperties() {
+    /*
+     * Only set expand properties when not zoomed in to avoid 
+     * labels toggling when moving image within the wrapper.
+     */
+    if (this.props.zoomScale !== 1) {
+      return;
+    }
+
     const labelProperties = this.getOverflowProperties();
 
     if (labelProperties.expandDirection !== this.state.expandDirection) {
