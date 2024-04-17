@@ -540,6 +540,7 @@ export default class NavigationButton extends React.Component {
             navButtonFocused={this.state.innerButtonFocused}
             rendered={this.props.rendered}
             onDoubleClick={this.onDoubleClick.bind(this)}
+            zoomScale={this.props.zoomScale}
           />}
 
       </div>
