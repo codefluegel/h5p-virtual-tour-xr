@@ -599,10 +599,10 @@ export default class StaticScene extends React.Component {
     const diff = this.endDistance - this.startDistance;
 
     if (diff > 0) {
-      this.props.zoomIn();
+      this.props.zoomIn(this.props.sceneParams.sceneType, 'touch');
     }
     else if (diff < 0) {
-      this.props.zoomOut();
+      this.props.zoomOut(this.props.sceneParams.sceneType, 'touch');
     }
   }
 
@@ -681,10 +681,10 @@ export default class StaticScene extends React.Component {
     event.stopPropagation();
 
     if (event.deltaY < 0 && !this.props.maxZoomedIn) {
-      this.props.zoomIn();
+      this.props.zoomIn(this.props.sceneParams.sceneType);
     }
     else if (event.deltaY > 0 && !this.props.maxZoomedOut) {
-      this.props.zoomOut();
+      this.props.zoomOut(this.props.sceneParams.sceneType);
     }
   }
 
@@ -702,10 +702,10 @@ export default class StaticScene extends React.Component {
     if (this.props.enableZoom) {
       switch (event.key) {
         case '+':
-          this.props.zoomIn();
+          this.props.zoomIn(this.props.sceneParams.sceneType);
           break;
         case '-':
-          this.props.zoomOut();
+          this.props.zoomOut(this.props.sceneParams.sceneType);
           break;
       }
     }
