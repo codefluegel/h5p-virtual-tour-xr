@@ -98,8 +98,9 @@ export default class ZoomButtons extends React.Component {
   /**
    * Move button focus.
    * @param {number} offset Offset to move position by.
+   * @param {boolean} setFocusButton Set new value for focusButton.
    */
-  moveFocus(offset) {
+  moveFocus(offset, setFocusButton = false) {
     if (typeof offset !== 'number') {
       return;
     }
@@ -120,7 +121,7 @@ export default class ZoomButtons extends React.Component {
 
     this.setState({
       currentButtonIndex: newIndex,
-      focusButton: newIndex
+      focusButton: setFocusButton ? newIndex : this.state.focusButton
     });
   }
 
@@ -146,11 +147,11 @@ export default class ZoomButtons extends React.Component {
     switch (event.key) {
       case 'ArrowDown':
       case 'ArrowRight':
-        this.moveFocus(1);
+        this.moveFocus(1, true);
         break;
       case 'ArrowUp':
       case 'ArrowLeft':
-        this.moveFocus(-1);
+        this.moveFocus(-1, true);
         break;
       case 'Home':
         this.setState({
@@ -165,6 +166,9 @@ export default class ZoomButtons extends React.Component {
           focusButton: lastIndex
         });
         break;
+      case 'Enter':
+      case ' ':
+        this.setState({ focusButton: this.state.currentButtonIndex });
       default:
         return;
     }
