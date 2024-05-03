@@ -215,11 +215,10 @@ export default class OpenContent extends React.Component {
    */
   onMouseMove(event, isHorizontalDrag) {
     const { clientX, clientY } = event;
-    const is3d = false; // OpenContent is always 2D
     const newSize = scaleOpenContentElement(
       clientX,
       clientY,
-      is3d,
+      this.props.is3d,
       isHorizontalDrag,
       this.state.elementRect,
       this.state.startMousePos,
