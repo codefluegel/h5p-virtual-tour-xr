@@ -29,7 +29,7 @@ export const scaleOpenContentElement = (
     const currentMousePosition = isHorizontalDrag ? clientX : clientY;
 
     /* divStartWidth is the start mouse position subtracted by the midpoint, technically this
-    half the size of the actual div, this is used for keeping the original widtrh of the div
+    half the size of the actual div, this is used for keeping the original width of the div
     everytime we drag */
     const divStartWidth = startMousePos - startMidPoint;
     newSize = (currentMousePosition - divStartWidth) * 2;
