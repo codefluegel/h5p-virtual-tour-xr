@@ -363,6 +363,17 @@ export default class OpenContent extends React.Component {
       height *= this.props.zoomScale;
     }
 
+    if (!this.props.staticScene && this.context.threeSixty) {
+      const defaultFov = this.context.threeSixty.fieldOfView;
+      const currentFov = this.context.threeSixty.camera.fov;
+      const zoomScale = defaultFov / currentFov;
+      
+      if (zoomScale !== 1) {
+        width *= zoomScale;
+        height *= zoomScale;
+      }
+    }
+
     if (this.state.isMouseOver) {
       wrapperClasses.push('hover');
     }
