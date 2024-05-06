@@ -218,7 +218,7 @@ export default class OpenContent extends React.Component {
     const newSize = scaleOpenContentElement(
       clientX,
       clientY,
-      this.props.is3dScene,
+      this.props.is3DScene,
       isHorizontalDrag,
       this.state.elementRect,
       this.state.startMousePos,
@@ -390,7 +390,7 @@ export default class OpenContent extends React.Component {
 
       // Add mouseup listener on document so user can release mouse everywhere
       const handleMouseDown = useCallback((event) => {
-        this.onAnchorDragMouseDown(event, !innerProps.horizontalDrag);
+        this.onAnchorDragMouseDown(event, innerProps.horizontalDrag);
         this.toggleDrag();
         document.addEventListener('mousemove', mouseMoveHandler);
 
