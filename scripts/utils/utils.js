@@ -6,7 +6,7 @@ import he from 'he';
  * @returns {boolean} True, if should be rendered in 3D.
  */
 export const renderIn3d = (interaction) => {
-  return interaction.showAsHotspot;
+  return interaction.showAsHotspot || interaction.showAsOpenSceneContent;
 };
 
 /**

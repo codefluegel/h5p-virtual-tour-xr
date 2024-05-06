@@ -41,13 +41,13 @@ $labelWidth: 9em;
     &.dragging, &.focused{
       z-index: 3;
     }
-&--editor {
-  /* for "deactivating" a tags so we don't accidentally click them when positioning the content box*/
-  a {
-    pointer-events: none;
-    cursor: default;
-  }
-}
+    &--editor {
+      /* for "deactivating" a tags so we don't accidentally click them when positioning the content box*/
+      a {
+        pointer-events: none;
+        cursor: default;
+      }
+    }
     .drag {
       width: 2em;
       height: 2em;
@@ -79,6 +79,16 @@ $labelWidth: 9em;
         &:before {
           content: $arrow-verti-scale;
         }
+      }
+    }
+  }
+  &.render-in-3d {
+    .open-content .drag {
+      width: 3.5em;
+      height: 3.5em;
+
+      &:before {
+        font-size: 2.25em;
       }
     }
   }

@@ -218,7 +218,7 @@ export default class OpenContent extends React.Component {
     const newSize = scaleOpenContentElement(
       clientX,
       clientY,
-      this.props.is3d,
+      this.props.is3dScene,
       isHorizontalDrag,
       this.state.elementRect,
       this.state.startMousePos,
@@ -363,17 +363,6 @@ export default class OpenContent extends React.Component {
       height *= this.props.zoomScale;
     }
 
-    if (!this.props.staticScene && this.context.threeSixty) {
-      const defaultFov = this.context.threeSixty.fieldOfView;
-      const currentFov = this.context.threeSixty.camera.fov;
-      const zoomScale = defaultFov / currentFov;
-      
-      if (zoomScale !== 1) {
-        width *= zoomScale;
-        height *= zoomScale;
-      }
-    }
-
     if (this.state.isMouseOver) {
       wrapperClasses.push('hover');
     }
@@ -386,6 +375,10 @@ export default class OpenContent extends React.Component {
     // Add classname to current active element (wrapper, button or expand label button) so it can be shown on top
     if (this.state.isFocused && this.props.children) {
       wrapperClasses.push('active-element');
+    }
+
+    if (this.props.is3d) {
+      wrapperClasses.push('render-in-3d');
     }
 
     const DragButton = (innerProps) => {
