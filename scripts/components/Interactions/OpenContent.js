@@ -158,15 +158,15 @@ export default class OpenContent extends React.Component {
    * Toggle dragging state.
    */
   toggleDrag() {
-    const dragBool = !this.state.canDrag;
-    this.setState({ canDrag: dragBool });
+    const canDrag = this.state.canDrag;
+    this.setState({ canDrag: !canDrag });
 
     if (!this.props.staticScene) {
       /*
        * If we cant drag anymore, we start rendering of threesixty scene, we
        * also set camera position that is stored when we start hotspot scaling
        */
-      if (!this.state.canDrag) {
+      if (canDrag) {
         this.context.threeSixty.startRendering();
         this.context.threeSixty.setCameraPosition(
           this.state.camPosYaw,
@@ -377,6 +377,10 @@ export default class OpenContent extends React.Component {
       wrapperClasses.push('active-element');
     }
 
+    if (this.props.is3d) {
+      wrapperClasses.push('render-in-3d');
+    }
+
     const DragButton = (innerProps) => {
       const hotspotBtnRef = useRef(null);
 
@@ -386,7 +390,7 @@ export default class OpenContent extends React.Component {
 
       // Add mouseup listener on document so user can release mouse everywhere
       const handleMouseDown = useCallback((event) => {
-        this.onAnchorDragMouseDown(event, !innerProps.horizontalDrag);
+        this.onAnchorDragMouseDown(event, innerProps.horizontalDrag);
         this.toggleDrag();
         document.addEventListener('mousemove', mouseMoveHandler);
 

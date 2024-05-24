@@ -382,6 +382,7 @@ export default class ThreeSixtyScene extends React.Component {
           isFocused={this.props.focusedInteraction === index}
           onBlur={this.props.onBlurInteraction}
           is3DScene={true}
+          is3d={is3d}
         >
           {
             this.context.extras.isEditor &&
