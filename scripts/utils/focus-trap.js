@@ -90,16 +90,18 @@ export default class FocusTrap {
       'input:not([disabled])',
       'select:not([disabled])',
       'video',
-      'audio',
-      '[tabindex]:not([tabindex="-1"])'
+      'audio'
     ].join(', ');
 
     this.focusableElements = []
       .slice
       .call(this.params.trapElement.querySelectorAll(focusableElementsString))
       .filter((element) => {
-        return element.getAttribute('disabled') !== 'true' &&
-          element.getAttribute('disabled') !== true;
+        return (
+          element.getAttribute('disabled') !== 'true' &&
+          element.getAttribute('disabled') !== true &&
+          element.getAttribute('tabindex') !== '-1'
+        );
       });
   }
 
