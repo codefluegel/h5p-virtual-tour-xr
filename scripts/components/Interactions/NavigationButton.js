@@ -26,7 +26,8 @@ const infoInteractions = [
   'H5P.Summary',
   'H5P.SingleChoiceSet',
   'H5P.MultiChoice',
-  'H5P.Blanks'
+  'H5P.Blanks',
+  'H5P.Crosswords'
 ];
 
 /**

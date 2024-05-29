@@ -293,7 +293,8 @@
                       "H5P.Summary 1.10",
                       "H5P.SingleChoiceSet 1.11",
                       "H5P.MultiChoice 1.16",
-                      "H5P.Blanks 1.14"
+                      "H5P.Blanks 1.14",
+                      "H5P.Crossword 0.5"
                     ]
                   },
                   {
