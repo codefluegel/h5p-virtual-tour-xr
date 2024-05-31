@@ -474,6 +474,10 @@
         {
           "label": "Zoom toolbar",
           "default": "Zoom toolbar"
+        },
+        {
+          "label": "Zoom aria text for screenreaders",
+          "default": ":num% zoomed in"
         }
       ]
     }

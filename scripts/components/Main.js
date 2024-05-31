@@ -52,6 +52,7 @@ export default class Main extends React.Component {
       maxZoomedIn: false,
       maxZoomedOut: true,
       zoomScale: 1,
+      zoomPercentage: 0,
       updateStaticSceneZoom: false,
       labelBehavior: {
         showLabel: true,
@@ -204,14 +205,16 @@ export default class Main extends React.Component {
     zoomControls?.on('zoomin', () => {
       this.setState({
         maxZoomedIn: zoomControls?.isDollyInDisabled(),
-        maxZoomedOut: zoomControls?.isDollyOutDisabled()
+        maxZoomedOut: zoomControls?.isDollyOutDisabled(),
+        zoomPercentage: zoomControls?.zoomPercentage
       });
     });
 
     zoomControls?.on('zoomout', () => {
       this.setState({
         maxZoomedIn: zoomControls?.isDollyInDisabled(),
-        maxZoomedOut: zoomControls?.isDollyOutDisabled()
+        maxZoomedOut: zoomControls?.isDollyOutDisabled(),
+        zoomPercentage: zoomControls?.zoomPercentage
       });
     });
 
@@ -678,8 +681,12 @@ export default class Main extends React.Component {
         zoomFactor = Main.ZOOM_FACTOR_TOUCH;
       }
 
+      const newZoomScale = Math.min(this.state.zoomScale + zoomFactor, Main.MAX_ZOOM);
+      const newZoomPercentage = Math.round((newZoomScale - Main.MIN_ZOOM) / (Main.MAX_ZOOM - Main.MIN_ZOOM) * 100);
+
       this.setState({
-        zoomScale: Math.min(this.state.zoomScale + zoomFactor, Main.MAX_ZOOM),
+        zoomScale: newZoomScale,
+        zoomPercentage: newZoomPercentage,
         updateStaticSceneZoom: true
       });
     }
@@ -704,8 +711,12 @@ export default class Main extends React.Component {
         zoomFactor = Main.ZOOM_FACTOR_TOUCH;
       }
 
+      const newZoomScale = Math.max(this.state.zoomScale - zoomFactor, Main.MIN_ZOOM);
+      const newZoomPercentage = Math.round((newZoomScale - Main.MIN_ZOOM) / (Main.MAX_ZOOM - Main.MIN_ZOOM) * 100);
+
       this.setState({
-        zoomScale: Math.max(this.state.zoomScale - zoomFactor, Main.MIN_ZOOM),
+        zoomScale: newZoomScale,
+        zoomPercentage: newZoomPercentage,
         updateStaticSceneZoom: true
       });
     }
@@ -984,6 +995,7 @@ export default class Main extends React.Component {
             isZoomInDisabled={ this.state.maxZoomedIn }
             isZoomOutDisabled={ this.state.maxZoomedOut }
             ariaControls={ this.documentID }
+            zoomPercentage={ this.state.zoomPercentage }
           />
         }
         <Screenreader
