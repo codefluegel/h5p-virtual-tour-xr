@@ -383,6 +383,7 @@ export default class ThreeSixtyScene extends React.Component {
           onBlur={this.props.onBlurInteraction}
           is3DScene={true}
           is3d={is3d}
+          isPanorama={this.props.isPanorama}
         >
           {
             this.context.extras.isEditor &&
