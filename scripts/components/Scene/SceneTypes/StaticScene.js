@@ -109,7 +109,8 @@ export default class StaticScene extends React.Component {
         if (this.props.zoomScale < this.prevZoomScale) {
           this.moveScene(0, 0, true);
         }
-      } else {
+      }
+      else {
         this.moveX = 0;
         this.moveY = 0;
       }
@@ -383,9 +384,9 @@ export default class StaticScene extends React.Component {
 
   /**
    * Handle movement of scene image.
-   * @param {number} xDiff 
-   * @param {number} yDiff 
-   * @param {boolean} zoomOut 
+   * @param {number} xDiff X-coordinate difference.
+   * @param {number} yDiff Y-coordinate difference.
+   * @param {boolean} zoomOut True if zooming out. Else false.
    */
   moveScene(xDiff, yDiff, zoomOut = false) {
     // Prevent moving scene when moving interaction
@@ -400,7 +401,7 @@ export default class StaticScene extends React.Component {
       return;
     }
 
-    const vertical = this.state.isVerticalImage
+    const vertical = this.state.isVerticalImage;
     const image = imageElement.getBoundingClientRect();
     const bounds = boundsElement.getBoundingClientRect();
 
@@ -409,7 +410,8 @@ export default class StaticScene extends React.Component {
 
     if (vertical && imageWidthIsSmallerThanBounds) {
       this.moveX = 0;
-    } else {
+    }
+    else {
       const newImageRight = image.right + xDiff;
       const newImageLeft = image.left + xDiff;
       const imageRightIsOutsideBounds = newImageRight >= bounds.right;
@@ -420,7 +422,7 @@ export default class StaticScene extends React.Component {
       if (imageIsBiggerThanBounds && !zoomOut) {
         this.moveX += xDiff;
       }
-      
+
       if (zoomOut) {
         // Keep image edges at bounds
         if (!imageRightIsOutsideBounds) {
@@ -437,7 +439,8 @@ export default class StaticScene extends React.Component {
 
     if (!vertical && imageHeightSmallerThanBounds) {
       this.moveY = 0;
-    } else {
+    }
+    else {
       const newImageBottom = image.bottom + yDiff;
       const newImageTop = image.top + yDiff;
       const imageBottomIsOutsideBounds = newImageBottom >= bounds.bottom;
@@ -447,8 +450,8 @@ export default class StaticScene extends React.Component {
       // Only move scene up and down if image is bigger than bounds
       if (imageIsBiggerThanBounds && !zoomOut) {
         this.moveY += yDiff;
-      } 
-      
+      }
+
       if (zoomOut) {
         // Keep image edges at bounds
         if (!imageBottomIsOutsideBounds) {
@@ -463,7 +466,7 @@ export default class StaticScene extends React.Component {
 
   /**
    * Handle mouse down.
-   * @param {MouseEvent} event 
+   * @param {MouseEvent} event Mouse event (SyntheticBaseEvent).
    */
   handleMouseDown(event) {
     // Prevent moving scene when moving interaction
@@ -493,7 +496,7 @@ export default class StaticScene extends React.Component {
 
   /**
    * Handle mouse move.
-   * @param {MouseEvent} event
+   * @param {MouseEvent} event Mouse event (SyntheticBaseEvent).
    */
   handleMouseMove(event) {
     let xDiff = event.movementX;
@@ -521,15 +524,14 @@ export default class StaticScene extends React.Component {
 
       this.setState({
         render: true,
-      });      
+      });
     }
   }
 
   /**
    * Handle mouse up.
-   * @param {MouseEvent} event
    */
-  handleMouseUp() {  
+  handleMouseUp() {
     this.setState({
       isDraggingScene: false,
       render: false,
@@ -541,7 +543,7 @@ export default class StaticScene extends React.Component {
 
   /**
    * Handle touch start.
-   * @param {TouchEvent} event
+   * @param {TouchEvent} event Touch event (SyntheticBaseEvent).
    */
   handleTouchStart(event) {
     // Prevent moving scene when moving interaction
@@ -579,7 +581,7 @@ export default class StaticScene extends React.Component {
 
   /**
    * Handle touch move zoom.
-   * @param {TouchEvent} event
+   * @param {TouchEvent} event Touch event (SyntheticBaseEvent).
    */
   handleTouchMoveZoom(event) {
     if (!this.props.enableZoom) {
@@ -608,7 +610,7 @@ export default class StaticScene extends React.Component {
 
   /**
    * Handle touch move.
-   * @param {TouchEvent} event
+   * @param {TouchEvent} event Touch event (SyntheticBaseEvent).
    */
   handleTouchMove(event) {
     if (event.touches.length > 1) {
@@ -637,19 +639,18 @@ export default class StaticScene extends React.Component {
       x: event.changedTouches[0].pageX,
       y: event.changedTouches[0].pageY,
     };
-    
+
     if (xDiff !== 0 || yDiff !== 0) {
       this.moveScene(xDiff, yDiff);
 
       this.setState({
         render: true,
       });
-    }    
+    }
   }
 
   /**
    * Handle touch end.
-   * @param {TouchEvent} event
    */
   handleTouchEnd() {
     this.prevPosition = null;
@@ -665,7 +666,7 @@ export default class StaticScene extends React.Component {
 
   /**
    * Handle mouse wheel.
-   * @param {WheelEvent} event
+   * @param {WheelEvent} event Mouse wheel event (SyntheticBaseEvent).
    */
   handleMouseWheel(event) {
     // Prevent moving scene when moving interaction

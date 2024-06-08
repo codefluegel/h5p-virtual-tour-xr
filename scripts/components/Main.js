@@ -201,7 +201,7 @@ export default class Main extends React.Component {
 
     // Listen for zoomed in and out
     const zoomControls = this.state.threeSixty?.zoomControls;
-    
+
     zoomControls?.on('zoomin', () => {
       this.setState({
         maxZoomedIn: zoomControls?.isDollyInDisabled(),
@@ -671,13 +671,13 @@ export default class Main extends React.Component {
    * @param {string} eventType Event type.
    */
   onZoomIn(sceneType, eventType) {
-    if (sceneType == SceneTypes.STATIC_SCENE) {
+    if (sceneType === SceneTypes.STATIC_SCENE) {
       if (this.state.maxZoomedIn) {
         return;
       }
 
       let zoomFactor = Main.ZOOM_FACTOR;
-      if (eventType == 'touch') {
+      if (eventType === 'touch') {
         zoomFactor = Main.ZOOM_FACTOR_TOUCH;
       }
 
@@ -701,13 +701,13 @@ export default class Main extends React.Component {
    * @param {string} eventType Event type.
    */
   onZoomOut(sceneType, eventType) {
-    if (sceneType == SceneTypes.STATIC_SCENE) {
+    if (sceneType === SceneTypes.STATIC_SCENE) {
       if (this.state.maxZoomedOut) {
         return;
       }
 
       let zoomFactor = Main.ZOOM_FACTOR;
-      if (eventType == 'touch') {
+      if (eventType === 'touch') {
         zoomFactor = Main.ZOOM_FACTOR_TOUCH;
       }
 
