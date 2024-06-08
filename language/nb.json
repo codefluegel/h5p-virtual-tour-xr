@@ -478,6 +478,10 @@
         {
           "label": "Zoom toolbar",
           "default": "Zoom toolbar"
+        },
+        {
+          "label": "Zoom tekst for skjermlesere",
+          "default": ":num% zoomet inn"
         }
       ]
     }

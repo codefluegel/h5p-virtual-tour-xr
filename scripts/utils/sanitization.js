@@ -120,6 +120,7 @@ export const sanitizeContentTypeParameters = (params = {}) => {
       buttonZoomIn: 'Zoom in',
       buttonZoomOut: 'Zoom out',
       zoomToolbar: 'Zoom toolbar',
+      zoomAria: ':num% zoomed in',
     }
   }, params);
 

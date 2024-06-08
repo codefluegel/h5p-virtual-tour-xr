@@ -180,6 +180,10 @@ export default class ZoomButtons extends React.Component {
    * @returns {object} JSX element.
    */
   render() {
+    const zoomAria = this.context.l10n.zoomAria.replace(':num', this.props.zoomPercentage);
+    const zoomInAriaLabel = `${this.context.l10n.buttonZoomIn}. ${zoomAria}`;
+    const zoomOutAriaLabel = `${this.context.l10n.buttonZoomOut}. ${zoomAria}`;
+
     return (
       <div
         className='h5p-ndla-virtual-tour-zoom-buttons'
@@ -194,7 +198,7 @@ export default class ZoomButtons extends React.Component {
           <button
             className='h5p-ndla-virtual-tour-zoom-button zoom-in'
             ref={ this.zoomInButtonRef }
-            aria-label={ this.context.l10n.buttonZoomIn }
+            aria-label={ zoomInAriaLabel }
             onClick={ this.props.onZoomIn }
             tabIndex={ this.getTabIndex('zoomIn') }
             disabled={ this.props.isZoomInDisabled }
@@ -207,7 +211,7 @@ export default class ZoomButtons extends React.Component {
           <button
             className='h5p-ndla-virtual-tour-zoom-button zoom-out'
             ref={ this.zoomOutButtonRef }
-            aria-label={ this.context.l10n.buttonZoomOut }
+            aria-label={ zoomOutAriaLabel }
             onClick={ this.props.onZoomOut }
             tabIndex={ this.getTabIndex('zoomOut') }
             disabled={ this.props.isZoomOutDisabled }

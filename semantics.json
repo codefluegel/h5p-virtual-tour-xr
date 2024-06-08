@@ -904,6 +904,13 @@
         "label": "Zoom toolbar",
         "importance": "low",
         "default": "Zoom toolbar"
+      },
+      {
+        "name": "zoomAria",
+        "type": "text",
+        "label": "Zoom aria text for screenreaders",
+        "importance": "low",
+        "default": ":num% zoomed in"
       }
     ]
   }
