@@ -38,10 +38,10 @@ export default class ZoomButtons extends React.Component {
   /**
    * Get index of button.
    * @param {string} type Button type.
-   * @returns {number} Button index.
+   * @returns {number|undefined} Button index or undefined if params invalid.
    */
   getIndex(type) {
-    if (typeof type !== 'string' || Object.keys(this.buttons).length == 0) {
+    if (typeof type !== 'string' || Object.keys(this.buttons).length === 0) {
       return;
     }
     return Object.values(this.buttons).indexOf(this.buttons[type]);
@@ -106,7 +106,7 @@ export default class ZoomButtons extends React.Component {
     }
 
     const newIndex = this.state.currentButtonIndex + offset;
-  
+
     if (newIndex < 0 || newIndex >= Object.keys(this.buttons).length) {
       return;
     }
@@ -142,6 +142,7 @@ export default class ZoomButtons extends React.Component {
 
   /**
    * Handle key down event.
+   * @param {KeyboardEvent} event Key down event.
    */
   handleKeyDown(event) {
     switch (event.key) {
@@ -160,15 +161,15 @@ export default class ZoomButtons extends React.Component {
         });
         break;
       case 'End':
-        const lastIndex = Object.keys(this.buttons).length - 1;
         this.setState({
-          currentButtonIndex: lastIndex,
-          focusButton: lastIndex
+          currentButtonIndex: Object.keys(this.buttons).length - 1,
+          focusButton: Object.keys(this.buttons).length - 1
         });
         break;
       case 'Enter':
       case ' ':
         this.setState({ focusButton: this.state.currentButtonIndex });
+        break;
       default:
         return;
     }
