@@ -224,9 +224,18 @@ export default class OpenContent extends React.Component {
       this.state.startMousePos,
       this.state.startMidPoint
     );
+  
+    let sizeMax = OpenContent.SIZE_MAX;
+    
+    if (this.props.is3DScene) {
+      sizeMax = OpenContent.SIZE_MAX_360;
+    } 
+    if (this.props.isPanorama) {
+      sizeMax = OpenContent.SIZE_MAX_PANORAMA;
+    }
 
     if (
-      newSize > OpenContent.SIZE_MIN && newSize < OpenContent.SIZE_MAX
+      newSize > OpenContent.SIZE_MIN && newSize < sizeMax
     ) {
       /*
        * These values are used for inline styling in div in render loop,
@@ -485,3 +494,9 @@ OpenContent.SIZE_MIN = 64;
 
 /** @constant {number} SIZE_MAX Maximum size for content. */
 OpenContent.SIZE_MAX = 512;
+
+/** @constant {number} SIZE_MAX_360 Maximum size for 360 content */
+OpenContent.SIZE_MAX_360 = 1024;
+
+/** @constant {number} SIZE_MAX_PANORAMA Maximum size for Panorama content */
+OpenContent.SIZE_MAX_PANORAMA = 720;
