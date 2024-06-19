@@ -3,7 +3,6 @@ scripts
 .babelrc
 .gitignore
 .h5pignore
-.storybook
 stories
 package.json
 package-lock.json
@@ -14,6 +13,5 @@ webpack.config.js
 .github
 .vscode
 build_info
-storybook-static
 assets
 LICENSE.md
