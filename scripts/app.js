@@ -14,7 +14,7 @@ export default class Wrapper extends H5P.EventDispatcher {
    * @param {object} [extras] Saved state, metadata, etc.
    */
   constructor(params, contentId, extras = {}) {
-    super('ndla-virtual-tour');
+    super('escape-room');
 
     this.params = sanitizeContentTypeParameters(params);
 

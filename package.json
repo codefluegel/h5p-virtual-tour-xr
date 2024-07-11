@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/h5p/h5p-three-image.git"
+    "url": "git+https://github.com/ndlano/h5p-escape-room.git"
   },
   "author": "Joubel AS <contact@joubel.com> (https://joubel.com)",
   "license": "MIT",
@@ -20,9 +20,9 @@
     "Thomas Marstrander <thomas.marstrander@joubel.com> (https://github.com/thomasmars)"
   ],
   "bugs": {
-    "url": "https://github.com/h5p/h5p-three-image/issues"
+    "url": "https://github.com/ndlano/h5p-escape-room/issues"
   },
-  "homepage": "https://github.com/h5p/h5p-three-image#readme",
+  "homepage": "https://github.com/ndlano/h5p-escape-room#readme",
   "devDependencies": {
     "@babel/cli": "^7.24.1",
     "@babel/core": "^7.24.1",
