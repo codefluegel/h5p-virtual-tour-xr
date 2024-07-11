@@ -62,9 +62,13 @@ export default class Wrapper extends H5P.EventDispatcher {
   resize() {
     const rect = this.getRect();
     // Fullscreen should use all of the space
-    const ratio = (H5P.isFullscreen ? (rect.height / rect.width) : (9 / 16));
+    const isStandaloneFullscreen = H5P.isFullscreen && this.isRoot();
 
-    this.wrapper.style.height = H5P.isFullscreen ?
+    const ratio = isStandaloneFullscreen ?
+      (rect.height / rect.width) :
+      (9 / 16);
+
+    this.wrapper.style.height = isStandaloneFullscreen ?
       '100%' :
       `${rect.width * ratio}px`;
 
