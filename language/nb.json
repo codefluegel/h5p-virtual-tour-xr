@@ -31,10 +31,6 @@
                 "description": "Aktiver zooming inn og ut med zoomknapper, berøringsbevegelser og hurtigtaster."
               },
               {
-                "label": "Aktiver \"Zoom\"",
-                "description": "Aktiver zooming inn og ut med zoomknapper, berøringsbevegelser og hurtigtaster."
-              },
-              {
                 "label": "SceneId"
               },
               {
