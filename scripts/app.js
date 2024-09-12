@@ -14,7 +14,7 @@ export default class Wrapper extends H5P.EventDispatcher {
    * @param {object} [extras] Saved state, metadata, etc.
    */
   constructor(params, contentId, extras = {}) {
-    super('escape-room');
+    super('virtualtourxr');
 
     this.params = sanitizeContentTypeParameters(params);
 
@@ -64,25 +64,19 @@ export default class Wrapper extends H5P.EventDispatcher {
     // Fullscreen should use all of the space
     const isStandaloneFullscreen = H5P.isFullscreen && this.isRoot();
 
-    const ratio = isStandaloneFullscreen ?
-      (rect.height / rect.width) :
-      (9 / 16);
+    const ratio = isStandaloneFullscreen ? rect.height / rect.width : 9 / 16;
 
-    this.wrapper.style.height = isStandaloneFullscreen ?
-      '100%' :
-      `${rect.width * ratio}px`;
+    this.wrapper.style.height = isStandaloneFullscreen ? '100%' : `${rect.width * ratio}px`;
 
     // Apply separate styles for mobile
     if (rect.width <= 480) {
       this.wrapper.classList.add('h5p-phone-size');
-    }
-    else {
+    } else {
       this.wrapper.classList.remove('h5p-phone-size');
     }
     if (rect.width < 768) {
       this.wrapper.classList.add('h5p-medium-tablet-size');
-    }
-    else {
+    } else {
       this.wrapper.classList.remove('h5p-medium-tablet-size');
     }
 
@@ -102,9 +96,7 @@ export default class Wrapper extends H5P.EventDispatcher {
   addThreeSixty(threeSixty) {
     this.threeSixty = threeSixty;
 
-    this.setSceneRenderingQuality(
-      this.behavior.sceneRenderingQuality || 'high'
-    );
+    this.setSceneRenderingQuality(this.behavior.sceneRenderingQuality || 'high');
   }
 
   /**
@@ -162,10 +154,9 @@ export default class Wrapper extends H5P.EventDispatcher {
         }
 
         this.render();
-      }
-      else {
+      } else {
         const messageBox = new MessageBox({
-          text: this.l10n.noValidScenesSet
+          text: this.l10n.noValidScenesSet,
         });
         this.wrapper.append(messageBox.getDOM());
       }
@@ -205,8 +196,7 @@ export default class Wrapper extends H5P.EventDispatcher {
     if (typeof state === 'string') {
       if (state === 'enter') {
         state = false;
-      }
-      else if (state === 'exit') {
+      } else if (state === 'exit') {
         state = true;
       }
     }
@@ -218,8 +208,7 @@ export default class Wrapper extends H5P.EventDispatcher {
     if (state) {
       this.fullscreenButtonAriaLabel = this.l10n.buttonFullscreenExit;
       H5P.fullScreen(H5P.jQuery(this.container), this);
-    }
-    else {
+    } else {
       this.fullscreenButtonAriaLabel = this.l10n.buttonFullscreenEnter;
       H5P.exitFullScreen();
     }
@@ -239,7 +228,7 @@ export default class Wrapper extends H5P.EventDispatcher {
    */
   getRatio() {
     const rect = this.wrapper.getBoundingClientRect();
-    return (rect.width / rect.height);
+    return rect.width / rect.height;
   }
 
   /**

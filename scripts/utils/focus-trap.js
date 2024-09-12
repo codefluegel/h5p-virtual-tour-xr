@@ -90,8 +90,7 @@ export default class FocusTrap {
       'input:not([disabled])',
       'select:not([disabled])',
       'video',
-      'audio',
-      '*[tabindex="0"]'
+      'audio'
     ].join(', ');
 
     this.focusableElements = []

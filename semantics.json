@@ -2,7 +2,7 @@
   {
     "name": "threeImage",
     "type": "group",
-    "widget": "EscapeRoom",
+    "widget": "VirtualTourXR",
     "label": "Three Image Editor",
     "importance": "high",
     "fields": [
@@ -85,13 +85,7 @@
               "label": "Scene Description",
               "description": "A text that can describe the scene for the end-user",
               "optional": true,
-              "tags": [
-                "p",
-                "br",
-                "strong",
-                "em",
-                "code"
-              ]
+              "tags": ["p", "br", "strong", "em", "code"]
             },
             {
               "name": "sceneDescriptionARIA",
@@ -210,11 +204,7 @@
                         "description": "An optional hint for the code, can be left empty if wanted",
                         "optional": true,
                         "widget": "html",
-                        "tags": [
-                          "br",
-                          "strong",
-                          "em"
-                        ]
+                        "tags": ["br", "strong", "em"]
                       }
                     ]
                   },
@@ -294,7 +284,10 @@
                       "H5P.SingleChoiceSet 1.11",
                       "H5P.MultiChoice 1.16",
                       "H5P.Blanks 1.14",
-                      "H5P.Crossword 0.5"
+                      "H5P.Crossword 0.5",
+                      "H5P.ModelViewer 1.7",
+                      "H5P.QuestionSet 1.20",
+                      "H5P.FileForDownload 1.0"
                     ]
                   },
                   {
@@ -313,9 +306,7 @@
                       "rules": [
                         {
                           "field": "action",
-                          "equals": [
-                            "H5P.AdvancedText"
-                          ]
+                          "equals": ["H5P.AdvancedText"]
                         }
                       ],
                       "widget": "radioGroup"
@@ -381,9 +372,7 @@
               "label": "Audio Track",
               "description": "Add an audio track that's specific for this scene.",
               "optional": true,
-              "widgetExtensions": [
-                "AudioRecorder"
-              ],
+              "widgetExtensions": ["AudioRecorder"],
               "widget": "showWhen",
               "showWhen": {
                 "rules": [
@@ -453,9 +442,7 @@
               "type": "audio",
               "description": "Add audio tracks to the playlist.",
               "optional": false,
-              "widgetExtensions": [
-                "AudioRecorder"
-              ]
+              "widgetExtensions": ["AudioRecorder"]
             },
             {
               "name": "playlistId",
@@ -518,9 +505,7 @@
         "label": "Global Audio",
         "description": "Add an audio track that's available for all of the scenes by default.",
         "optional": true,
-        "widgetExtensions": [
-          "AudioRecorder"
-        ],
+        "widgetExtensions": ["AudioRecorder"],
         "widget": "showWhen",
         "showWhen": {
           "rules": [
