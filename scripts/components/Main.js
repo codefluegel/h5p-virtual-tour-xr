@@ -61,6 +61,7 @@ export default class Main extends React.Component {
     };
 
     this.isVeryFirstRenderDone = this.props.isVeryFirstRenderDone ?? false;
+    this.show360Affordance = true; // No need to use state for this
 
     this.documentID = `document-dom-${H5P.createUUID()}`;
   }
@@ -964,6 +965,10 @@ export default class Main extends React.Component {
                 zoomOut={ this.onZoomOut.bind(this) }
                 maxZoomedIn={ this.state.maxZoomedIn }
                 maxZoomedOut={ this.state.maxZoomedOut }
+                show360Affordance={ this.show360Affordance }
+                on360AffordanceDone={ () => {
+                  this.show360Affordance = false;
+                } }
               />
             );
           })
