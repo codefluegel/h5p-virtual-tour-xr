@@ -13,6 +13,12 @@ export const sceneRenderingQualityMapping = {
   low: 16,
 };
 
+/** @constant {number} AFFORDANCE_INTERVAL_DEFAULT_MS Default time in between affordance pointers. */
+const AFFORDANCE_INTERVAL_DEFAULT_MS = 7500;
+
+/** @constant {number} AFFORDANCE_INTERVAL_MIN_MS Minimum time in between affordance pointers. */
+const AFFORDANCE_INTERVAL_MIN_MS = 1000;
+
 export default class ThreeSixtyScene extends React.Component {
   /**
    * @param {object} props React properties.
@@ -83,9 +89,9 @@ export default class ThreeSixtyScene extends React.Component {
       isRendered: true
     });
 
-    this.registerAffordance({
-      intervalMs: 7500
-    });
+    if (this.props.show360Affordance) {
+      this.registerAffordance();
+    }
 
     this.focusScene();
   }
@@ -97,8 +103,8 @@ export default class ThreeSixtyScene extends React.Component {
    * @param {boolean} [params.once] If true, run only once.
    */
   registerAffordance(params = {}) {
-    if (typeof params.intervalMs !== 'number' || params.intervalMs < 1000) {
-      params.intervalMs = 2000;
+    if (typeof params.intervalMs !== 'number' || params.intervalMs < AFFORDANCE_INTERVAL_MIN_MS) {
+      params.intervalMs = AFFORDANCE_INTERVAL_DEFAULT_MS;
     }
 
     window.clearTimeout(this.affordanceStartTimeout);
@@ -193,6 +199,8 @@ export default class ThreeSixtyScene extends React.Component {
 
     document.removeEventListener('click', this.terminateAffordance);
     document.removeEventListener('keydown', this.terminateAffordance);
+
+    this.props.on360AffordanceDone?.();
   }
 
   /**
