@@ -148,14 +148,14 @@
                       "label": "Interaction position"
                     },
                     {
-                      "label": "Button style",
-                      "description": "Decide how the icon should look.",
+                      "label": "Estilo del botón",
+                      "description": "Decidir cómo debería verse el ícono.",
                       "options": [
                         {
-                          "label": "Text icon"
+                          "label": "Ícono de texto"
                         },
                         {
-                          "label": "Info icon"
+                          "label": "Ícono de información"
                         }
                       ]
                     }
@@ -205,16 +205,16 @@
           "label": "Listas de reproducción"
         },
         {
-          "label": "Playlists",
+          "label": "Listas de reproducción",
           "field": {
             "fields": [
               {
-                "label": "Playlist Title",
-                "description": "Used to identify the playlist"
+                "label": "Título de Lista de reproducción",
+                "description": "Usado para identificar la lista de reproducción"
               },
               {
-                "label": "Audio Tracks",
-                "description": "Add audio tracks to the playlist."
+                "label": "Pistas de Audio",
+                "description": "Añadir pistas de audio a la lista de reproducción."
               },
               {}
             ]
@@ -313,7 +313,7 @@
       "fields": [
         {
           "label": "Etiqueta Aria para tipo de contenido",
-          "default": "Tour Virtual"
+          "default": "Escape Room"
         },
         {
           "label": "Etiqueta para reproducir audio",

@@ -3,7 +3,7 @@
     "name": "threeImage",
     "type": "group",
     "widget": "EscapeRoom",
-    "label": "Three Image Editor",
+    "label": "Escape Room Editor",
     "importance": "high",
     "fields": [
       {
@@ -636,7 +636,7 @@
         "name": "title",
         "type": "text",
         "label": "Aria label for content type",
-        "default": "Virtual Tour"
+        "default": "Escape Room"
       },
       {
         "name": "playAudioTrack",

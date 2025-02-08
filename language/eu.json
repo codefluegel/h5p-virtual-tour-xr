@@ -148,14 +148,14 @@
                       "label": "Interaction position"
                     },
                     {
-                      "label": "Button style",
-                      "description": "Decide how the icon should look.",
+                      "label": "Botoiaren estiloa",
+                      "description": "Erabaki ikonoa nola ikusi behar den.",
                       "options": [
                         {
-                          "label": "Text icon"
+                          "label": "Testuaren ikonoa"
                         },
                         {
-                          "label": "Info icon"
+                          "label": "Informazioaren ikonoa"
                         }
                       ]
                     }
@@ -313,7 +313,7 @@
       "fields": [
         {
           "label": "Aria etiketa eduki-motarentzat",
-          "default": "Ibilbide Birtuala"
+          "default": "Escape Room"
         },
         {
           "label": "Audioa erreproduzitzeko etiketa",

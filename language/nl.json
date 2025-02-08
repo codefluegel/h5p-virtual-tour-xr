@@ -202,10 +202,10 @@
         },
         {},
         {
-          "label": "Playlists"
+          "label": "Audiobestand"
         },
         {
-          "label": "Playlists",
+          "label": "Audiobestand",
           "field": {
             "fields": [
               {
@@ -313,7 +313,7 @@
       "fields": [
         {
           "label": "Aria label voor inhoudstype",
-          "default": "Virtuele Tour"
+          "default": "Escape Room"
         },
         {
           "label": "Label om audio af te spelen",
