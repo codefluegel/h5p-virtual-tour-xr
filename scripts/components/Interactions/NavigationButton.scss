@@ -1,8 +1,5 @@
-@import "../../styles/icons";
-@import "../../styles/colors";
-
-$labelPadding: 0.5em;
-$labelWidth: 9em;
+@use "../../styles/icons";
+@use "../../styles/colors";
 
 .nav-button-wrapper {
   position: absolute;
@@ -19,14 +16,14 @@ $labelWidth: 9em;
 
 .nav-button {
   position: relative;
-  width: $buttonSize;
-  height: $buttonSize;
+  width: colors.$buttonSize;
+  height: colors.$buttonSize;
   padding: 0;
   border-radius: 50%;
   line-height: 1;
   font-size: 0.92em;
 
-  background-color: $buttonBg;
+  background-color: colors.$buttonBg;
   border: none;
   cursor: pointer;
 
@@ -39,12 +36,12 @@ $labelWidth: 9em;
   transition: border 100ms linear;
 
   &:hover {
-    background-color: $hoverBg;
+    background-color: colors.$hoverBg;
   }
 
   &:active {
-    background-color: $activeBg;
-    border: 0.25em solid $activeBorder;
+    background-color: colors.$activeBg;
+    border: 0.25em solid colors.$activeBorder;
   }
 }
 
@@ -61,11 +58,11 @@ $labelWidth: 9em;
 
 .h5p-interaction-button:not(.nav-button-wrapper--gotoscene) {
   .nav-button:not(.nav-button-hotspot) {
-    background-color: $interactionBg;
+    background-color: colors.$interactionBg;
 
     &:active {
-      background-color: $interactionActiveBg;
-      border-color: $interactionActiveBorder;
+      background-color: colors.$interactionActiveBg;
+      border-color: colors.$interactionActiveBorder;
     }
   }
 }
@@ -84,23 +81,23 @@ $labelWidth: 9em;
       display: none;
     }
     &:active {
-      border: 0.125em solid $activeBorder;
+      border: 0.125em solid colors.$activeBorder;
     }
     /*Modifiers*/
     &--show-hotspot-on-hover {
       background-color: rgba(0, 0, 0, 0);
 
       &:focus {
-        background-color: $hotspotAlteredState;
+        background-color: colors.$hotspotAlteredState;
         opacity: 1;
       }
       &:hover {
-        background-color: $hotspotAlteredState;
+        background-color: colors.$hotspotAlteredState;
       }
     }
 
     &--editor {
-      background-color: $hotspotEditor;
+      background-color: colors.$hotspotEditor;
 
       &::before {
         display: inherit;
@@ -110,7 +107,7 @@ $labelWidth: 9em;
       &:hover,
       &:focus,
       &:active {
-        background-color: $hotspotAlteredState;
+        background-color: colors.$hotspotAlteredState;
       }
     }
   }
@@ -119,7 +116,7 @@ $labelWidth: 9em;
     width: 3.5em;
     height: 3.5em;
     padding: 0;
-    background-color: $dragBg;
+    background-color: colors.$dragBg;
     border: 0;
     position: absolute;
     cursor: pointer;
@@ -128,7 +125,7 @@ $labelWidth: 9em;
     &:before {
       font-family: "360-image";
       vertical-align: middle;
-      color: $dragIcon;
+      color: colors.$dragIcon;
       font-size: 2.25em;
     }
     &--horizontal {
@@ -136,7 +133,7 @@ $labelWidth: 9em;
       transform: translateX(50%) translateY(-50%);
       top: 50%;
       &:before {
-        content: $arrow-horiz-scale;
+        content: icons.$arrow-horiz-scale;
       }
     }
     &--vertical {
@@ -144,7 +141,7 @@ $labelWidth: 9em;
       left: 50%;
       transform: translateX(-50%) translateY(50%);
       &:before {
-        content: $arrow-verti-scale;
+        content: icons.$arrow-verti-scale;
       }
     }
 
@@ -181,42 +178,42 @@ $labelWidth: 9em;
 }
 
 .h5p-question-button .nav-button:before {
-  content: $question;
+  content: icons.$question;
 }
 
 .h5p-info-button .nav-button:before {
-  content: $info;
+  content: icons.$info;
   font-size: 1.6em;
 }
 
 .h5p-go-to-scene-button .nav-button:before {
-  content: $goToScene;
+  content: icons.$goToScene;
 }
 .h5p-locked-button .nav-button:before {
-  content: $lock-icon;
+  content: icons.$lock-icon;
 }
 .h5p-unlocked-button .nav-button:before {
-  content: $unlock-icon;
+  content: icons.$unlock-icon;
 }
 
 .h5p-audio-button .nav-button:before {
-  content: $audioOff;
+  content: icons.$audioOff;
 }
 .h5p-video-button .nav-button:before {
-  content: $video;
+  content: icons.$video;
 }
 .h5p-image-button .nav-button:before {
-  content: $image;
+  content: icons.$image;
 }
 .h5p-info-mark-button .nav-button:before {
-  content: $info-mark;
+  content: icons.$info-mark;
 }
 .h5p-audio-button.active .nav-button:before {
-  content: $audioOn;
+  content: icons.$audioOn;
 }
 
 .h5p-text-block-button .nav-button:before {
-  content: $text-block;
+  content: icons.$text-block;
 }
 
 .h5p-go-back-button {
@@ -234,16 +231,16 @@ $labelWidth: 9em;
 }
 
 .h5p-go-back-button .nav-button:before {
-  content: $goBack;
+  content: icons.$goBack;
   font-size: 1em;
 }
 
 .h5p-go-back-button .nav-button:active {
-  border-color: $activeBorder;
+  border-color: colors.$activeBorder;
 }
 
 .h5p-scene-description-button .nav-button:before {
-  content: $sceneDescription;
+  content: icons.$sceneDescription;
 }
 
 $answerable-interactions: (
@@ -257,7 +254,7 @@ $answerable-interactions: (
   .#{$interaction}:not(.nav-btn-hotspot) {
     &::before {
       $offset: 0.5rem;
-      border: 3px dashed $interactionBg;
+      border: 3px dashed colors.$interactionBg;
       border-radius: 50%;
       bottom: -$offset;
       content: "";

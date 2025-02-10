@@ -1,4 +1,4 @@
-@import '../../../../styles/icons';
+@use '../../../../styles/icons';
 
 .btn-wrap {
   pointer-events: auto;
@@ -68,7 +68,7 @@
 
   &:before {
     font-family: "360-image";
-    content: $noicon;
+    content: icons.$noicon;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -77,23 +77,23 @@
   }
 
   &.audio-track:before {
-    content: $audioOff;
+    content: icons.$audioOff;
   }
   &.audio-track.active:before {
-    content: $audioOn;
+    content: icons.$audioOn;
   }
 
   &.scene-description:before {
-    content: $sceneDescription;
+    content: icons.$sceneDescription;
   }
   &.reset:before {
-    content: $reset;
+    content: icons.$reset;
   }
   &.go-to-start:before {
-    content: $goToStart;
+    content: icons.$goToStart;
   }
   &.score-summary:before {
-    content: $scoreSummary;
+    content: icons.$scoreSummary;
   }
   &.submit-dialog:before {
     content: " ";

@@ -1,4 +1,4 @@
-@import "../../styles/icons";
+@use "../../styles/icons";
 
 .no-scene-container {
   height: 100%;
@@ -14,7 +14,7 @@
   line-height: 1.5;
 
   &:before {
-    content: $noscene;
+    content: icons.$noscene;
     font-family: "360-image";
     font-size: 10em;
     color: #8d8f98;

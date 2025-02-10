@@ -1,5 +1,5 @@
-@import '../../styles/icons';
-@import '../../styles/colors';
+@use '../../styles/icons';
+@use '../../styles/colors';
 
 $labelPadding: 0.5em;
 $labelWidth: 9em;
@@ -19,8 +19,8 @@ $labelWidth: 9em;
   }
   .open-content {
     border: .25em solid transparent;
-    width: $buttonSize;
-    height: $buttonSize;
+    width: colors.$buttonSize;
+    height: colors.$buttonSize;
     padding: 0;
     line-height: 1;
     background-color: white;
@@ -52,7 +52,7 @@ $labelWidth: 9em;
       width: 2em;
       height: 2em;
       padding: 0;
-      background-color: $dragBg;
+      background-color: colors.$dragBg;
       border: 0;
       position: absolute;
       cursor: pointer;
@@ -61,7 +61,7 @@ $labelWidth: 9em;
       &:before {
         font-family: "360-image";
         vertical-align: middle;
-        color: $dragIcon;
+        color: colors.$dragIcon;
         font-size: 1.25em;
       }
       &--horizontal {
@@ -69,7 +69,7 @@ $labelWidth: 9em;
         transform: translateX(50%) translateY(-50%);
         top: 50%;
         &:before {
-          content: $arrow-horiz-scale;
+          content: icons.$arrow-horiz-scale;
         }
       }
       &--vertical {
@@ -77,7 +77,7 @@ $labelWidth: 9em;
         left: 50%;
         transform: translateX(-50%) translateY(50%);
         &:before {
-          content: $arrow-verti-scale;
+          content: icons.$arrow-verti-scale;
         }
       }
     }

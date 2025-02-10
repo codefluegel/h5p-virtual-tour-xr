@@ -1,4 +1,4 @@
-@import '../../styles/icons';
+@use '../../styles/icons';
 
 .context-menu {
   display: none;
@@ -84,15 +84,15 @@
   }
 
   .go-to-scene:before {
-    content: $goToScene;
+    content: icons.$goToScene;
   }
 
   .edit:before {
-    content: $edit
+    content: icons.$edit
   }
 
   .delete:before {
-    content: $delete;
+    content: icons.$delete;
   }
 }
 
