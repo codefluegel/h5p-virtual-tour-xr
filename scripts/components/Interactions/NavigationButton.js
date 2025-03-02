@@ -414,15 +414,10 @@ export default class NavigationButton extends React.Component {
    */
   render() {
     const interaction = this.getCurrentInteraction();
-    const [libraryName] = interaction ?
-      (H5P.libraryFromString(interaction?.action?.library).machineName || '')
-        .split('.') :
-      [null];
 
-    let wrapperClasses = interaction ? [
-      'nav-button-wrapper',
-      `nav-button-wrapper--${libraryName.toLowerCase()}`,
-    ] : ['nav-button-wrapper'];
+    const machineName = interaction ? H5P.libraryFromString(interaction?.action?.library ?? '').machineName : '';
+    const libraryName = machineName.replace('.', '-').toLowerCase();
+    let wrapperClasses = interaction ? ['nav-button-wrapper', libraryName] : ['nav-button-wrapper'];
 
     if (this.props.buttonClasses) {
       wrapperClasses = wrapperClasses.concat(this.props.buttonClasses);
