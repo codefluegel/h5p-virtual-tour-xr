@@ -775,7 +775,9 @@ export default class ThreeSixtyScene extends React.Component {
     }
 
     return (
-      <div className='three-sixty-scene-wrapper'>
+      <div
+        style={{ '--zoom-percentage': this.props.zoomPercentage }}
+        className='three-sixty-scene-wrapper'>
         <div
           ref={this.sceneRef}
           aria-hidden={ this.props.isHiddenBehindOverlay ? true : undefined }

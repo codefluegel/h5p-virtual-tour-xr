@@ -9,6 +9,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
+  overflow: hidden;
 
   .image-scene-wrapper {
     position: relative;
@@ -37,7 +38,7 @@
 
   .image-scene-wrapper.vertical {
     height: 100%;
-    
+
     .image-scene {
       height: 100%;
       width: auto;

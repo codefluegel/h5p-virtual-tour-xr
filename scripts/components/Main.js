@@ -31,6 +31,7 @@ export default class Main extends React.Component {
     this.sceneAudioPlayers = {};
 
     this.state = {
+      zoomPercentage: 0,
       threeSixty: null,
       showingTextDialog: false,
       currentText: null,
@@ -53,7 +54,6 @@ export default class Main extends React.Component {
       maxZoomedOut: true,
       zoomScale: 1,
       zoomPercentage: 0,
-      updateStaticSceneZoom: false,
       labelBehavior: {
         showLabel: true,
         labelPosition: 'right'
@@ -204,28 +204,18 @@ export default class Main extends React.Component {
     const zoomControls = this.state.threeSixty?.zoomControls;
 
     zoomControls?.on('zoomin', () => {
-      this.setState({
-        maxZoomedIn: zoomControls?.isDollyInDisabled(),
-        maxZoomedOut: zoomControls?.isDollyOutDisabled(),
-        zoomPercentage: zoomControls?.zoomPercentage
-      });
+      const zoomPercentage = zoomControls?.zoomPercentage;
+      const zoomScale = this.calculateZoomScale(zoomPercentage);
+
+      this.updateZoomState(zoomScale, zoomPercentage);
     });
 
     zoomControls?.on('zoomout', () => {
-      this.setState({
-        maxZoomedIn: zoomControls?.isDollyInDisabled(),
-        maxZoomedOut: zoomControls?.isDollyOutDisabled(),
-        zoomPercentage: zoomControls?.zoomPercentage
-      });
-    });
+      const zoomPercentage = zoomControls?.zoomPercentage;
+      const zoomScale = this.calculateZoomScale(zoomPercentage);
 
-    if (this.state.updateStaticSceneZoom) {
-      this.setState({
-        maxZoomedIn: this.state.zoomScale >= Main.MAX_ZOOM,
-        maxZoomedOut: this.state.zoomScale <= Main.MIN_ZOOM,
-        updateStaticSceneZoom: false
-      });
-    }
+      this.updateZoomState(zoomScale, zoomPercentage);
+    });
   }
 
   /**
@@ -672,24 +662,18 @@ export default class Main extends React.Component {
    * @param {string} eventType Event type.
    */
   onZoomIn(sceneType, eventType) {
-    if (sceneType === SceneTypes.STATIC_SCENE) {
+    const isStaticScene = sceneType === SceneTypes.STATIC_SCENE;
+
+    if (isStaticScene) {
       if (this.state.maxZoomedIn) {
         return;
       }
 
-      let zoomFactor = Main.ZOOM_FACTOR;
-      if (eventType === 'touch') {
-        zoomFactor = Main.ZOOM_FACTOR_TOUCH;
-      }
-
+      const zoomFactor = this.getZoomFactor(eventType);
       const newZoomScale = Math.min(this.state.zoomScale + zoomFactor, Main.MAX_ZOOM);
-      const newZoomPercentage = Math.round((newZoomScale - Main.MIN_ZOOM) / (Main.MAX_ZOOM - Main.MIN_ZOOM) * 100);
+      const newZoomPercentage = this.calculateZoomPercentage(newZoomScale);
 
-      this.setState({
-        zoomScale: newZoomScale,
-        zoomPercentage: newZoomPercentage,
-        updateStaticSceneZoom: true
-      });
+      this.updateZoomState(newZoomScale, newZoomPercentage);
     }
     else {
       this.state.threeSixty.zoomControls.dollyIn();
@@ -702,28 +686,62 @@ export default class Main extends React.Component {
    * @param {string} eventType Event type.
    */
   onZoomOut(sceneType, eventType) {
-    if (sceneType === SceneTypes.STATIC_SCENE) {
+    const isStaticScene = sceneType === SceneTypes.STATIC_SCENE;
+    if (isStaticScene) {
       if (this.state.maxZoomedOut) {
         return;
       }
 
-      let zoomFactor = Main.ZOOM_FACTOR;
-      if (eventType === 'touch') {
-        zoomFactor = Main.ZOOM_FACTOR_TOUCH;
-      }
-
+      const zoomFactor = this.getZoomFactor(eventType);
       const newZoomScale = Math.max(this.state.zoomScale - zoomFactor, Main.MIN_ZOOM);
-      const newZoomPercentage = Math.round((newZoomScale - Main.MIN_ZOOM) / (Main.MAX_ZOOM - Main.MIN_ZOOM) * 100);
+      const newZoomPercentage = this.calculateZoomPercentage(newZoomScale);
 
-      this.setState({
-        zoomScale: newZoomScale,
-        zoomPercentage: newZoomPercentage,
-        updateStaticSceneZoom: true
-      });
+      this.updateZoomState(newZoomScale, newZoomPercentage);
     }
     else {
       this.state.threeSixty.zoomControls.dollyOut();
     }
+  }
+
+  /**
+   * Get zoom factor based on event type.
+   * @param {string} eventType Event type.
+   * @returns {number} Zoom factor.
+   */
+  getZoomFactor(eventType) {
+    return eventType === 'touch' ? Main.ZOOM_FACTOR_TOUCH : Main.ZOOM_FACTOR;
+  }
+
+  /**
+   * Calculate zoom percentage.
+   * @param {number} zoomScale Zoom scale.
+   * @returns {number} Zoom percentage.
+   */
+  calculateZoomPercentage(zoomScale) {
+    return Math.round((zoomScale - Main.MIN_ZOOM) / (Main.MAX_ZOOM - Main.MIN_ZOOM) * 100);
+  }
+
+  /**
+   * Calculate zoom scale.
+   * @param {number} zoomPercentage Zoom percentage.
+   * @returns {number} Zoom scale.
+   */
+  calculateZoomScale(zoomPercentage) {
+    return (zoomPercentage / 100) * (Main.MAX_ZOOM - Main.MIN_ZOOM) + Main.MIN_ZOOM;
+  }
+
+  /**
+   * Update zoom state.
+   * @param {number} zoomScale Zoom scale.
+   * @param {number} zoomPercentage Zoom percentage.
+   */
+  updateZoomState(zoomScale, zoomPercentage) {
+    this.setState({
+      zoomScale: zoomScale,
+      zoomPercentage: zoomPercentage,
+      maxZoomedIn: zoomScale >= Main.MAX_ZOOM,
+      maxZoomedOut: zoomScale <= Main.MIN_ZOOM
+    });
   }
 
   /**
@@ -929,6 +947,7 @@ export default class Main extends React.Component {
           this.context.params.scenes.map((sceneParams) => {
             return (
               <Scene
+                zoomPercentage={this.state.zoomPercentage}
                 key={sceneParams.sceneId}
                 threeSixty={this.state.threeSixty}
                 updateThreeSixty={this.state.updateThreeSixty}
