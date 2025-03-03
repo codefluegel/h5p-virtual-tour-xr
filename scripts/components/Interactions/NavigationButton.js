@@ -498,7 +498,6 @@ export default class NavigationButton extends React.Component {
               style={{ height:'100%', width:'100%' }}
               ariaLabel={getLabelText(label) || this.context.l10n.untitled}
               tabIndexValue={isInnerButtonTabbable ? undefined : -1}
-              onClickEvent={this.onClick.bind(this)}
               onDoubleClickEvent={this.onDoubleClick.bind(this)}
               onMouseDownEvent={this.onMouseDown.bind(this)}
               onFocusEvent={() => this.setState({ innerButtonFocused: true })}
@@ -517,7 +516,6 @@ export default class NavigationButton extends React.Component {
               aria-label={ getLabelText(label) || this.props.title }
               className='nav-button'
               tabIndex={isInnerButtonTabbable ? undefined : -1}
-              onClick={this.onClick.bind(this)}
               onDoubleClick={this.onDoubleClick.bind(this)}
               onMouseDown={this.onMouseDown.bind(this)}
               onFocus={() => this.setState({ innerButtonFocused: true })}
