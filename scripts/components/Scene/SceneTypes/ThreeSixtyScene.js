@@ -44,6 +44,7 @@ export default class ThreeSixtyScene extends React.Component {
 
     this.handleFirstRender = this.handleFirstRender.bind(this);
     this.handleSceneMoveStart = this.handleSceneMoveStart.bind(this);
+    this.handleSceneMove = this.handleSceneMove.bind(this);
     this.handleSceneMoveStop = this.handleSceneMoveStop.bind(this);
 
     this.terminateAffordance = this.terminateAffordance.bind(this);
@@ -243,6 +244,23 @@ export default class ThreeSixtyScene extends React.Component {
   }
 
   /**
+   * Handle dragging scene ongoing.
+   */
+  handleSceneMove() {
+    if (this.context.extras.isEditor) {
+      return;
+    }
+
+    // Consider to be dragging after moving beyond maximum slack.
+    const endPosition = this.props.threeSixty.getCurrentPosition();
+    const sceneIsDragging =
+      Math.abs(endPosition.yaw - this.startPosition?.yaw ?? 0) > ThreeSixtyScene.MAX_YAW_DELTA ||
+      Math.abs(endPosition.pitch - this.startPosition?.pitch ?? 0) > ThreeSixtyScene.MAX_PITCH_DELTA;
+
+    this.setState({ sceneIsDragging: sceneIsDragging });
+  }
+
+  /**
    * Handle dragging scene ended.
    * @param {H5P.Event} event Event.
    */
@@ -250,6 +268,11 @@ export default class ThreeSixtyScene extends React.Component {
     if (this.context.extras.isEditor) {
       this.cancelPointerLock();
     }
+
+    window.requestAnimationFrame(() => {
+      this.setState({ sceneIsDragging: false });
+    });
+
     this.context.trigger('movestop', event.data);
   }
 
@@ -264,6 +287,7 @@ export default class ThreeSixtyScene extends React.Component {
     // Remove handlers.
     this.props.threeSixty.stopRendering();
     this.props.threeSixty.off('movestart', this.handleSceneMoveStart);
+    this.props.threeSixty.off('move', this.handleSceneMove);
     this.props.threeSixty.off('movestop', this.handleSceneMoveStop);
     this.props.threeSixty.off('firstrender', this.handleFirstRender);
   }
@@ -315,6 +339,7 @@ export default class ThreeSixtyScene extends React.Component {
     threeSixty.update();
 
     threeSixty.on('movestart', this.handleSceneMoveStart);
+    threeSixty.on('move', this.handleSceneMove);
     threeSixty.on('movestop', this.handleSceneMoveStop);
 
     // Add buttons to scene
@@ -518,6 +543,7 @@ export default class ThreeSixtyScene extends React.Component {
         :
         <NavigationButton
           key={key}
+          sceneIsDragging={this.state.sceneIsDragging}
           staticScene={false}
           leftPosition={null}
           topPosition={null}
@@ -590,17 +616,6 @@ export default class ThreeSixtyScene extends React.Component {
    * @param {number} index Index of interaction linked to navigation button.
    */
   handleNavButtonClick(index) {
-    // Prevent click if user also dragged button beyond maximum slack.
-    const endPosition = this.props.threeSixty.getCurrentPosition();
-    if (
-      Math.abs(endPosition.yaw - this.startPosition?.yaw) >
-        ThreeSixtyScene.MAX_YAW_DELTA ||
-      Math.abs(endPosition.pitch - this.startPosition?.pitch) >
-        ThreeSixtyScene.MAX_PITCH_DELTA
-    ) {
-      return; // Dragged button too much for click
-    }
-
     this.props.showInteraction.bind(this)(index);
   }
 
@@ -657,6 +672,7 @@ export default class ThreeSixtyScene extends React.Component {
       // No longer active, indicate that scene must be updated
       this.props.threeSixty.stopRendering();
       this.props.threeSixty.off('movestart', this.handleSceneMoveStart);
+      this.props.threeSixty.off('move', this.handleSceneMove);
       this.props.threeSixty.off('movestop', this.handleSceneMoveStop);
       this.props.threeSixty.off('firstrender', this.handleFirstRender);
       this.setState({
