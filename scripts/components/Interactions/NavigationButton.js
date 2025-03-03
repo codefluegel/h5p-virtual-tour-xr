@@ -27,7 +27,8 @@ const infoInteractions = [
   'H5P.SingleChoiceSet',
   'H5P.MultiChoice',
   'H5P.Blanks',
-  'H5P.Crosswords'
+  'H5P.Crosswords',
+  'H5P.ThreeDModel'
 ];
 
 /**
@@ -283,17 +284,33 @@ export default class NavigationButton extends React.Component {
   }
 
   /**
+   * Handle key down.
+   * @param {KeyboardEvent} event Keyboard event.
+   */
+  handleKeyDown(event) {
+    if (!this.context.extras.isEditor) {
+      return;
+    }
+
+    if (event.code === 'Enter' || event.code === 'Space') {
+      this.onDoubleClick();
+    }
+  }
+
+  /**
    * Handle click.
    */
   onClick() {
+    if (this.props.sceneIsDragging) {
+      return;
+    }
+
     if (this.props.forceClickHandler || !this.context.extras.isEditor) {
       this.props.clickHandler();
 
       // Reset button focus state when changing scenes or opening content
       this.setState({ innerButtonFocused: false });
     }
-
-    this.setFocus(true);
   }
 
   /**
@@ -339,18 +356,10 @@ export default class NavigationButton extends React.Component {
   }
 
   /**
-   * @param {FocusEvent} event Event.
+   * Handle focus.
    */
-  handleFocus(event) {
-    if (this.context.extras.isEditor) {
-      if (this.navButtonWrapper?.current === event.target) {
-        this.setFocus();
-      }
-
-      return;
-    }
-
-    if (!this.context.extras.isEditor && this.props.onFocus) {
+  handleFocus() {
+    if (this.props.onFocus) {
       if (this.skipFocus) {
         this.skipFocus = false;
       }
@@ -484,6 +493,7 @@ export default class NavigationButton extends React.Component {
         tabIndex={isWrapperTabbable ? 0 : undefined}
         onFocus={this.handleFocus.bind(this)}
         onClick={this.onClick.bind(this)}
+        onKeyDown={this.handleKeyDown.bind(this)}
         onBlur={this.onBlur.bind(this)}
       >
         {
@@ -493,7 +503,6 @@ export default class NavigationButton extends React.Component {
               style={{ height:'100%', width:'100%' }}
               ariaLabel={getLabelText(label) || this.context.l10n.untitled}
               tabIndexValue={isInnerButtonTabbable ? undefined : -1}
-              onClickEvent={this.onClick.bind(this)}
               onDoubleClickEvent={this.onDoubleClick.bind(this)}
               onMouseDownEvent={this.onMouseDown.bind(this)}
               onFocusEvent={() => this.setState({ innerButtonFocused: true })}
@@ -512,7 +521,6 @@ export default class NavigationButton extends React.Component {
               aria-label={ getLabelText(label) || this.props.title }
               className='nav-button'
               tabIndex={isInnerButtonTabbable ? undefined : -1}
-              onClick={this.onClick.bind(this)}
               onDoubleClick={this.onDoubleClick.bind(this)}
               onMouseDown={this.onMouseDown.bind(this)}
               onFocus={() => this.setState({ innerButtonFocused: true })}
