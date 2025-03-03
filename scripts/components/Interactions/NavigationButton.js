@@ -292,8 +292,6 @@ export default class NavigationButton extends React.Component {
       // Reset button focus state when changing scenes or opening content
       this.setState({ innerButtonFocused: false });
     }
-
-    this.setFocus(true);
   }
 
   /**
