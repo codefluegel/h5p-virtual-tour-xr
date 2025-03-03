@@ -218,6 +218,7 @@ export default class NavigationButton extends React.Component {
       window.setTimeout(() => {
         this.context.threeSixty.preventCameraMovement = true;
         this.setFocus(true);
+
       }, 0); // Note: Don't think timeout is needed after rendering was fixed
     }
 
@@ -283,6 +284,20 @@ export default class NavigationButton extends React.Component {
   }
 
   /**
+   * Handle key down.
+   * @param {KeyboardEvent} event Keyboard event.
+   */
+  handleKeyDown(event) {
+    if (!this.context.extras.isEditor) {
+      return;
+    }
+
+    if (event.code === 'Enter' || event.code === 'Space') {
+      this.onDoubleClick();
+    }
+  }
+
+  /**
    * Handle click.
    */
   onClick() {
@@ -341,18 +356,10 @@ export default class NavigationButton extends React.Component {
   }
 
   /**
-   * @param {FocusEvent} event Event.
+   * Handle focus.
    */
-  handleFocus(event) {
-    if (this.context.extras.isEditor) {
-      if (this.navButtonWrapper?.current === event.target) {
-        this.setFocus();
-      }
-
-      return;
-    }
-
-    if (!this.context.extras.isEditor && this.props.onFocus) {
+  handleFocus() {
+    if (this.props.onFocus) {
       if (this.skipFocus) {
         this.skipFocus = false;
       }
@@ -491,6 +498,7 @@ export default class NavigationButton extends React.Component {
         tabIndex={isWrapperTabbable ? 0 : undefined}
         onFocus={this.handleFocus.bind(this)}
         onClick={this.onClick.bind(this)}
+        onKeyDown={this.handleKeyDown.bind(this)}
         onBlur={this.onBlur.bind(this)}
       >
         {
