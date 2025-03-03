@@ -286,6 +286,10 @@ export default class NavigationButton extends React.Component {
    * Handle click.
    */
   onClick() {
+    if (this.props.sceneIsDragging) {
+      return;
+    }
+
     if (this.props.forceClickHandler || !this.context.extras.isEditor) {
       this.props.clickHandler();
 
