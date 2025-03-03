@@ -218,7 +218,6 @@ export default class NavigationButton extends React.Component {
       window.setTimeout(() => {
         this.context.threeSixty.preventCameraMovement = true;
         this.setFocus(true);
-
       }, 0); // Note: Don't think timeout is needed after rendering was fixed
     }
 
