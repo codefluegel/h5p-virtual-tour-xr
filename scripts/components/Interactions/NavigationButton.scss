@@ -177,6 +177,43 @@
   font-size: 1.25em;
 }
 
+.nav-button-wrapper.h5p-blanks .nav-button:before {
+  content: icons.$blanks;
+  font-family: "H5PFontIcons";
+  top: 45%;
+}
+
+.nav-button-wrapper.h5p-crossword .nav-button:before {
+  content: icons.$crossword;
+  font-size: 1em;
+  left: 52%;
+  top: 52%;
+}
+
+.nav-button-wrapper.h5p-threedmodel .nav-button:before {
+  content: icons.$threedmodel;
+  left: 52%;
+  top: 52%;
+}
+
+.nav-button-wrapper.h5p-multichoice .nav-button:before {
+  content: icons.$multiChoice;
+  font-family: "H5PFontIcons";
+  top: 45%;
+}
+
+.nav-button-wrapper.h5p-singlechoiceset .nav-button:before {
+  content: icons.$singleChoiceSet;
+  font-family: "H5PFontIcons";
+  top: 45%;
+}
+
+.nav-button-wrapper.h5p-summary .nav-button:before {
+  content: icons.$summary;
+  font-family: "H5PFontIcons";
+  top: 45%;
+}
+
 .h5p-question-button .nav-button:before {
   content: icons.$question;
 }
