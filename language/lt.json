@@ -1,11 +1,11 @@
 {
   "semantics": [
     {
-      "label": "Three Image Editor",
+      "label": "Trijų vaizdų rengyklė",
       "fields": [
         {
-          "label": "Scenes",
-          "entity": "Scene",
+          "label": "Vaizdai",
+          "entity": "Vaizdas",
           "field": {
             "fields": [
               {
@@ -57,7 +57,7 @@
                 "description": "Camera position in pitch and yaw"
               },
               {
-                "label": "Interactions",
+                "label": "Sąveikos",
                 "field": {
                   "fields": [
                     {
@@ -313,7 +313,7 @@
       "fields": [
         {
           "label": "Aria label for content type",
-          "default": "Virtual Tour"
+          "default": "Escape Room"
         },
         {
           "label": "Label for to play audio",

@@ -148,14 +148,14 @@
                       "label": "Interaction position"
                     },
                     {
-                      "label": "Button style",
-                      "description": "Decide how the icon should look.",
+                      "label": "Knappetype",
+                      "description": "Velg hvilket ikon som skal vises.",
                       "options": [
                         {
-                          "label": "Text icon"
+                          "label": "Tekstikon"
                         },
                         {
-                          "label": "Info icon"
+                          "label": "Informasjonsikon"
                         }
                       ]
                     }
@@ -205,16 +205,16 @@
           "label": "Spillelister"
         },
         {
-          "label": "Playlists",
+          "label": "Spillelister",
           "field": {
             "fields": [
               {
-                "label": "Playlist Title",
-                "description": "Used to identify the playlist"
+                "label": "Navn på spilleliste",
+                "description": "Brukes for å gjenkjenne spillelisten"
               },
               {
-                "label": "Audio Tracks",
-                "description": "Add audio tracks to the playlist."
+                "label": "Lydspor",
+                "description": "Legg ett eller flere lydspor til i spillelisten."
               },
               {}
             ]
@@ -313,7 +313,7 @@
       "fields": [
         {
           "label": "Aria label for content type",
-          "default": "Virtuell tur"
+          "default": "Escape Room"
         },
         {
           "label": "Label for to play audio",

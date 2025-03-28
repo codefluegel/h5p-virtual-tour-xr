@@ -313,7 +313,7 @@
       "fields": [
         {
           "label": "Aria label pro typ obsahu",
-          "default": "Virtuální prohlídka"
+          "default": "Escape Room"
         },
         {
           "label": "Popisek pro přehrávání zvuku",

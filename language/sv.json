@@ -148,14 +148,14 @@
                       "label": "Interaction position"
                     },
                     {
-                      "label": "Button style",
-                      "description": "Decide how the icon should look.",
+                      "label": "Knapptyp",
+                      "description": "Avgör hur ikonen ska se ut.",
                       "options": [
                         {
-                          "label": "Text icon"
+                          "label": "Textikon"
                         },
                         {
-                          "label": "Info icon"
+                          "label": "Info-ikon"
                         }
                       ]
                     }
@@ -313,7 +313,7 @@
       "fields": [
         {
           "label": "Aria-etikett för innehållstyp",
-          "default": "Virtual tur"
+          "default": "Escape Room"
         },
         {
           "label": "Etikett för att spela ljud",

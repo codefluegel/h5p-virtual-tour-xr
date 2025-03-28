@@ -1,7 +1,7 @@
 {
   "semantics": [
     {
-      "label": "Three Image Editor",
+      "label": "Escape Room Editor",
       "fields": [
         {
           "label": "Scenes",
@@ -313,7 +313,7 @@
       "fields": [
         {
           "label": "Aria label for content type",
-          "default": "Virtual Tour"
+          "default": "Escape Room"
         },
         {
           "label": "Label for to play audio",

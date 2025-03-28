@@ -1,7 +1,7 @@
 {
   "semantics": [
     {
-      "label": "Editor für Virtuelle Touren",
+      "label": "Editor für Escape Room",
       "fields": [
         {
           "label": "Szenen",
@@ -27,8 +27,8 @@
                 "description": "Button anzeigen, um zur vorherigen Szene zurückzukehren"
               },
               {
-                "label": "Enable \"Zoom\"",
-                "description": "Enable zooming in and out with zoom buttons, mouse wheel, touch gestures and keyboard shortcuts."
+                "label": "\"Zoom\" einschalten",
+                "description": "Schalte Herein- und Herauszoomen über Buttons, das Mausscrollrad, Wischgesten und Tastatur ein."
               },
               {
                 "label": "Szenen-Id"
@@ -313,7 +313,7 @@
       "fields": [
         {
           "label": "Aria-Label für den Inhaltstyp",
-          "default": "Virtuelle Tour"
+          "default": "Escape Room"
         },
         {
           "label": "Beschriftung des \"Tonspur abspielen\"-Buttons",

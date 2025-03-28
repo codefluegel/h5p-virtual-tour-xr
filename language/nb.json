@@ -155,7 +155,7 @@
                           "label": "Tekstikon"
                         },
                         {
-                          "label": "Info icon"
+                          "label": "Informasjonsikon"
                         }
                       ]
                     }
@@ -313,7 +313,7 @@
       "fields": [
         {
           "label": "Aria-merkelapp for innholdstype",
-          "default": "Virtuell tur"
+          "default": "Escape Room"
         },
         {
           "label": "Merkelapp for lydavspilling",

@@ -13,6 +13,12 @@ export const sceneRenderingQualityMapping = {
   low: 16,
 };
 
+/** @constant {number} AFFORDANCE_INTERVAL_DEFAULT_MS Default time in between affordance pointers. */
+const AFFORDANCE_INTERVAL_DEFAULT_MS = 7500;
+
+/** @constant {number} AFFORDANCE_INTERVAL_MIN_MS Minimum time in between affordance pointers. */
+const AFFORDANCE_INTERVAL_MIN_MS = 1000;
+
 export default class ThreeSixtyScene extends React.Component {
   /**
    * @param {object} props React properties.
@@ -22,6 +28,7 @@ export default class ThreeSixtyScene extends React.Component {
     this.props = props;
 
     this.sceneRef = React.createRef();
+    this.affordancePointerRef = React.createRef();
     this.renderedInteractions = 0;
 
     this.state = {
@@ -37,7 +44,10 @@ export default class ThreeSixtyScene extends React.Component {
 
     this.handleFirstRender = this.handleFirstRender.bind(this);
     this.handleSceneMoveStart = this.handleSceneMoveStart.bind(this);
+    this.handleSceneMove = this.handleSceneMove.bind(this);
     this.handleSceneMoveStop = this.handleSceneMoveStop.bind(this);
+
+    this.terminateAffordance = this.terminateAffordance.bind(this);
   }
 
   /**
@@ -80,7 +90,118 @@ export default class ThreeSixtyScene extends React.Component {
       isRendered: true
     });
 
+    if (this.props.show360Affordance) {
+      this.registerAffordance();
+    }
+
     this.focusScene();
+  }
+
+  /**
+   * Register affordance.
+   * @param {object} [params] Parameters.
+   * @param {number} [params.intervalMs] Interval in milliseconds.
+   * @param {boolean} [params.once] If true, run only once.
+   */
+  registerAffordance(params = {}) {
+    if (typeof params.intervalMs !== 'number' || params.intervalMs < AFFORDANCE_INTERVAL_MIN_MS) {
+      params.intervalMs = AFFORDANCE_INTERVAL_DEFAULT_MS;
+    }
+
+    window.clearTimeout(this.affordanceStartTimeout);
+    this.affordanceStartTimeout = window.setInterval(() => {
+      if (this.preAffordanceCameraPosition) {
+        return; // Affordance already started
+      }
+
+      this.startAffordance({ once: params.once });
+    }, params.intervalMs);
+
+    document.addEventListener('click', this.terminateAffordance, { once: true });
+    document.addEventListener('keydown', this.terminateAffordance, { once: true });
+  }
+
+  /**
+   * Start affordance animation.
+   * @param {object} [params] Parameters.
+   * @param {boolean} [params.once] If true, run only once.
+   */
+  startAffordance(params = {}) {
+    params.once = params.once || false;
+
+    this.preAffordanceCameraPosition = this.props.threeSixty.getCurrentPosition();
+    this.affordanceCounter = 0;
+
+    this.affordancePointerRef.current.classList.remove('display-none');
+
+    this.affordanceAnimationTimeout = window.setInterval(() => {
+      this.animateAffordance({ once: params.once });
+    }, 25); // 40 fps
+  }
+
+  /**
+   * Animate the affordance.
+   * @param {object} [params] Parameters.
+   * @param {boolean} [params.once] If true, terminate after one animation.
+   * @param {number} [params.displacementFactor] Displacement factor.
+   */
+  animateAffordance(params = {}) {
+    params.displacementFactor = params.displacementFactor ?? 0.5;
+
+    this.affordanceCounter += Math.PI / 45;
+
+    if (this.affordanceCounter >= 2 * Math.PI) {
+      if (params.once) {
+        this.terminateAffordance();
+      }
+      else {
+        this.stopAffordance();
+      }
+
+      return;
+    }
+
+    const translation = Math.sin(this.affordanceCounter) * params.displacementFactor;
+
+    this.affordancePointerRef.current.style.translate = `${-10 * translation}%`;
+    this.affordanceYaw = this.preAffordanceCameraPosition.yaw + translation / 10;
+
+    // Setting this by updating state seems to be too slow
+    this.props.threeSixty.setCameraPosition(this.affordanceYaw, this.preAffordanceCameraPosition.pitch);
+  }
+
+  /**
+   * Stop affordance animation.
+   */
+  stopAffordance() {
+    clearTimeout(this.affordanceAnimationTimeout);
+
+    this.affordancePointerRef.current.classList.add('display-none');
+    this.affordancePointerRef.current.style.translate = '';
+
+    if (!this.preAffordanceCameraPosition) {
+      return;
+    }
+
+    this.props.threeSixty.setCameraPosition(
+      this.preAffordanceCameraPosition.yaw, this.preAffordanceCameraPosition.pitch
+    );
+
+    delete this.affordanceCounter;
+    delete this.preAffordanceCameraPosition;
+  }
+
+  /**
+   * Terminate affordance animation.
+   */
+  terminateAffordance() {
+    window.clearTimeout(this.affordanceStartTimeout);
+    this.stopAffordance();
+
+    document.removeEventListener('click', this.terminateAffordance);
+    document.removeEventListener('keydown', this.terminateAffordance);
+
+    this.props.on360AffordanceDone?.();
   }
 
   /**
@@ -89,6 +210,8 @@ export default class ThreeSixtyScene extends React.Component {
    * @returns {boolean|undefined} False, when dragging context menu or context menu children.
    */
   handleSceneMoveStart(event) {
+    this.terminateAffordance();
+
     this.startPosition = this.props.threeSixty.getCurrentPosition();
 
     if (!this.context.extras.isEditor || event.data.isCamera) {
@@ -121,6 +244,23 @@ export default class ThreeSixtyScene extends React.Component {
   }
 
   /**
+   * Handle dragging scene ongoing.
+   */
+  handleSceneMove() {
+    if (this.context.extras.isEditor) {
+      return;
+    }
+
+    // Consider to be dragging after moving beyond maximum slack.
+    const endPosition = this.props.threeSixty.getCurrentPosition();
+    const sceneIsDragging =
+      Math.abs(endPosition.yaw - this.startPosition?.yaw ?? 0) > ThreeSixtyScene.MAX_YAW_DELTA ||
+      Math.abs(endPosition.pitch - this.startPosition?.pitch ?? 0) > ThreeSixtyScene.MAX_PITCH_DELTA;
+
+    this.setState({ sceneIsDragging: sceneIsDragging });
+  }
+
+  /**
    * Handle dragging scene ended.
    * @param {H5P.Event} event Event.
    */
@@ -128,6 +268,11 @@ export default class ThreeSixtyScene extends React.Component {
     if (this.context.extras.isEditor) {
       this.cancelPointerLock();
     }
+
+    window.requestAnimationFrame(() => {
+      this.setState({ sceneIsDragging: false });
+    });
+
     this.context.trigger('movestop', event.data);
   }
 
@@ -142,6 +287,7 @@ export default class ThreeSixtyScene extends React.Component {
     // Remove handlers.
     this.props.threeSixty.stopRendering();
     this.props.threeSixty.off('movestart', this.handleSceneMoveStart);
+    this.props.threeSixty.off('move', this.handleSceneMove);
     this.props.threeSixty.off('movestop', this.handleSceneMoveStop);
     this.props.threeSixty.off('firstrender', this.handleFirstRender);
   }
@@ -193,6 +339,7 @@ export default class ThreeSixtyScene extends React.Component {
     threeSixty.update();
 
     threeSixty.on('movestart', this.handleSceneMoveStart);
+    threeSixty.on('move', this.handleSceneMove);
     threeSixty.on('movestop', this.handleSceneMoveStop);
 
     // Add buttons to scene
@@ -396,6 +543,7 @@ export default class ThreeSixtyScene extends React.Component {
         :
         <NavigationButton
           key={key}
+          sceneIsDragging={this.state.sceneIsDragging}
           staticScene={false}
           leftPosition={null}
           topPosition={null}
@@ -468,17 +616,6 @@ export default class ThreeSixtyScene extends React.Component {
    * @param {number} index Index of interaction linked to navigation button.
    */
   handleNavButtonClick(index) {
-    // Prevent click if user also dragged button beyond maximum slack.
-    const endPosition = this.props.threeSixty.getCurrentPosition();
-    if (
-      Math.abs(endPosition.yaw - this.startPosition?.yaw) >
-        ThreeSixtyScene.MAX_YAW_DELTA ||
-      Math.abs(endPosition.pitch - this.startPosition?.pitch) >
-        ThreeSixtyScene.MAX_PITCH_DELTA
-    ) {
-      return; // Dragged button too much for click
-    }
-
     this.props.showInteraction.bind(this)(index);
   }
 
@@ -535,6 +672,7 @@ export default class ThreeSixtyScene extends React.Component {
       // No longer active, indicate that scene must be updated
       this.props.threeSixty.stopRendering();
       this.props.threeSixty.off('movestart', this.handleSceneMoveStart);
+      this.props.threeSixty.off('move', this.handleSceneMove);
       this.props.threeSixty.off('movestop', this.handleSceneMoveStop);
       this.props.threeSixty.off('firstrender', this.handleFirstRender);
       this.setState({
@@ -637,7 +775,9 @@ export default class ThreeSixtyScene extends React.Component {
     }
 
     return (
-      <div className='three-sixty-scene-wrapper'>
+      <div
+        style={{ '--zoom-percentage': this.props.zoomPercentage }}
+        className='three-sixty-scene-wrapper'>
         <div
           ref={this.sceneRef}
           aria-hidden={ this.props.isHiddenBehindOverlay ? true : undefined }
@@ -653,6 +793,11 @@ export default class ThreeSixtyScene extends React.Component {
             </div>
           </div>
         }
+        <div
+          ref={this.affordancePointerRef}
+          className="affordance-pointer display-none"
+        >
+        </div>
       </div>
     );
   }

@@ -69,6 +69,7 @@ export default class Scene extends React.Component {
     if (this.props.sceneParams.sceneType === SceneTypes.STATIC_SCENE) {
       return (
         <StaticScene
+          zoomPercentage={this.props.zoomPercentage}
           isActive={this.props.isActive}
           isHiddenBehindOverlay={ this.props.isHiddenBehindOverlay }
           nextFocus={ this.props.nextFocus }
@@ -98,6 +99,7 @@ export default class Scene extends React.Component {
 
     return (
       <ThreeSixtyScene
+        zoomPercentage={this.props.zoomPercentage}
         threeSixty={this.props.threeSixty}
         updateThreeSixty={this.props.updateThreeSixty}
         isActive={this.props.isActive}
@@ -128,6 +130,8 @@ export default class Scene extends React.Component {
         isPanorama={this.props.sceneParams.sceneType === SceneTypes.PANORAMA}
         enableZoom={this.props.sceneParams.enableZoom}
         getInteractionTitle={this.getInteractionTitle.bind(this)}
+        show360Affordance={ this.props.show360Affordance }
+        on360AffordanceDone={ this.props.on360AffordanceDone }
       />
     );
   }

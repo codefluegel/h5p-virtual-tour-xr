@@ -928,6 +928,7 @@ export default class StaticScene extends React.Component {
 
     return (
       <div
+        style={{ '--zoom-percentage': this.props.zoomPercentage }}
         ref={this.overLayRef}
         className='image-scene-overlay'
         aria-hidden={this.props.isHiddenBehindOverlay ? true : undefined}

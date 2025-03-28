@@ -202,10 +202,10 @@
         },
         {},
         {
-          "label": "Playlists"
+          "label": "Heliriba"
         },
         {
-          "label": "Playlists",
+          "label": "Heliriba",
           "field": {
             "fields": [
               {
@@ -313,7 +313,7 @@
       "fields": [
         {
           "label": "Aria label for content type",
-          "default": "Virtual Tour"
+          "default": "Escape Room"
         },
         {
           "label": "Label for to play audio",

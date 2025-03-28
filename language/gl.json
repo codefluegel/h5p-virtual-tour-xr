@@ -1,7 +1,7 @@
 {
   "semantics": [
     {
-      "label": "Editor de Tres Imaxes",
+      "label": "Editor da sala de escape",
       "fields": [
         {
           "label": "Escenas",
@@ -148,14 +148,14 @@
                       "label": "Interaction position"
                     },
                     {
-                      "label": "Button style",
-                      "description": "Decide how the icon should look.",
+                      "label": "Estilo do botón",
+                      "description": "Decide como debe ser a icona.",
                       "options": [
                         {
-                          "label": "Text icon"
+                          "label": "Icona de texto"
                         },
                         {
-                          "label": "Info icon"
+                          "label": "Icona de información"
                         }
                       ]
                     }
@@ -205,16 +205,16 @@
           "label": "Listas de reprodución"
         },
         {
-          "label": "Playlists",
+          "label": "Listas de reprodución",
           "field": {
             "fields": [
               {
-                "label": "Playlist Title",
-                "description": "Used to identify the playlist"
+                "label": "Título da lista de reprodución",
+                "description": "Úsase para identificar a lista de reprodución"
               },
               {
-                "label": "Audio Tracks",
-                "description": "Add audio tracks to the playlist."
+                "label": "Pistas de son",
+                "description": "Engade pistas de son á lista de reprodución."
               },
               {}
             ]
@@ -313,7 +313,7 @@
       "fields": [
         {
           "label": "Etiqueta Aria para tipo de contido",
-          "default": "Xira Virtual"
+          "default": "Escape Room"
         },
         {
           "label": "Etiqueta para reproducir son",
